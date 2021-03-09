@@ -16,6 +16,7 @@ SFML = -lsfml-graphics -lsfml-audio -lsfml-window -lsfml-system -lsfml-network
 LDFLAGS	=	-shared
 
 SRC	=	$(wildcard *.cpp)	\
+		../../core/AGraphicalModule.cpp
 
 OBJ	=	$(SRC:.cpp=.o)
 

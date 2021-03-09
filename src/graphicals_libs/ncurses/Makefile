@@ -11,7 +11,7 @@ TARGET	=	../../../lib/arcade_ncurses.so
 
 CPPFLAGS	=	-W -Wall -Wextra -std=c++17 -fPIC
 
-LDFLAGS	=	-shared
+LDFLAGS	=	-shared -lncurses
 
 SRC	=	$(wildcard *.cpp)	\
 		../../core/AGraphicalModule.cpp

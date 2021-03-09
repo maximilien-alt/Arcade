@@ -24,13 +24,12 @@ void Arcade::Game_Nibbler::startGame()
 {
     graphical_text_t text;
 
-    if (!_texts.empty()) {
+    if (!_texts.empty())
         _texts.clear();
-        text.text = std::string("NIBBLER");
-        text.pos = (graphical_pos_t){WIDTH / 2, HEIGHT / 2, 0};
-        text.size = 12;
-        _texts.push_back(text);
-    }
+    text.text = std::string("NIBBLER");
+    text.pos = (graphical_pos_t){WIDTH / 2, HEIGHT / 2, 0};
+    text.size = 12;
+    _texts.push_back(text);
 }
 
 void Arcade::Game_Nibbler::updateGame()

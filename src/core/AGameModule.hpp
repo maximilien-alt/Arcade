@@ -16,7 +16,7 @@ namespace Arcade {
         public:
             AGameModule();
             virtual ~AGameModule() = default;
-            void setGraphicalModule(IGraphicalModule *newModule) final;
+            virtual void setGraphicalModule(IGraphicalModule *newModule) final;
         
         protected:
             IGraphicalModule *_graphicalModule;

@@ -16,8 +16,8 @@ namespace Arcade {
             Game_Pacman();
             ~Game_Pacman();
         
-            virtual void startGame() final;
-            virtual void updateGame() final;
+            void startGame() final;
+            void updateGame() final;
     };
 }
 

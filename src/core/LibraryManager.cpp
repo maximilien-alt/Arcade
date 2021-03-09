@@ -9,7 +9,14 @@
 
 Arcade::LibraryManager::LibraryManager(const std::string &name)
 {
-    _graphicalModules.push_back(std::move(loadLibrary(name)));
+    Arcade::IGraphicalModule *graphical = loadLibrary(name);
+    _graphicalModules.push_back(graphical);
+    Arcade::IGameModule *game = loadGame("./lib/arcade_pacman.so");
+    std::cout << "nullptr" << std::endl;
+    game->setGraphicalModule(graphical);
+    std::cout << "nullptr" << std::endl;
+    while (1)
+        game->updateGame();
 }
 
 Arcade::LibraryManager::~LibraryManager()

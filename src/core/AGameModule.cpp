@@ -13,5 +13,6 @@ Arcade::AGameModule::AGameModule()
 
 void Arcade::AGameModule::setGraphicalModule(IGraphicalModule *newModule)
 {
+    std::cout << "Cc" << std::endl;
     _graphicalModule = newModule;
 }
