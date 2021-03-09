@@ -8,6 +8,38 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include "arcade_nibbler.hpp"
+
+Arcade::Game_Nibbler::Game_Nibbler(): AGameModule()
+{
+
+}
+
+Arcade::Game_Nibbler::~Game_Nibbler()
+{
+
+}
+
+void Arcade::Game_Nibbler::startGame()
+{
+    graphical_text_t text;
+
+    if (!_texts.empty()) {
+        _texts.clear();
+        text.text = std::string("NIBBLER");
+        text.pos = (graphical_pos_t){WIDTH / 2, HEIGHT / 2, 0};
+        text.size = 12;
+        _texts.push_back(text);
+    }
+}
+
+void Arcade::Game_Nibbler::updateGame()
+{
+    _graphicalModule->clear();
+    for (auto &n: _texts)
+        _graphicalModule->drawText(n);
+    _graphicalModule->refresh();
+}
 
 __attribute__((constructor))
 void constructor()
@@ -21,8 +53,7 @@ void destructor()
     printf("[libfoo] foo closing...\n");
 }
 
-extern "C" int entryPoint(void)
+extern "C" Arcade::IGameModule *entryPoint(void)
 {
-    printf("[libfoo] Entry point for foo!\n");
-    return (0);
+    return new Arcade::Game_Nibbler;
 }
