@@ -18,6 +18,8 @@ namespace Arcade
             ~Graphical_SFML();
 
             void drawText(graphical_text_t &text);
+            void clear();
+            void refresh();
         private:
             sf::RenderWindow _window;
             sf::Event _event;

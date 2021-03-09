@@ -19,6 +19,8 @@ namespace Arcade
         virtual ~AGraphicalModule() = default;
 
         virtual void drawText(graphical_text_t &text) = 0;
+        virtual void clear() = 0;
+        virtual void refresh() = 0;
     };
 }
 

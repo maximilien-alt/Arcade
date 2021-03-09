@@ -7,7 +7,7 @@
 
 #include "arcade_sfml.hpp"
 
-Arcade::Graphical_SFML::Graphical_SFML() : AGraphicalModule(), _window(sf::VideoMode(800, 600), "SFML window")
+Arcade::Graphical_SFML::Graphical_SFML() : AGraphicalModule(), _window(sf::VideoMode(WIDTH, HEIGHT), "SFML window")
 {
     _window.setFramerateLimit(60);
 }
@@ -27,13 +27,17 @@ void Arcade::Graphical_SFML::drawText(graphical_text_t &text)
     _window.draw(txt);
 }
 
+void Arcade::Graphical_SFML::clear()
+{
+    _window.clear(sf::Color::Black);
+}
+
+void Arcade::Graphical_SFML::refresh()
+{
+    _window.display();
+}
+
 extern "C" Arcade::IGraphicalModule *entryPoint()
 {
     return new Arcade::Graphical_SFML;
 }
-
-// void update(sfRenderWindow *window, sfEvent event)
-// {
-//     sfRenderWindow_clear(window, sfBlack);
-//     sfRenderWindow_display(window);
-// }
