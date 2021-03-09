@@ -9,6 +9,8 @@
 #define IGRAPHICAL_MODULE_HPP_
 
 #include "GraphicalStructures.hpp"
+#include <memory>
+#include <iostream>
 
 namespace Arcade
 {

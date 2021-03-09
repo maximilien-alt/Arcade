@@ -14,3 +14,13 @@ Arcade::Graphical_Ncurses::Graphical_Ncurses() : AGraphicalModule()
 Arcade::Graphical_Ncurses::~Graphical_Ncurses()
 {
 }
+
+void Arcade::Graphical_Ncurses::drawText(graphical_text_t &text)
+{
+    std::cout << "Jules" << std::endl;
+}
+
+extern "C" Arcade::IGraphicalModule *entryPoint()
+{
+    return new Arcade::Graphical_Ncurses;
+}

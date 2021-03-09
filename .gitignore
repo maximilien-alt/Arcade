@@ -2,3 +2,4 @@
 arcade
 *.o
 .build
+.vscode/*

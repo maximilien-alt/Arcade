@@ -12,7 +12,7 @@
 
 namespace Arcade
 {
-    class AGraphicalModule : IGraphicalModule
+    class AGraphicalModule : public IGraphicalModule
     {
     public:
         AGraphicalModule();

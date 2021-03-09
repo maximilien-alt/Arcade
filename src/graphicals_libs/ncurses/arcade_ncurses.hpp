@@ -12,10 +12,11 @@
 
 namespace Arcade
 {
-    class Graphical_Ncurses : AGraphicalModule {
+    class Graphical_Ncurses : public AGraphicalModule {
         public:
             Graphical_Ncurses();
             ~Graphical_Ncurses();
+            void drawText(graphical_text_t &text);
     };
 } // namespace Arcade
 

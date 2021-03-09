@@ -5,10 +5,13 @@
 ## Makefile
 ##
 
-all:	core games graphicals
+all:	games graphicals core
 
 core:
 	$(MAKE) -C src/core
+
+core_debug:
+	$(MAKE) -C src/core debug
 
 games:
 	$(MAKE) -C src/games_libs
