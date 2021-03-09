@@ -39,6 +39,20 @@ void Arcade::Graphical_SFML::refresh()
 
 int Arcade::Graphical_SFML::check()
 {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+        return (1);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
+        return (2);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+        return (3);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+        return (4);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::T))
+        return (5);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Y))
+        return (6);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::U))
+        return (7);
     return (0);
 }
 
