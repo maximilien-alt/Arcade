@@ -7,13 +7,23 @@
 
 #include "arcade_sfml.hpp"
 
-Arcade::Graphical_SFML::Graphical_SFML() : AGraphicalModule(), _window(sf::VideoMode(WIDTH, HEIGHT), "SFML window")
+Arcade::Graphical_SFML::Graphical_SFML() : AGraphicalModule()
 {
-    _window.setFramerateLimit(60);
 }
 
 Arcade::Graphical_SFML::~Graphical_SFML()
 {
+}
+
+void Arcade::Graphical_SFML::openWindow()
+{
+    _window = new sf::RenderWindow(sf::VideoMode(WIDTH, HEIGHT), "SFML window");
+    _window->setFramerateLimit(60);
+}
+
+void Arcade::Graphical_SFML::closeWindow()
+{
+    _window->close();
 }
 
 void Arcade::Graphical_SFML::drawText(graphical_text_t &text)
@@ -24,17 +34,21 @@ void Arcade::Graphical_SFML::drawText(graphical_text_t &text)
     sf::Text txt(text.text, font, text.size);
     txt.setColor({text.color.r, text.color.g, text.color.b});
     txt.setPosition(text.pos.x, text.pos.y);
-    _window.draw(txt);
+    _window->draw(txt);
 }
 
 void Arcade::Graphical_SFML::clear()
 {
-    _window.clear(sf::Color::Black);
+    while (_window->pollEvent(_event)) {
+        if (_event.type == sf::Event::Closed)
+            _window->close();
+    }
+    _window->clear(sf::Color::Black);
 }
 
 void Arcade::Graphical_SFML::refresh()
 {
-    _window.display();
+    _window->display();
 }
 
 int Arcade::Graphical_SFML::check()

@@ -22,6 +22,8 @@ namespace Arcade
         virtual void clear() = 0;
         virtual void refresh() = 0;
         virtual int check() = 0;
+        virtual void openWindow() = 0;
+        virtual void closeWindow() = 0;
     };
 }
 

@@ -9,6 +9,14 @@
 
 Arcade::Graphical_Ncurses::Graphical_Ncurses() : AGraphicalModule()
 {
+}
+
+Arcade::Graphical_Ncurses::~Graphical_Ncurses()
+{
+}
+
+void Arcade::Graphical_Ncurses::openWindow()
+{
     initscr();
     start_color();
     assume_default_colors(COLOR_WHITE, -1);
@@ -18,39 +26,60 @@ Arcade::Graphical_Ncurses::Graphical_Ncurses() : AGraphicalModule()
     init_pair(4, COLOR_WHITE, -1);
     init_pair(5, COLOR_CYAN, -1);
     noecho();
+    _window = newwin(product_y(HEIGHT), product_x(WIDTH), 0, 0);
+    nodelay(stdscr, true);
+    nodelay(_window, true);
     curs_set(0);
-    _win = newwin(product_y(HEIGHT), product_x(WIDTH), 0, 0);
     keypad(stdscr, true);
-    keypad(_win, true);
+    keypad(_window, true);
 }
 
-Arcade::Graphical_Ncurses::~Graphical_Ncurses()
+void Arcade::Graphical_Ncurses::closeWindow()
 {
+    wclear(_window);
+    endwin();
 }
 
 void Arcade::Graphical_Ncurses::drawText(graphical_text_t &text)
 {
     init_color(10, text.color.r, text.color.g, text.color.b);
     init_pair(10, 10, -1);
-    wattron(_win, COLOR_PAIR(10));
-    mvwprintw(_win, product_y(text.pos.y), product_x(text.pos.x), text.text.c_str());
-    wattroff(_win, COLOR_PAIR(10));
+    wattron(_window, COLOR_PAIR(10));
+    mvwprintw(_window, product_y(text.pos.y), product_x(text.pos.x), text.text.c_str());
+    wattroff(_window, COLOR_PAIR(10));
 }
 
 void Arcade::Graphical_Ncurses::clear()
 {
-    werase(_win);
-    box(_win, 0, 0);
+    werase(_window);
+    box(_window, 0, 0);
 }
 
 void Arcade::Graphical_Ncurses::refresh()
 {
-    wrefresh(_win);
+    wrefresh(_window);
 }
 
 int Arcade::Graphical_Ncurses::check()
 {
+    int input = getInput();
+
+    switch (input) {
+        case 'a': return 1;
+        case 'z': return 2;
+        case 'e': return 3;
+        case 'r': return 4;
+        case 't': return 5;
+        case 'y': return 6;
+        case 'u': return 7;
+        default: return 0;
+    }
     return (0);
+}
+
+int Arcade::Graphical_Ncurses::getInput()
+{
+    return (wgetch(stdscr));
 }
 
 extern "C" Arcade::IGraphicalModule *entryPoint()

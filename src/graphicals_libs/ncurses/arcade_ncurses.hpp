@@ -20,9 +20,13 @@ namespace Arcade
             void clear() final;
             void refresh() final;
             int check() final;
+            void openWindow() final;
+            void closeWindow() final;
         
         private:
-            WINDOW *_win;
+            WINDOW *_window;
+
+            int getInput();
     };
 } // namespace Arcade
 

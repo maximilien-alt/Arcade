@@ -21,8 +21,11 @@ namespace Arcade
             void clear() final;
             void refresh() final;
             int check() final;
+            void openWindow() final;
+            void closeWindow() final;
+
         private:
-            sf::RenderWindow _window;
+            sf::RenderWindow *_window;
             sf::Event _event;
     };
 } // namespace Arcade

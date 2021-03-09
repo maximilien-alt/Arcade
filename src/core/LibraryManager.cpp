@@ -13,7 +13,7 @@ Arcade::LibraryManager::LibraryManager(const std::string &name)
 
     Arcade::IGraphicalModule *graphical = loadLibrary(name);
     _graphicalModules.push_back(graphical);
-    _graphicalModules.push_back(loadLibrary("arcade_ncurses.so"));
+    _graphicalModules.push_back(loadLibrary("lib/arcade_ncurses.so"));
     Arcade::IGameModule *game = loadGame("./lib/arcade_nibbler.so");
     game->setGraphicalModule(graphical);
     game->startGame();
@@ -21,6 +21,18 @@ Arcade::LibraryManager::LibraryManager(const std::string &name)
         check = game->check();
         switch (check) {
             case 1: game->setGraphicalModule(_graphicalModules[1]);
+                break;
+            case 2: game->setGraphicalModule(_graphicalModules[1]);
+                break;
+            case 3: game->setGraphicalModule(_graphicalModules[1]);
+                break;
+            case 4: game->setGraphicalModule(_graphicalModules[1]);
+                break;
+            case 5: game->setGraphicalModule(_graphicalModules[1]);
+                break;
+            case 6: game->setGraphicalModule(_graphicalModules[1]);
+                break;
+            case 7: game->setGraphicalModule(_graphicalModules[0]);
                 break;
             default: break;
         }

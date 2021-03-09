@@ -13,7 +13,12 @@ Arcade::AGameModule::AGameModule()
 
 void Arcade::AGameModule::setGraphicalModule(IGraphicalModule *newModule)
 {
-    _graphicalModule = newModule;
+    if (_graphicalModule)
+        _graphicalModule->closeWindow();
+    if (newModule) {
+        _graphicalModule = newModule;
+        _graphicalModule->openWindow();
+    }
 }
 
 int Arcade::AGameModule::check()
