@@ -16,7 +16,12 @@ namespace Arcade
         public:
             Graphical_Ncurses();
             ~Graphical_Ncurses();
-            void drawText(graphical_text_t &text);
+            void drawText(graphical_text_t &text) final;
+            void clear() final;
+            void refresh() final;
+        
+        private:
+            WINDOW *_win;
     };
 } // namespace Arcade
 

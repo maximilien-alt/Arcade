@@ -9,6 +9,8 @@
 
 Arcade::Graphical_Ncurses::Graphical_Ncurses() : AGraphicalModule()
 {
+    _win = newwin(WIDTH, HEIGHT, 0, 0);
+    keypad(_win, true);
 }
 
 Arcade::Graphical_Ncurses::~Graphical_Ncurses()
@@ -17,7 +19,17 @@ Arcade::Graphical_Ncurses::~Graphical_Ncurses()
 
 void Arcade::Graphical_Ncurses::drawText(graphical_text_t &text)
 {
-    std::cout << "Jules" << std::endl;
+    mvwprintw(_win, text.pos.y, text.pos.x, text.text.c_str());
+}
+
+void Arcade::Graphical_Ncurses::clear()
+{
+    wclear(_win);
+}
+
+void Arcade::Graphical_Ncurses::refresh()
+{
+    wrefresh(_win);
 }
 
 extern "C" Arcade::IGraphicalModule *entryPoint()
