@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <dlfcn.h>
 #include "IGraphicalModule.hpp"
+#include "LibraryManager.hpp"
 
 int load_library(const char *libname, void *handle)
 {
@@ -24,10 +25,10 @@ int load_library(const char *libname, void *handle)
         std::cerr << "Unable to find entryPoint" << std::endl;
         return (84);
     }
-    Arcade::IGraphicalModule *ncurses = entryPoint();
-    Arcade::graphical_text_t text;
-    ncurses->drawText(text);
-    delete ncurses;
+    Arcade::IGraphicalModule *graphicalModule = entryPoint();
+    Arcade::LibraryManager libraryManager(graphicalModule);
+    libraryManager.openMenu();
+    delete graphicalModule;
     dlclose(handle);
     return (0);
 }
