@@ -18,12 +18,13 @@ Arcade::Graphical_SFML::~Graphical_SFML()
 
 void Arcade::Graphical_SFML::drawText(graphical_text_t &text)
 {
-    // sfText_setCharacterSize(text.text, texte.size);
-    // sfText_setString(texte.text, texte.data);
-    // // sfText_setFont(texte.text, texte.font);
-    // // sfText_setColor (texte.text, texte.color);
-    // sfText_setPosition (texte.text, texte.pos);
-    // sfRenderWindow_drawText(_window, texte.text, NULL);
+    sf::Font font;
+    if (!font.loadFromFile("arial.ttf"))
+        return;
+    sf::Text txt("Hello SFML", font, 50);
+    txt.setColor(sf::Color::Green);
+    txt.setPosition(text.pos.x, text.pos.y);
+    _window.draw(txt);
 }
 
 extern "C" Arcade::IGraphicalModule *entryPoint()
