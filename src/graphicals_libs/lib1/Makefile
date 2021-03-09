@@ -7,7 +7,7 @@
 
 CC	=	g++
 
-TARGET	=	lib1.so
+TARGET	=	../../../lib/lib1.so
 
 CPPFLAGS	=	-W -Wall -Wextra -std=c++17 -fPIC
 
