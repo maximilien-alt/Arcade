@@ -7,7 +7,7 @@
 
 CC	=	g++
 
-TARGET	=	../../../lib/lib1.so
+TARGET	=	../../../lib/arcade_ncurses.so
 
 CPPFLAGS	=	-W -Wall -Wextra -std=c++17 -fPIC
 
