@@ -16,7 +16,7 @@ int load_library(const char *libname, void *handle)
     Arcade::IGraphicalModule *(*entryPoint)(void) = NULL;
 
     if (!handle) {
-        printf("Error on lib %s : %s\n", libname, dlerror());
+        printf("Unable to load library %s : %s\n", libname, dlerror());
         return (84);
     }
     *(void **)(&entryPoint) = dlsym(handle, "entryPoint");
@@ -35,7 +35,7 @@ int load_library(const char *libname, void *handle)
 int main(int ac, char **av)
 {
     if (ac != 2) {
-        std::cerr << "Usage" << std::endl;
+        std::cerr << "Usage: ./arcade Graphical_Library.so" << std::endl;
         return (84);
     }
     return (load_library(av[1], dlopen(av[1], RTLD_LAZY)));
