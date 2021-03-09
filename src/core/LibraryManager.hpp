@@ -20,7 +20,7 @@ namespace Arcade {
         void loadGame();
         void nextGame();
     private:
-        Arcade::IGraphicalModule *_graphicalModule;
+        Arcade::IGraphicalModule *_curGraphicalModule;
     };
 }
 
