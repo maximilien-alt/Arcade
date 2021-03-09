@@ -19,11 +19,19 @@ namespace Arcade
         float z;
     } graphical_pos_t;
 
+    typedef struct graphical_color_s
+    {
+        unsigned char r;
+        unsigned char g;
+        unsigned char b;
+    } graphical_color_t;
+
     typedef struct graphical_text_s
     {
         std::string text;
         graphical_pos_t pos;
         int size;
+        graphical_color_t color;
     } graphical_text_t;
 }
 

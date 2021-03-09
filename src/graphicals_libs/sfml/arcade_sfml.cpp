@@ -22,7 +22,7 @@ void Arcade::Graphical_SFML::drawText(graphical_text_t &text)
     if (!font.loadFromFile("src/graphicals_libs/sfml/font.ttf"))
         return;
     sf::Text txt(text.text, font, text.size);
-    txt.setColor(sf::Color::Green);
+    txt.setColor({text.color.r, text.color.g, text.color.b});
     txt.setPosition(text.pos.x, text.pos.y);
     _window.draw(txt);
 }
@@ -35,6 +35,11 @@ void Arcade::Graphical_SFML::clear()
 void Arcade::Graphical_SFML::refresh()
 {
     _window.display();
+}
+
+int Arcade::Graphical_SFML::check()
+{
+    return (0);
 }
 
 extern "C" Arcade::IGraphicalModule *entryPoint()

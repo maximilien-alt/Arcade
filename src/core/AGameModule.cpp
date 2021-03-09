@@ -15,3 +15,8 @@ void Arcade::AGameModule::setGraphicalModule(IGraphicalModule *newModule)
 {
     _graphicalModule = newModule;
 }
+
+int Arcade::AGameModule::check()
+{
+    return (_graphicalModule->check());
+}

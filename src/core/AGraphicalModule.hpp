@@ -21,6 +21,7 @@ namespace Arcade
         virtual void drawText(graphical_text_t &text) = 0;
         virtual void clear() = 0;
         virtual void refresh() = 0;
+        virtual int check() = 0;
     };
 }
 

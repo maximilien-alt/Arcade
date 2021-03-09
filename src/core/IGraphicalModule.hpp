@@ -8,8 +8,12 @@
 #ifndef IGRAPHICAL_MODULE_HPP_
 #define IGRAPHICAL_MODULE_HPP_
 
+#include <ncurses.h>
+
 #define WIDTH 1920
 #define HEIGHT 1080
+#define product_x(x) (COLS * x / WIDTH)
+#define product_y(y) (LINES * y / HEIGHT)
 
 #include "GraphicalStructures.hpp"
 #include <memory>
@@ -19,7 +23,6 @@
 #include <SFML/Audio.hpp>
 #include <list>
 #include <vector>
-#include <ncurses.h>
 
 namespace Arcade
 {
@@ -31,6 +34,7 @@ namespace Arcade
         virtual void drawText(graphical_text_t &text) = 0;
         virtual void clear() = 0;
         virtual void refresh() = 0;
+        virtual int check() = 0;
     };
 }
 

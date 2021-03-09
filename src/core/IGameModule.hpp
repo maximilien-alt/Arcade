@@ -18,6 +18,7 @@ namespace Arcade {
             virtual void startGame() = 0;
             virtual void updateGame() = 0;
             virtual void setGraphicalModule(IGraphicalModule *newModule) = 0;
+            virtual int check() = 0;
     };
 }
 

@@ -19,6 +19,7 @@ namespace Arcade
             void drawText(graphical_text_t &text) final;
             void clear() final;
             void refresh() final;
+            int check() final;
         
         private:
             WINDOW *_win;

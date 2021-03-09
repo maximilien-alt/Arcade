@@ -9,13 +9,23 @@
 
 Arcade::LibraryManager::LibraryManager(const std::string &name)
 {
+    int check = 0;
+
     Arcade::IGraphicalModule *graphical = loadLibrary(name);
     _graphicalModules.push_back(graphical);
-    Arcade::IGameModule *game = loadGame("./lib/arcade_pacman.so");
+    _graphicalModules.push_back(loadLibrary("arcade_ncurses.so"));
+    Arcade::IGameModule *game = loadGame("./lib/arcade_nibbler.so");
     game->setGraphicalModule(graphical);
     game->startGame();
-    while (1)
+    while (1) {
+        check = game->check();
+        switch (check) {
+            case 1: game->setGraphicalModule(_graphicalModules[1]);
+                break;
+            default: break;
+        }
         game->updateGame();
+    }
 }
 
 Arcade::LibraryManager::~LibraryManager()
