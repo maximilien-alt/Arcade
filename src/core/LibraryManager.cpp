@@ -12,9 +12,8 @@ Arcade::LibraryManager::LibraryManager(const std::string &name)
     Arcade::IGraphicalModule *graphical = loadLibrary(name);
     _graphicalModules.push_back(graphical);
     Arcade::IGameModule *game = loadGame("./lib/arcade_pacman.so");
-    std::cout << "nullptr" << std::endl;
     game->setGraphicalModule(graphical);
-    std::cout << "nullptr" << std::endl;
+    game->startGame();
     while (1)
         game->updateGame();
 }
@@ -38,7 +37,6 @@ Arcade::IGraphicalModule *Arcade::LibraryManager::loadLibrary(const std::string 
         throw Errors("Unable to load library " + name + " : Invalid library");
 
     Arcade::IGraphicalModule *graphicalModule = entryPoint();
-    LDL::close(handle);
     return (graphicalModule);
 }
 
@@ -55,7 +53,6 @@ Arcade::IGameModule *Arcade::LibraryManager::loadGame(const std::string &name)
         throw Errors("Unable to load library " + name + " : Invalid library");
 
     Arcade::IGameModule *gameModule = entryPoint();
-    LDL::close(handle);
     return (gameModule);
 }
 

@@ -40,18 +40,6 @@ void Arcade::Game_Nibbler::updateGame()
     _graphicalModule->refresh();
 }
 
-__attribute__((constructor))
-void constructor()
-{
-    printf("[libfoo] Loading foo library...\n");
-}
-
-__attribute__((destructor))
-void destructor()
-{
-    printf("[libfoo] foo closing...\n");
-}
-
 extern "C" Arcade::IGameModule *entryPoint(void)
 {
     return new Arcade::Game_Nibbler;

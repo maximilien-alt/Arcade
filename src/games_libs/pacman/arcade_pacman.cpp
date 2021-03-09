@@ -12,7 +12,6 @@
 
 Arcade::Game_Pacman::Game_Pacman(): AGameModule()
 {
-    std::cout << "testing" <<  std::endl;
 }
 
 Arcade::Game_Pacman::~Game_Pacman()
@@ -35,7 +34,7 @@ void Arcade::Game_Pacman::startGame()
 void Arcade::Game_Pacman::updateGame()
 {
     _graphicalModule->clear();
-    for (auto &n: _texts)
+    for (auto &n : _texts)
         _graphicalModule->drawText(n);
     _graphicalModule->refresh();
 }

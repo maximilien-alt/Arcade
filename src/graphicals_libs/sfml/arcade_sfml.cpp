@@ -19,7 +19,7 @@ Arcade::Graphical_SFML::~Graphical_SFML()
 void Arcade::Graphical_SFML::drawText(graphical_text_t &text)
 {
     sf::Font font;
-    if (!font.loadFromFile("font.ttf"))
+    if (!font.loadFromFile("src/graphicals_libs/sfml/font.ttf"))
         return;
     sf::Text txt(text.text, font, text.size);
     txt.setColor(sf::Color::Green);
