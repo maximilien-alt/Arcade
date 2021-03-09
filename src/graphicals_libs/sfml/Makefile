@@ -11,6 +11,8 @@ TARGET	=	../../../lib/arcade_sfml.so
 
 CPPFLAGS	=	-W -Wall -Wextra -std=c++17 -fPIC
 
+SFML = -lsfml-graphics -lsfml-audio -lsfml-window -lsfml-system -lsfml-network
+
 LDFLAGS	=	-shared
 
 SRC	=	$(wildcard *.cpp)	\
@@ -18,7 +20,7 @@ SRC	=	$(wildcard *.cpp)	\
 OBJ	=	$(SRC:.cpp=.o)
 
 all:	$(OBJ)
-	$(CC) $(OBJ) -o $(TARGET) $(LDFLAGS)
+	$(CC) $(OBJ) -o $(TARGET) $(LDFLAGS) $(SFML)
 
 debug:	CPPFLAGS += -g3
 

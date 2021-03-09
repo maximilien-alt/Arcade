@@ -11,6 +11,9 @@
 #include "GraphicalStructures.hpp"
 #include <memory>
 #include <iostream>
+#include <SFML/Graphics.h>
+#include <SFML/System.h>
+#include <SFML/Audio.h>
 
 namespace Arcade
 {
