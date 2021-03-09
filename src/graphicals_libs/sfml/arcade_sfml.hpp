@@ -18,10 +18,9 @@ namespace Arcade
             ~Graphical_SFML();
 
             void drawText(graphical_text_t &text);
-            void poll_event();
         private:
-            sfRenderWindow *_window;
-            sfEvent _event;
+            sf::RenderWindow _window;
+            sf::Event _event;
     };
 } // namespace Arcade
 
