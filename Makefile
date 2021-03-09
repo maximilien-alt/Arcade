@@ -5,22 +5,10 @@
 ## Makefile
 ##
 
-CC	=	g++
-
-TARGET	=	arcade
-
-CPPFLAGS	=	-W -Wall -Wextra -std=c++17
-
-LDFLAGS	=	-ldl
-
-SRC	=	$(wildcard src/core/*.cpp)	\
-
-OBJ	=	$(SRC:.cpp=.o)
-
 all:	core games graphicals
 
-core:	$(OBJ)
-	$(CC) $(OBJ) -o $(TARGET) $(LDFLAGS)
+core:
+	$(MAKE) -C src/core
 
 games:
 	$(MAKE) -C src/games_libs
@@ -28,17 +16,13 @@ games:
 graphicals:
 	$(MAKE) -C src/graphicals_libs
 
-debug:	CPPFLAGS += -g3
-
-debug:	all
-
 clean:
-	$(RM) $(OBJ)
+	$(MAKE) -C src/core clean
 	$(MAKE) -C src/games_libs clean
 	$(MAKE) -C src/graphicals_libs clean
 
 fclean:	clean
-	$(RM) $(TARGET)
+	$(MAKE) -C src/core fclean
 	$(MAKE) -C src/games_libs fclean
 	$(MAKE) -C src/graphicals_libs fclean
 
