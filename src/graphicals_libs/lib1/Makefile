@@ -9,9 +9,9 @@ CC	=	g++
 
 TARGET	=	lib1.so
 
-CPPFLAGS	=	-W -Wall -Wextra -std=c++17
+CPPFLAGS	=	-W -Wall -Wextra -std=c++17 -fPIC
 
-LDFLAGS	=	-fPIC -shared
+LDFLAGS	=	-shared
 
 SRC	=	$(wildcard *.cpp)	\
 
