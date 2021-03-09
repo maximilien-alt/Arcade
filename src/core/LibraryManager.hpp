@@ -9,18 +9,23 @@
 #define LIBRARYMANAGER_HPP_
 
 #include "IGraphicalModule.hpp"
+#include <vector>
+#include "LDL.hpp"
+#include "Errors.hpp"
 
 namespace Arcade {
     class LibraryManager
     {
     public:
-        LibraryManager(Arcade::IGraphicalModule *graphicalModule);
+        LibraryManager(const std::string &name);
         ~LibraryManager();
         void openMenu();
         void loadGame();
         void nextGame();
     private:
-        Arcade::IGraphicalModule *_curGraphicalModule;
+        std::vector<Arcade::IGraphicalModule *> _graphicalModules;
+
+        Arcade::IGraphicalModule *loadLibrary(const std::string &name);
     };
 }
 
