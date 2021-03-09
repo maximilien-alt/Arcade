@@ -19,9 +19,9 @@ Arcade::Graphical_SFML::~Graphical_SFML()
 void Arcade::Graphical_SFML::drawText(graphical_text_t &text)
 {
     sf::Font font;
-    if (!font.loadFromFile("arial.ttf"))
+    if (!font.loadFromFile("font.ttf"))
         return;
-    sf::Text txt("Hello SFML", font, 50);
+    sf::Text txt(text.text, font, 50);
     txt.setColor(sf::Color::Green);
     txt.setPosition(text.pos.x, text.pos.y);
     _window.draw(txt);
