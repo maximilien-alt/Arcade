@@ -21,7 +21,7 @@ void Arcade::Graphical_SFML::drawText(graphical_text_t &text)
     sf::Font font;
     if (!font.loadFromFile("font.ttf"))
         return;
-    sf::Text txt(text.text, font, 50);
+    sf::Text txt(text.text, font, text.size);
     txt.setColor(sf::Color::Green);
     txt.setPosition(text.pos.x, text.pos.y);
     _window.draw(txt);
