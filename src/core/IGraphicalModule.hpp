@@ -8,12 +8,18 @@
 #ifndef IGRAPHICAL_MODULE_HPP_
 #define IGRAPHICAL_MODULE_HPP_
 
+#define WIDTH 1920
+#define HEIGHT 1080
+
 #include "GraphicalStructures.hpp"
 #include <memory>
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Audio.hpp>
+#include <list>
+#include <vector>
+#include <ncurses.h>
 
 namespace Arcade
 {
@@ -23,7 +29,8 @@ namespace Arcade
         virtual ~IGraphicalModule() = default;
 
         virtual void drawText(graphical_text_t &text) = 0;
-
+        virtual void clear() = 0;
+        virtual void refresh() = 0;
     };
 }
 
