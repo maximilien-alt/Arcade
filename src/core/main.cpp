@@ -16,7 +16,7 @@ void load_library(const char *libname, void *handle)
     int (*entryPoint)(void) = NULL;
 
     if (!handle) {
-        printf("Error on lib %s", libname);
+        printf("Error on lib %s : %s\n", libname, dlerror());
         return;
     }
     *(void **)(&entryPoint) = dlsym(handle, "entryPoint");

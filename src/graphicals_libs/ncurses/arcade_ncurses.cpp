@@ -1,28 +1,16 @@
 /*
 ** EPITECH PROJECT, 2021
-** bootstrap_arcade
+** B-OOP-400-MPL-4-1-arcade-leo.sarochar
 ** File description:
-** lib1
+** arcade_ncurses
 */
 
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
+#include "arcade_ncurses.hpp"
 
-__attribute__((constructor))
-void constructor()
+Arcade::Graphical_Ncurses::Graphical_Ncurses() : AGraphicalModule()
 {
-    printf("[libfoo] Loading foo library...\n");
 }
 
-__attribute__((destructor))
-void destructor()
+Arcade::Graphical_Ncurses::~Graphical_Ncurses()
 {
-    printf("[libfoo] foo closing...\n");
-}
-
-extern "C" int entryPoint(void)
-{
-    printf("[libfoo] Entry point for foo!\n");
-    return (0);
 }

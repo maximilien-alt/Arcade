@@ -6,10 +6,13 @@
 ##
 
 all:
-	$(MAKE) -C game1
+	$(MAKE) -C pacman
+	$(MAKE) -C nibbler
 
 clean:
-	$(MAKE) -C game1 clean
+	$(MAKE) -C pacman clean
+	$(MAKE) -C nibbler clean
 
 fclean:	clean
-	$(MAKE) -C game1 fclean
+	$(MAKE) -C pacman fclean
+	$(MAKE) -C nibbler fclean

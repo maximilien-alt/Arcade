@@ -7,7 +7,7 @@
 
 CC	=	g++
 
-TARGET	=	../../../lib/game1.so
+TARGET	=	../../../lib/arcade_pacman.so
 
 CPPFLAGS	=	-W -Wall -Wextra -std=c++17 -fPIC
 

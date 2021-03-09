@@ -8,7 +8,7 @@
 #ifndef IGRAPHICAL_MODULE_HPP_
 #define IGRAPHICAL_MODULE_HPP_
 
-#include <GraphicalStructures.hpp>
+#include "GraphicalStructures.hpp"
 
 namespace Arcade
 {
