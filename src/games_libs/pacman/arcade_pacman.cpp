@@ -27,7 +27,7 @@ void Arcade::Game_Pacman::startGame()
     if (!_texts.empty()) {
         _texts.clear();
         text.text = std::string("PACMAN");
-        text.pos = (graphical_pos_t){WIDTH / 2, HEIGHT / 2};
+        text.pos = (graphical_pos_t){WIDTH / 2, HEIGHT / 2, 0};
         text.size = 12;
         _texts.push_back(text);
     }
