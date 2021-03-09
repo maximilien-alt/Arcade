@@ -23,6 +23,7 @@ namespace Arcade
         virtual ~IGraphicalModule() = default;
 
         virtual void drawText(graphical_text_t &text) = 0;
+
     };
 }
 

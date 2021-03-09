@@ -7,7 +7,7 @@
 
 #include "LibraryManager.hpp"
 
-Arcade::LibraryManager::LibraryManager(Arcade::IGraphicalModule *graphicalModule) : _graphicalModule(graphicalModule)
+Arcade::LibraryManager::LibraryManager(Arcade::IGraphicalModule *graphicalModule) : _curGraphicalModule(graphicalModule)
 {
 }
 
