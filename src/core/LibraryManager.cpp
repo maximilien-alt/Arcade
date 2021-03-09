@@ -35,6 +35,23 @@ Arcade::IGraphicalModule *Arcade::LibraryManager::loadLibrary(const std::string 
     return (graphicalModule);
 }
 
+Arcade::IGameModule *Arcade::LibraryManager::loadGame(const std::string &name)
+{
+    void *handle = LDL::open(name.c_str());
+    Arcade::IGameModule *(*entryPoint)(void) = NULL;
+
+    if (!handle)
+        throw Errors("Unable to load library " + name + " : " + LDL::error());
+
+    *(void **)(&entryPoint) = LDL::sym(handle, "entryPoint");
+    if (entryPoint == NULL)
+        throw Errors("Unable to load library " + name + " : Invalid library");
+
+    Arcade::IGameModule *gameModule = entryPoint();
+    LDL::close(handle);
+    return (gameModule);
+}
+
 void Arcade::LibraryManager::openMenu()
 {
     // _graphicalModule->init();

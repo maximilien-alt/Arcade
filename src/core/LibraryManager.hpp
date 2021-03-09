@@ -8,7 +8,7 @@
 #ifndef LIBRARYMANAGER_HPP_
 #define LIBRARYMANAGER_HPP_
 
-#include "IGraphicalModule.hpp"
+#include "IGameModule.hpp"
 #include <vector>
 #include "LDL.hpp"
 #include "Errors.hpp"
@@ -26,6 +26,7 @@ namespace Arcade {
         std::vector<Arcade::IGraphicalModule *> _graphicalModules;
 
         Arcade::IGraphicalModule *loadLibrary(const std::string &name);
+        Arcade::IGameModule *loadGame(const std::string &name);
     };
 }
 
