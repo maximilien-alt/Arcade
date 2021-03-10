@@ -23,9 +23,10 @@ namespace Arcade
             int check() final;
             void openWindow() final;
             void closeWindow() final;
-        
+
         private:
-            WINDOW *_window;
+            SDL_Window *_window;
+            SDL_Renderer *_renderer;
 
             int getInput();
     };

@@ -17,31 +17,17 @@ Arcade::Graphical_SDL2::~Graphical_SDL2()
 
 void Arcade::Graphical_SDL2::openWindow()
 {
-    if (SDL_Init(SDL_INIT_VIDEO) < 0)     
-    {         
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "[DEBUG] > %s", SDL_GetError());         
-        return;     
-    }       
-    SDL_Window* pWindow{ nullptr };     
-    SDL_Renderer* pRenderer{ nullptr };       
-    if (SDL_CreateWindowAndRenderer(800, 600, SDL_WINDOW_SHOWN, &pWindow, &pRenderer) < 0)     
-    {         
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "[DEBUG] > %s", SDL_GetError());         
-        SDL_Quit();         
-        return;     
-    }
-    SDL_SetWindowTitle(pWindow, "Hello !");     
-    SDL_Delay(1000); // mettre en pause pendant 1 seconde le rendu
-    SDL_SetWindowTitle(pWindow, "World !");     
-    SDL_Delay(1000);           
-    SDL_DestroyRenderer(pRenderer);     
-    SDL_DestroyWindow(pWindow);     
-    SDL_Quit();       
+    _window = nullptr;
+    _renderer = nullptr;
+    SDL_CreateWindowAndRenderer(WIDTH, HEIGHT, SDL_WINDOW_SHOWN, &_window, &_renderer);
+    SDL_SetWindowTitle(_window, "SDL window");
 }
 
 void Arcade::Graphical_SDL2::closeWindow()
 {
-
+    SDL_DestroyRenderer(_renderer);
+    SDL_DestroyWindow(_window);
+    SDL_Quit();
 }
 
 void Arcade::Graphical_SDL2::drawText(graphical_text_t &text)
