@@ -11,13 +11,14 @@ Arcade::LibraryManager::LibraryManager(const std::string &name): _startIndex(0)
 {
     int index = 0;
 
+    _gameModules.push_back(loadGame("lib/arcade_menu.so"));
     for (const auto & entry : std::filesystem::directory_iterator("lib")) {
         if (entry.path() == "lib/arcade_sfml.so" || entry.path() == "lib/arcade_sdl2.so" || entry.path() == "lib/arcade_ncurses.so") {
             _graphicalModules.push_back(loadLibrary(entry.path()));
             if (entry.path() == name)
                 _startIndex = index;
             index += 1;
-        } else if (entry.path() != "lib/.gitkeep")
+        } else if (entry.path() != "lib/.gitkeep" && entry.path() != "lib/arcade_menu.so")
             _gameModules.push_back(loadGame(entry.path()));
     }
 }
@@ -81,7 +82,7 @@ size_t Arcade::LibraryManager::getStartIndex() const
 
 size_t Arcade::LibraryManager::getPreviousGameIndex(size_t index) const
 {
-    if (index == 0)
+    if (index == 1)
         index = _gameModules.size();
     return (index - 1);
 }
@@ -90,7 +91,7 @@ size_t Arcade::LibraryManager::getNextGameIndex(size_t index) const
 {
     index += 1;
     if (index >= _gameModules.size())
-        index = 0;
+        index = 1;
     return (index);
 }
 
