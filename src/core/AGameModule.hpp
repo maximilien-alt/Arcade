@@ -20,7 +20,7 @@ namespace Arcade {
             int check() final;
             virtual void startGame() = 0;
             virtual void updateGame() = 0;
-        
+
         protected:
             IGraphicalModule *_graphicalModule;
             std::list<graphical_text_t> _texts;

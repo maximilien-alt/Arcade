@@ -12,16 +12,6 @@
 
 Arcade::Game_Nibbler::Game_Nibbler(): AGameModule()
 {
-
-}
-
-Arcade::Game_Nibbler::~Game_Nibbler()
-{
-
-}
-
-void Arcade::Game_Nibbler::startGame()
-{
     graphical_text_t text;
 
     if (!_texts.empty())
@@ -31,6 +21,15 @@ void Arcade::Game_Nibbler::startGame()
     text.color = {255, 0, 0};
     text.size = 12;
     _texts.push_back(text);
+}
+
+Arcade::Game_Nibbler::~Game_Nibbler()
+{
+
+}
+
+void Arcade::Game_Nibbler::startGame()
+{
 }
 
 void Arcade::Game_Nibbler::updateGame()

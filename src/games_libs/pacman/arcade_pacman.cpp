@@ -12,15 +12,6 @@
 
 Arcade::Game_Pacman::Game_Pacman(): AGameModule()
 {
-}
-
-Arcade::Game_Pacman::~Game_Pacman()
-{
-
-}
-
-void Arcade::Game_Pacman::startGame()
-{
     graphical_text_t text;
 
     if (!_texts.empty())
@@ -30,6 +21,15 @@ void Arcade::Game_Pacman::startGame()
     text.color = {255, 0, 0};
     text.size = 12;
     _texts.push_back(text);
+}
+
+Arcade::Game_Pacman::~Game_Pacman()
+{
+
+}
+
+void Arcade::Game_Pacman::startGame()
+{
 }
 
 void Arcade::Game_Pacman::updateGame()

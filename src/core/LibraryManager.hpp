@@ -10,6 +10,9 @@
 
 #include "IGameModule.hpp"
 #include <vector>
+#include <filesystem>
+#include <iostream>
+#include <string>
 #include "LDL.hpp"
 #include "Errors.hpp"
 
@@ -24,6 +27,10 @@ namespace Arcade {
         void nextGame();
     private:
         std::vector<Arcade::IGraphicalModule *> _graphicalModules;
+        std::vector<Arcade::IGameModule *> _gameModules;
+
+        int _currentGame;
+        int _currentGraphical;
 
         Arcade::IGraphicalModule *loadLibrary(const std::string &name);
         Arcade::IGameModule *loadGame(const std::string &name);

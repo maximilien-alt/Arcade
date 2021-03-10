@@ -10,33 +10,44 @@
 Arcade::LibraryManager::LibraryManager(const std::string &name)
 {
     int check = 0;
+    int IGame = 0;
+    int IGraphical = 0;
 
-    Arcade::IGraphicalModule *graphical = loadLibrary(name);
-    _graphicalModules.push_back(graphical);
-    _graphicalModules.push_back(loadLibrary("lib/arcade_ncurses.so"));
-    Arcade::IGameModule *game = loadGame("./lib/arcade_nibbler.so");
-    game->setGraphicalModule(graphical);
-    game->startGame();
+    for (const auto & entry : std::filesystem::directory_iterator("lib")) {
+        if (entry.path() == "lib/arcade_sfml.so" || entry.path() == "lib/arcade_sdl2.so" || entry.path() == "lib/arcade_ncurses.so") {
+            _graphicalModules.push_back(loadLibrary(entry.path()));
+            if (entry.path() == name)
+                _currentGraphical = IGraphical;
+            IGraphical++;
+        } else if (entry.path() != "lib/.gitkeep") {
+            _gameModules.push_back(loadGame(entry.path()));
+            if (entry.path() == "lib/arcade_pacman.so")
+                _currentGame = IGame;
+            IGame++;
+        }
+    }
+    _gameModules[_currentGame]->setGraphicalModule(_graphicalModules[_currentGraphical]);
+    _gameModules[_currentGame]->startGame();
     while (1) {
-        check = game->check();
+        check = _gameModules[_currentGame]->check();
         switch (check) {
-            case 1: game->setGraphicalModule(_graphicalModules[1]);
+            case 1: _gameModules[_currentGame]->setGraphicalModule(_graphicalModules[1]);
                 break;
-            case 2: game->setGraphicalModule(_graphicalModules[1]);
+            case 2: _gameModules[_currentGame]->setGraphicalModule(_graphicalModules[2]);
                 break;
-            case 3: game->setGraphicalModule(_graphicalModules[1]);
+            case 3: _gameModules[_currentGame]->setGraphicalModule(_graphicalModules[1]);
                 break;
-            case 4: game->setGraphicalModule(_graphicalModules[1]);
+            case 4: _gameModules[_currentGame]->setGraphicalModule(_graphicalModules[1]);
                 break;
-            case 5: game->setGraphicalModule(_graphicalModules[1]);
+            case 5: _gameModules[_currentGame]->setGraphicalModule(_graphicalModules[1]);
                 break;
-            case 6: game->setGraphicalModule(_graphicalModules[1]);
+            case 6: _gameModules[_currentGame]->setGraphicalModule(_graphicalModules[1]);
                 break;
-            case 7: game->setGraphicalModule(_graphicalModules[0]);
+            case 7: _gameModules[_currentGame]->setGraphicalModule(_graphicalModules[0]);
                 break;
             default: break;
         }
-        game->updateGame();
+        _gameModules[_currentGame]->updateGame();
     }
 }
 
