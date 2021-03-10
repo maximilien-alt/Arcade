@@ -11,7 +11,7 @@ TARGET	=	../../../lib/arcade_sdl2.so
 
 CPPFLAGS	=	-W -Wall -Wextra -std=c++17 -fPIC
 
-LDFLAGS	=	-shared -l SDL2-2.0.0
+LDFLAGS	=	-shared -lSDL2
 
 SRC	=	$(wildcard *.cpp)	\
 		../../core/AGraphicalModule.cpp
