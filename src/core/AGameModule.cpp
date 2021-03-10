@@ -11,14 +11,26 @@ Arcade::AGameModule::AGameModule()
 {
 }
 
-void Arcade::AGameModule::setGraphicalModule(IGraphicalModule *newModule)
+void Arcade::AGameModule::setGraphicalModule(IGraphicalModule *newModule, bool update)
 {
-    if (_graphicalModule)
+    if (_graphicalModule && update)
         _graphicalModule->closeWindow();
     if (newModule) {
         _graphicalModule = newModule;
-        _graphicalModule->openWindow();
+        if (update)
+            _graphicalModule->openWindow();
     }
+}
+
+Arcade::IGraphicalModule *Arcade::AGameModule::getGraphicalModule() const
+{
+    return (_graphicalModule);
+}
+
+Arcade::IGameModule *Arcade::AGameModule::operator=(const IGameModule *copy)
+{
+    _graphicalModule = copy->getGraphicalModule();
+    return (this);
 }
 
 int Arcade::AGameModule::check()

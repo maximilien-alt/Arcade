@@ -16,10 +16,12 @@ namespace Arcade {
         public:
             AGameModule();
             virtual ~AGameModule() = default;
-            void setGraphicalModule(IGraphicalModule *newModule) final;
+            void setGraphicalModule(IGraphicalModule *newModule, bool) final;
             int check() final;
             virtual void startGame() = 0;
             virtual void updateGame() = 0;
+            IGameModule *operator=(const IGameModule *copy) final;
+            IGraphicalModule *getGraphicalModule() const;
 
         protected:
             IGraphicalModule *_graphicalModule;
