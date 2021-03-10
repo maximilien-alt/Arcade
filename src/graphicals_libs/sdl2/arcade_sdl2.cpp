@@ -44,12 +44,31 @@ void Arcade::Graphical_SDL2::refresh()
 
 int Arcade::Graphical_SDL2::check()
 {
+    if (SDL_PollEvent(&_event)) {
+        if (_event.type == SDL_KEYDOWN) {
+            switch(_event.key.keysym.sym) {
+                case SDLK_a:
+                    return (1);
+                case SDLK_z:
+                    return (2);
+                case SDLK_e:
+                    return (3);
+                case SDLK_r:
+                    return (4);
+                case SDLK_t:
+                    return (5);
+                case SDLK_y:
+                    return (6);
+                case SDLK_u:
+                    return (7);
+            }
+        }
+    }
     return (0);
 }
 
 int Arcade::Graphical_SDL2::getInput()
 {
-    return (0);
 }
 
 extern "C" Arcade::IGraphicalModule *entryPoint()
