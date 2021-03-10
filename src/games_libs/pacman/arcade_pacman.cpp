@@ -14,8 +14,6 @@ Arcade::Game_Pacman::Game_Pacman(): AGameModule()
 {
     graphical_text_t text;
 
-    if (!_texts.empty())
-        _texts.clear();
     text.text = std::string("PACMAN");
     text.pos = {WIDTH / 2, HEIGHT / 2, 0};
     text.color = {255, 0, 0};
