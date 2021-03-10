@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include <dlfcn.h>
 #include "IGraphicalModule.hpp"
-#include "LibraryManager.hpp"
+#include "Simulator.hpp"
 
 int main(int ac, char **av)
 {
@@ -20,9 +20,11 @@ int main(int ac, char **av)
     }
     try {
         const std::string path = av[1];
-        Arcade::LibraryManager libraryManager(path);
+        Arcade::Simulator simulator(path);
+        simulator.run();
     } catch (Arcade::Errors &error) {
         std::cerr << error.what() << std::endl;
         return (84);
     }
+    return (0);
 }
