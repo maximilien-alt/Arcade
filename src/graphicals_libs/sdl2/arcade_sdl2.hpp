@@ -10,6 +10,7 @@
 
 #include "../../core/AGraphicalModule.hpp"
 #include <SDL2/SDL.h>
+#include "SDL_ttf.h"
 
 namespace Arcade
 {
@@ -25,8 +26,8 @@ namespace Arcade
             void closeWindow() final;
 
         private:
-            SDL_Window *_window;
-            SDL_Renderer *_renderer;
+            SDL_Window *_window = nullptr;
+            SDL_Renderer *_renderer = nullptr;
             SDL_Event _event;
 
             int getInput();

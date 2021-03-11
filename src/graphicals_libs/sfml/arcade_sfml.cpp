@@ -29,7 +29,7 @@ void Arcade::Graphical_SFML::closeWindow()
 void Arcade::Graphical_SFML::drawText(graphical_text_t &text)
 {
     sf::Font font;
-    if (!font.loadFromFile("src/graphicals_libs/sfml/font.ttf"))
+    if (!font.loadFromFile("ressources/font.ttf"))
         return;
     sf::Text txt(text.text, font, text.size);
     txt.setColor({text.color.r, text.color.g, text.color.b});
