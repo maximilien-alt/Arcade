@@ -19,27 +19,27 @@ void Arcade::Graphical_SDL2::openWindow()
 {
     SDL_CreateWindowAndRenderer(WIDTH, HEIGHT, SDL_WINDOW_SHOWN, &_window, &_renderer);
     SDL_SetWindowTitle(_window, "SDL window");
-    _font = TTF_OpenFont("lib/resources/visitor.ttf", 200);
+    TTF_Init();
+    _font = TTF_OpenFont("ressources/font.ttf", 24);
 }
 
 void Arcade::Graphical_SDL2::closeWindow()
 {
     SDL_DestroyRenderer(_renderer);
     SDL_DestroyWindow(_window);
+    TTF_Quit();
 }
 
 void Arcade::Graphical_SDL2::drawText(graphical_text_t &text)
 {
-    SDL_Color textColor = {text.color.r, text.color.g, text.color.b, 255};
-    SDL_Surface *surfaceText = TTF_RenderText_Blended(_font, text.text.c_str(), textColor);
+    SDL_Color textColor = {255, 0, 0};
+    SDL_Surface *surfaceText = TTF_RenderText_Solid(_font, text.text.c_str(), textColor);
     SDL_Texture *texture = SDL_CreateTextureFromSurface(_renderer, surfaceText);
-    SDL_Rect rect = {(int)text.pos.x, (int)text.pos.y, 0, 0};
+    SDL_Rect rect = {(int)text.pos.x, (int)text.pos.y, 100, 100};
 
-    rect.w = text.text.length() * 15;
-    rect.h = 24;
     SDL_RenderCopy(_renderer, texture, NULL, &rect);
-    SDL_DestroyTexture(texture);
     SDL_FreeSurface(surfaceText);
+    SDL_DestroyTexture(texture);
 }
 
 void Arcade::Graphical_SDL2::clear()
@@ -54,6 +54,7 @@ void Arcade::Graphical_SDL2::clear()
 
 void Arcade::Graphical_SDL2::refresh()
 {
+    SDL_RenderPresent(_renderer);
 }
 
 int Arcade::Graphical_SDL2::check()
