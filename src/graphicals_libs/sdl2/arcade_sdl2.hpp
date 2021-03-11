@@ -29,7 +29,7 @@ namespace Arcade
             SDL_Window *_window = nullptr;
             SDL_Renderer *_renderer = nullptr;
             SDL_Event _event;
-
+            TTF_Font *_font = nullptr;
             int getInput();
     };
 } // namespace Arcade

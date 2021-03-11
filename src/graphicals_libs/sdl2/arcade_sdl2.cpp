@@ -19,6 +19,7 @@ void Arcade::Graphical_SDL2::openWindow()
 {
     SDL_CreateWindowAndRenderer(WIDTH, HEIGHT, SDL_WINDOW_SHOWN, &_window, &_renderer);
     SDL_SetWindowTitle(_window, "SDL window");
+    _font = TTF_OpenFont("lib/resources/visitor.ttf", 200);
 }
 
 void Arcade::Graphical_SDL2::closeWindow()
@@ -29,25 +30,16 @@ void Arcade::Graphical_SDL2::closeWindow()
 
 void Arcade::Graphical_SDL2::drawText(graphical_text_t &text)
 {
-    TTF_Font* font = TTF_OpenFont("ressources/font.ttf", text.size);
-    SDL_Surface *surface = NULL;
-    SDL_Rect position = {(int)text.pos.x, (int)text.pos.y, 0, 0};
-    int text_width;
-    int text_height;
-    SDL_Color textColor = {255, 255, 255, 0};
-    SDL_Texture *texture = NULL;
+    SDL_Color textColor = {text.color.r, text.color.g, text.color.b, 255};
+    SDL_Surface *surfaceText = TTF_RenderText_Blended(_font, text.text.c_str(), textColor);
+    SDL_Texture *texture = SDL_CreateTextureFromSurface(_renderer, surfaceText);
+    SDL_Rect rect = {(int)text.pos.x, (int)text.pos.y, 0, 0};
 
-    surface = TTF_RenderText_Solid(font, text.text.c_str(), textColor);
-    texture = SDL_CreateTextureFromSurface(_renderer, surface);
-    text_width = surface->w;
-    text_height = surface->h;
-    SDL_FreeSurface(surface);
-    position.x = text.pos.x;
-    position.y = text.pos.y;
-    position.w = text_width;
-    position.h = text_height;
-    SDL_RenderCopy(_renderer, texture, NULL, &position);
-    SDL_RenderPresent(_renderer);
+    rect.w = text.text.length() * 15;
+    rect.h = 24;
+    SDL_RenderCopy(_renderer, texture, NULL, &rect);
+    SDL_DestroyTexture(texture);
+    SDL_FreeSurface(surfaceText);
 }
 
 void Arcade::Graphical_SDL2::clear()

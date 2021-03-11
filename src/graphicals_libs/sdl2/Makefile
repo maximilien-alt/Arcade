@@ -9,9 +9,9 @@ CC	=	g++
 
 TARGET	=	../../../lib/arcade_sdl2.so
 
-CPPFLAGS	=	-W -Wall -Wextra -std=c++17 -fPIC -lSDL2_ttf
+CPPFLAGS	=	-W -Wall -Wextra -std=c++17 -fPIC
 
-LDFLAGS	=	-shared -lSDL2 -L../../../ressources
+LDFLAGS	=	-shared -lSDL2 -lSDL_ttf
 
 SRC	=	$(wildcard *.cpp)	\
 		../../core/AGraphicalModule.cpp
