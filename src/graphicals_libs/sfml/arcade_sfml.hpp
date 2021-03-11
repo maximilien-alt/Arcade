@@ -27,6 +27,7 @@ namespace Arcade
         private:
             sf::RenderWindow *_window;
             sf::Event _event;
+            bool _key[sf::Keyboard::KeyCount];
     };
 } // namespace Arcade
 

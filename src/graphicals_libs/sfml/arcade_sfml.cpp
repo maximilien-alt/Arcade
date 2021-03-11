@@ -39,9 +39,15 @@ void Arcade::Graphical_SFML::drawText(graphical_text_t &text)
 
 void Arcade::Graphical_SFML::clear()
 {
+    for (int i = 0; i < sf::Keyboard::KeyCount; i++)
+        _key[i] = false;
     while (_window->pollEvent(_event)) {
         if (_event.type == sf::Event::Closed)
             _window->close();
+        for (int i = 0; i < sf::Keyboard::KeyCount; i++) {
+            _key[i] = _event.type == sf::Event::KeyPressed && \
+            _event.key.code == i ? true : _key[i];
+        }
     }
     _window->clear(sf::Color::Black);
 }
@@ -53,19 +59,19 @@ void Arcade::Graphical_SFML::refresh()
 
 int Arcade::Graphical_SFML::check()
 {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+    if (_key[sf::Keyboard::A])
         return (1);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
+    if (_key[sf::Keyboard::Z])
         return (2);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+    if (_key[sf::Keyboard::E])
         return (3);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+    if (_key[sf::Keyboard::R])
         return (4);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::T))
+    if (_key[sf::Keyboard::T])
         return (5);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Y))
+    if (_key[sf::Keyboard::Y])
         return (6);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::U))
+    if (_key[sf::Keyboard::U])
         return (7);
     return (0);
 }

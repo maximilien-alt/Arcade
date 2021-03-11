@@ -26,8 +26,8 @@ namespace Arcade {
         void loadGame();
         void nextGame();
 
-        Arcade::IGraphicalModule * getGraphicalModule(size_t index) const;
-        Arcade::IGameModule * getGameModule(size_t index) const;
+        Arcade::IGraphicalModule *getGraphicalModule(size_t index) const;
+        Arcade::IGameModule *getGameModule(size_t index) const;
         size_t getStartIndex() const;
         size_t getPreviousGameIndex(size_t index) const;
         size_t getNextGameIndex(size_t index) const;
