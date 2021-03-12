@@ -10,10 +10,25 @@
 Arcade::Game_Menu::Game_Menu(): AGameModule()
 {
     graphical_text_t text;
+    int index = 0;
+    float x = 100;
+    float y = 100;
 
+    for (const auto & entry : std::filesystem::directory_iterator("lib")) {
+        if (entry.path() == "lib/arcade_sfml.so" || entry.path() == "lib/arcade_sdl2.so" || entry.path() == "lib/arcade_ncurses.so" || entry.path() == "lib/arcade_menu.so" || entry.path() == "lib/.gitkeep")
+            continue;
+        std::string path(entry.path());
+        index = path.find(".so");
+        text.text = std::string(path.substr(11, index - 11));
+        text.pos = {x, y, 0};
+        text.color = {0, 0, 255, {Arcade::COLOR::BLUE, Arcade::COLOR::BLACK}};
+        text.size = 12;
+        _texts.push_back(text);
+        y += 100;
+    }
     text.text = std::string("MAIN MENU");
     text.pos = {WIDTH / 2, HEIGHT / 2, 0};
-    text.color = {255, 0, 0};
+    text.color = {255, 0, 0, {Arcade::COLOR::RED, Arcade::COLOR::BLACK}};
     text.size = 12;
     _texts.push_back(text);
 }

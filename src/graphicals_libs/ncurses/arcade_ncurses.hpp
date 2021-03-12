@@ -9,6 +9,8 @@
 #define ARCADE_NCURSES_HPP_
 
 #include "../../core/AGraphicalModule.hpp"
+#include <iostream>
+#include <fstream>
 
 namespace Arcade
 {
@@ -25,8 +27,11 @@ namespace Arcade
         
         private:
             WINDOW *_window;
+            int colors[2][2][2];
 
             int getInput();
+            int getPair(Arcade::graphical_color_t color) const;
+            void init_colors_pairs();
     };
 } // namespace Arcade
 

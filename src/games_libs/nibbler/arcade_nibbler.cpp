@@ -16,7 +16,7 @@ Arcade::Game_Nibbler::Game_Nibbler(): AGameModule()
 
     text.text = std::string("NIBBLER");
     text.pos = {WIDTH / 2, HEIGHT / 2, 0};
-    text.color = {255, 0, 0};
+    text.color = {255, 0, 0, {Arcade::COLOR::RED, Arcade::COLOR::BLACK}};
     text.size = 12;
     _texts.push_back(text);
 }

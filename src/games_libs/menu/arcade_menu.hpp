@@ -9,6 +9,8 @@
 #define ARCADE_MENU_HPP_
 
 #include "../../core/AGameModule.hpp"
+#include <filesystem>
+#include <string>
 
 namespace Arcade
 {

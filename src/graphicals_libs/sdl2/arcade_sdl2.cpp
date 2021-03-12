@@ -35,7 +35,7 @@ void Arcade::Graphical_SDL2::closeWindow()
 
 void Arcade::Graphical_SDL2::drawText(graphical_text_t &text)
 {
-    SDL_Color textColor = {255, 0, 0};
+    SDL_Color textColor = {text.color.r, text.color.g, text.color.b};
     SDL_Surface *surfaceText = TTF_RenderText_Solid(_font, text.text.c_str(), textColor);
     SDL_Texture *texture = SDL_CreateTextureFromSurface(_renderer, surfaceText);
     SDL_Rect rect;

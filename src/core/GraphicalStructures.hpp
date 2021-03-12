@@ -12,6 +12,17 @@
 
 namespace Arcade
 {
+    enum COLOR {
+        BLACK,
+        RED,
+        GREEN,
+        YELLOW,
+        BLUE,
+        MAGENTA,
+        CYAN,
+        WHITE    
+    };
+
     typedef struct graphical_pos_s
     {
         float x;
@@ -24,6 +35,7 @@ namespace Arcade
         unsigned char r;
         unsigned char g;
         unsigned char b;
+        Arcade::COLOR ncurse[2];
     } graphical_color_t;
 
     typedef struct graphical_text_s

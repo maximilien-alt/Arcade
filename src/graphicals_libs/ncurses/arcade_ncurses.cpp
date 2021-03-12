@@ -18,13 +18,10 @@ Arcade::Graphical_Ncurses::~Graphical_Ncurses()
 void Arcade::Graphical_Ncurses::openWindow()
 {
     initscr();
+
     start_color();
     assume_default_colors(COLOR_WHITE, -1);
-    init_pair(1, COLOR_GREEN, -1);
-    init_pair(2, COLOR_YELLOW, -1);
-    init_pair(3, COLOR_RED, -1);
-    init_pair(4, COLOR_WHITE, -1);
-    init_pair(5, COLOR_CYAN, -1);
+    init_colors_pairs();
     noecho();
     _window = newwin(product_y(HEIGHT), product_x(WIDTH), 0, 0);
     nodelay(stdscr, true);
@@ -32,6 +29,22 @@ void Arcade::Graphical_Ncurses::openWindow()
     curs_set(0);
     keypad(stdscr, true);
     keypad(_window, true);
+}
+
+int colornum(int f, int bg)
+{
+    int a = 1 << 7;
+    int b = (7 & bg) << 4;
+    int c = 7 & f;
+
+    return (a | b | c);
+}
+
+void Arcade::Graphical_Ncurses::init_colors_pairs()
+{
+    for (int f = 0; f <= 7; f += 1)
+        for (int b = 0; b <= 7; b += 1)
+            init_pair(colornum(f, b), f, b);
 }
 
 void Arcade::Graphical_Ncurses::closeWindow()
@@ -42,11 +55,11 @@ void Arcade::Graphical_Ncurses::closeWindow()
 
 void Arcade::Graphical_Ncurses::drawText(graphical_text_t &text)
 {
-    init_color(10, text.color.r, text.color.g, text.color.b);
-    init_pair(10, 10, -1);
-    wattron(_window, COLOR_PAIR(10));
+    int pair = colornum(text.color.ncurse[0], text.color.ncurse[1]);
+
+    wattron(_window, COLOR_PAIR(pair));
     mvwprintw(_window, product_y(text.pos.y), product_x(text.pos.x), text.text.c_str());
-    wattroff(_window, COLOR_PAIR(10));
+    wattroff(_window, COLOR_PAIR(pair));
 }
 
 void Arcade::Graphical_Ncurses::clear()
