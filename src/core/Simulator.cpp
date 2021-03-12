@@ -26,6 +26,7 @@ void Arcade::Simulator::run()
     currentGame->setGraphicalModule(currentGraphical, true);
     currentGame->startGame();
     while (1) {
+        currentGame->updateGame();
         check = currentGame->check();
         switch (check) {
             case 1: _currentGraphicalIndex = _libraryManager.getPreviousGraphicalIndex(_currentGraphicalIndex);
@@ -48,6 +49,5 @@ void Arcade::Simulator::run()
         currentGame = _libraryManager.getGameModule(_currentGameIndex);
         if (check > 0 && check < 5)
             currentGame->setGraphicalModule(currentGraphical, (check == 1 || check == 2));
-        currentGame->updateGame();
     }
 }
