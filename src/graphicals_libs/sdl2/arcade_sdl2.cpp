@@ -42,14 +42,12 @@ void Arcade::Graphical_SDL2::drawText(graphical_text_t &text)
 
     rect.x = text.pos.x;
     rect.y = text.pos.y;
-    rect.w = text.text.length() * text.size;
-    rect.h = text.size * 2;
+    rect.w = text.text.length() * (text.size * 2 / 3);
+    rect.h = text.size;
 
     SDL_RenderCopy(_renderer, texture, NULL, &rect);
-    SDL_RenderPresent(_renderer);
     SDL_DestroyTexture(texture);
     SDL_FreeSurface(surfaceText);
-    SDL_DestroyTexture(texture);
 }
 
 void Arcade::Graphical_SDL2::clear()
