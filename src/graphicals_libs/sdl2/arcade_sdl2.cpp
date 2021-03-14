@@ -43,7 +43,7 @@ void Arcade::Graphical_SDL2::drawText(graphical_text_t &text)
     rect.x = text.pos.x;
     rect.y = text.pos.y;
     rect.w = text.text.length() * (text.size * 2 / 3);
-    rect.h = text.size;
+    rect.h = text.size + 4;
 
     SDL_RenderCopy(_renderer, texture, NULL, &rect);
     SDL_DestroyTexture(texture);
