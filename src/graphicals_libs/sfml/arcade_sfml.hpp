@@ -17,6 +17,7 @@ namespace Arcade
             Graphical_SFML();
             ~Graphical_SFML();
 
+            void drawSprite(graphical_sprite_t &sprite) final;
             void drawText(graphical_text_t &text) final;
             void clear() final;
             void refresh() final;

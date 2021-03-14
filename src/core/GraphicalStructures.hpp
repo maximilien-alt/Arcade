@@ -20,15 +20,15 @@ namespace Arcade
         BLUE,
         MAGENTA,
         CYAN,
-        WHITE    
+        WHITE
     };
 
-    typedef struct graphical_pos_s
+    typedef struct graphical_vector_s
     {
         float x;
         float y;
         float z;
-    } graphical_pos_t;
+    } graphical_vector_t;
 
     typedef struct graphical_color_s
     {
@@ -41,10 +41,17 @@ namespace Arcade
     typedef struct graphical_text_s
     {
         std::string text;
-        graphical_pos_t pos;
+        graphical_vector_t pos;
         int size;
         graphical_color_t color;
     } graphical_text_t;
+
+    typedef struct graphical_sprite_s
+    {
+        std::string path;
+        graphical_vector_t pos;
+        graphical_vector_t size;
+    } graphical_sprite_t;
 }
 
 #endif /* !GRAPHICALSTRUCTURES_HPP_ */

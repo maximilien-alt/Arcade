@@ -10,6 +10,7 @@
 
 #include "../../core/AGraphicalModule.hpp"
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 
 namespace Arcade
@@ -19,6 +20,7 @@ namespace Arcade
             Graphical_SDL2();
             ~Graphical_SDL2();
             void drawText(graphical_text_t &text) final;
+            void drawSprite(graphical_sprite_t &sprite) final;
             void clear() final;
             void refresh() final;
             int check() final;

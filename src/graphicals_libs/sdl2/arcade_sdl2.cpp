@@ -33,9 +33,21 @@ void Arcade::Graphical_SDL2::closeWindow()
     TTF_Quit();
 }
 
+void Arcade::Graphical_SDL2::drawSprite(graphical_sprite_t &sprite)
+{
+    SDL_Texture *img = IMG_LoadTexture(_renderer, sprite.path.c_str());
+    int w, h;
+
+    SDL_QueryTexture(img, NULL, NULL, &w, &h);
+    SDL_Rect texr; texr.x = WIDTH / 2; texr.y = HEIGHT / 2; texr.w = w * 2; texr.h = h * 2;
+
+    SDL_RenderCopy(_renderer, img, NULL, &texr);
+    SDL_DestroyTexture(img);
+}
+
 void Arcade::Graphical_SDL2::drawText(graphical_text_t &text)
 {
-    SDL_Color textColor = {text.color.r, text.color.g, text.color.b};
+    SDL_Color textColor = {text.color.r, text.color.g, text.color.b, 255};
     SDL_Surface *surfaceText = TTF_RenderText_Solid(_font, text.text.c_str(), textColor);
     SDL_Texture *texture = SDL_CreateTextureFromSurface(_renderer, surfaceText);
     SDL_Rect rect;

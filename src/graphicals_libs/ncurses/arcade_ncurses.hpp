@@ -19,12 +19,13 @@ namespace Arcade
             Graphical_Ncurses();
             ~Graphical_Ncurses();
             void drawText(graphical_text_t &text) final;
+            void drawSprite(graphical_sprite_t &sprite) final;
             void clear() final;
             void refresh() final;
             int check() final;
             void openWindow() final;
             void closeWindow() final;
-        
+
         private:
             WINDOW *_window;
             int colors[2][2][2];

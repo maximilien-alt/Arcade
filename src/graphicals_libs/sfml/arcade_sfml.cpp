@@ -26,13 +26,18 @@ void Arcade::Graphical_SFML::closeWindow()
     _window->close();
 }
 
+void Arcade::Graphical_SFML::drawSprite(graphical_sprite_t &sprite)
+{
+    (void)sprite;
+}
+
 void Arcade::Graphical_SFML::drawText(graphical_text_t &text)
 {
     sf::Font font;
     if (!font.loadFromFile("ressources/font.ttf"))
         return;
     sf::Text txt(text.text, font, text.size);
-    txt.setColor({text.color.r, text.color.g, text.color.b});
+    txt.setFillColor({text.color.r, text.color.g, text.color.b});
     txt.setPosition(text.pos.x, text.pos.y);
     _window->draw(txt);
 }

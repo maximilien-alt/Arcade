@@ -53,6 +53,11 @@ void Arcade::Graphical_Ncurses::closeWindow()
     endwin();
 }
 
+void Arcade::Graphical_Ncurses::drawSprite(graphical_sprite_t &sprite)
+{
+    (void)sprite;
+}
+
 void Arcade::Graphical_Ncurses::drawText(graphical_text_t &text)
 {
     int pair = colornum(text.color.ncurse[0], text.color.ncurse[1]);
