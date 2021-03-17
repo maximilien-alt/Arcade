@@ -34,7 +34,6 @@ void Arcade::Graphical_Ncurses::openWindow()
     init_colors_pairs();
     noecho();
     _windows.push_back(init_new_window(product_y(HEIGHT), product_x(WIDTH), 0, 0));
-    _windows.push_back(init_new_window(product_y(108), product_x(192), product_y(540), product_x(540)));
     nodelay(stdscr, true);
     curs_set(0);
     keypad(stdscr, true);
@@ -79,6 +78,7 @@ void Arcade::Graphical_Ncurses::drawText(graphical_text_t &text)
 
 void Arcade::Graphical_Ncurses::clear()
 {
+    showBox = false;
     for (auto &n: _windows) {
        werase(n);
        box(n, 0, 0);
@@ -87,35 +87,27 @@ void Arcade::Graphical_Ncurses::clear()
 
 void Arcade::Graphical_Ncurses::refresh()
 {
-    for (auto &n: _windows)
-       wrefresh(n);
+    wrefresh(_windows[0]);
+    if (showBox)
+        wrefresh(_windows[1]);
 }
 
 void Arcade::Graphical_Ncurses::showInputBox(graphical_box_t &_box)
 {
     static int i = 0;
 
-    getInput();
-
-    //if (!i++)
-    //_windows.push_back(init_new_window(product_y(_box.size.y), product_x(_box.size.x), product_y(_box.pos.y), product_x(_box.pos.x)));
-    //stream << "POS: " << _box.pos.x << "|" << _box.pos.y << std::endl << "SIZE: " << _box.size.x << "|" << _box.size.y << "|" << std::endl;
+    if (!i++)
+        _windows.push_back(init_new_window(product_y(_box.size.y), product_x(_box.size.x), product_y(_box.pos.y), product_x(_box.pos.x)));
+    showBox = true;
 }
 
 int Arcade::Graphical_Ncurses::check()
 {
     int input = getInput();
 
-    switch (input) {
-        case 'a': return 1;
-        case 'z': return 2;
-        case 'e': return 3;
-        case 'r': return 4;
-        case 't': return 5;
-        case 'y': return 6;
-        case 'u': return 7;
-        default: return 0;
-    }
+    for (int index = 1; index < 8; index += 1)
+        if (input == KEY_F(index))
+            return (index);
     return (0);
 }
 

@@ -36,6 +36,7 @@ namespace Arcade
             int getInput();
             int getPair(Arcade::graphical_color_t color) const;
             void init_colors_pairs();
+            bool showBox = false;
     };
 } // namespace Arcade
 
