@@ -30,6 +30,8 @@ namespace Arcade
         private:
             sf::RenderWindow *_window;
             sf::Event _event;
+            sf::Text txt;
+            std::unordered_map<std::string, sf::Font *> _fonts;
             bool _key[sf::Keyboard::KeyCount];
     };
 } // namespace Arcade

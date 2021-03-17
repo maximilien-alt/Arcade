@@ -36,24 +36,37 @@ void Arcade::Graphical_SDL2::closeWindow()
 
 void Arcade::Graphical_SDL2::drawSprite(graphical_sprite_t &sprite)
 {
-    SDL_Texture *img = IMG_LoadTexture(_renderer, sprite.path.c_str());
     int w, h;
+    if (_sprites.find(sprite.id) == _sprites.end()) {
+        SDL_Texture *img = IMG_LoadTexture(_renderer, sprite.path.c_str());
+        SDL_QueryTexture(img, NULL, NULL, &w, &h);
+        _sprites[sprite.id] = img;
+    }
 
-    SDL_QueryTexture(img, NULL, NULL, &w, &h);
-    SDL_Rect texr; texr.x = WIDTH / 2; texr.y = HEIGHT / 2; texr.w = w * 2; texr.h = h * 2;
+    SDL_Rect texr;
+    texr.x = WIDTH / 2;
+    texr.y = HEIGHT / 2;
+    texr.w = w * 2;
+    texr.h = h * 2;
 
-    SDL_RenderCopy(_renderer, img, NULL, &texr);
-    SDL_DestroyTexture(img);
+    SDL_RenderCopy(_renderer, _sprites[sprite.id], NULL, &texr);
+    SDL_DestroyTexture(_sprites[sprite.id]);
 }
 
 void Arcade::Graphical_SDL2::drawText(graphical_text_t &text)
 {
     SDL_Color textColor = {text.color.r, text.color.g, text.color.b, 255};
 
+    if (_texts.find(text.id) != _texts.end()) {
+        if (text.text != _texts[text.id].second.text || textColor.r != _texts[text.id].second.color.r || textColor.g != _texts[text.id].second.color.g || textColor.b != _texts[text.id].second.color.b) {
+            SDL_DestroyTexture(_texts[text.id].first);
+            _texts.erase(text.id);
+        }
+    }
     if (_texts.find(text.id) == _texts.end()) {
         SDL_Surface *surfaceText = TTF_RenderText_Solid(_font, text.text.c_str(), textColor);
         SDL_Texture *texture = SDL_CreateTextureFromSurface(_renderer, surfaceText);
-        _texts[text.id] = texture;
+        _texts[text.id] = std::make_pair(texture, text);
     }
     SDL_Rect rect;
     rect.x = text.pos.x;
@@ -61,7 +74,7 @@ void Arcade::Graphical_SDL2::drawText(graphical_text_t &text)
     rect.w = text.text.length() * (text.size * 2 / 3);
     rect.h = text.size + 4;
 
-    SDL_RenderCopy(_renderer, _texts[text.id], NULL, &rect);
+    SDL_RenderCopy(_renderer, _texts[text.id].first, NULL, &rect);
 }
 
 void Arcade::Graphical_SDL2::clear()
@@ -116,7 +129,7 @@ void Arcade::Graphical_SDL2::reset()
     }
     _sprites.clear();
     for (auto &texture : _texts) {
-        SDL_DestroyTexture(texture.second);
+        SDL_DestroyTexture(texture.second.first);
     }
     _texts.clear();
 }

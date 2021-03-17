@@ -35,8 +35,8 @@ namespace Arcade
             SDL_Renderer *_renderer = nullptr;
             SDL_Event _event;
             TTF_Font *_font = nullptr;
-            std::unordered_map<unsigned char, SDL_Texture *> _sprites;
-            std::unordered_map<unsigned char, SDL_Texture *> _texts;
+            std::unordered_map<unsigned int, SDL_Texture *> _sprites;
+            std::unordered_map<unsigned int, std::pair<SDL_Texture *, graphical_text_t>> _texts;
             int getInput();
     };
 } // namespace Arcade
