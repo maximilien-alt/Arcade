@@ -26,11 +26,9 @@ Arcade::Game_Menu::Game_Menu(): AGameModule()
         _texts.push_back(text);
         y += 100;
     }
-    text.text = std::string("MAIN MENU");
-    text.pos = {WIDTH / 2, HEIGHT / 2, 0};
-    text.color = {255, 0, 0, {Arcade::COLOR::RED, Arcade::COLOR::BLACK}};
-    text.size = 12;
-    _texts.push_back(text);
+    _box.pos = {WIDTH / 2, HEIGHT / 2, 0};
+    _box.size = {WIDTH / 10, HEIGHT / 10, 0};
+    _box.input = _playerName;
 }
 
 Arcade::Game_Menu::~Game_Menu()
@@ -45,8 +43,9 @@ void Arcade::Game_Menu::startGame()
 void Arcade::Game_Menu::updateGame()
 {
     _graphicalModule->clear();
-    for (auto &n: _texts)
-        _graphicalModule->drawText(n);
+    //for (auto &n: _texts)
+    //    _graphicalModule->drawText(n);
+    //_graphicalModule->showInputBox(_box);
     _graphicalModule->refresh();
 }
 

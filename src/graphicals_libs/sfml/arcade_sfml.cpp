@@ -62,6 +62,11 @@ void Arcade::Graphical_SFML::refresh()
     _window->display();
 }
 
+void Arcade::Graphical_SFML::showInputBox(graphical_box_t &box)
+{
+    (void)box;
+}
+
 int Arcade::Graphical_SFML::check()
 {
     if (_key[sf::Keyboard::A])

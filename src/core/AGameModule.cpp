@@ -9,6 +9,8 @@
 
 Arcade::AGameModule::AGameModule()
 {
+    _box.pos = {0, 0, 0};
+    _box.size = {0, 0, 0};
 }
 
 void Arcade::AGameModule::setGraphicalModule(IGraphicalModule *newModule, bool update)

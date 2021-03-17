@@ -77,6 +77,11 @@ void Arcade::Graphical_SDL2::refresh()
     SDL_RenderPresent(_renderer);
 }
 
+void Arcade::Graphical_SDL2::showInputBox(graphical_box_t &box)
+{
+    (void)box;
+}
+
 int Arcade::Graphical_SDL2::check()
 {
     int input = getInput();

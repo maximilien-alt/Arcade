@@ -20,6 +20,7 @@ namespace Arcade
             ~Graphical_Ncurses();
             void drawText(graphical_text_t &text) final;
             void drawSprite(graphical_sprite_t &sprite) final;
+            void showInputBox(graphical_box_t &box) final;
             void clear() final;
             void refresh() final;
             int check() final;
@@ -27,8 +28,9 @@ namespace Arcade
             void closeWindow() final;
 
         private:
-            WINDOW *_window;
+            std::vector<WINDOW *> _windows;
             int colors[2][2][2];
+            std::ofstream stream;
 
             int getInput();
             int getPair(Arcade::graphical_color_t color) const;

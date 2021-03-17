@@ -32,6 +32,8 @@ namespace Arcade
         virtual ~IGraphicalModule() = default;
 
         virtual void drawText(graphical_text_t &text) = 0;
+        virtual void drawSprite(graphical_sprite_t &sprite) = 0;
+        virtual void showInputBox(graphical_box_t &box) = 0;
         virtual void clear() = 0;
         virtual void refresh() = 0;
         virtual int check() = 0;

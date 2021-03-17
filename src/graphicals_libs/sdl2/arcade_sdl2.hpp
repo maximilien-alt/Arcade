@@ -21,6 +21,7 @@ namespace Arcade
             ~Graphical_SDL2();
             void drawText(graphical_text_t &text) final;
             void drawSprite(graphical_sprite_t &sprite) final;
+            void showInputBox(graphical_box_t &box) final;
             void clear() final;
             void refresh() final;
             int check() final;

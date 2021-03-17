@@ -7,12 +7,22 @@
 
 #include "arcade_ncurses.hpp"
 
-Arcade::Graphical_Ncurses::Graphical_Ncurses() : AGraphicalModule()
+Arcade::Graphical_Ncurses::Graphical_Ncurses() : AGraphicalModule(), stream("debug.txt", std::ios::app)
 {
 }
 
 Arcade::Graphical_Ncurses::~Graphical_Ncurses()
 {
+    stream.close();
+}
+
+WINDOW *init_new_window(int a, int b, int c, int d)
+{
+    WINDOW *win = newwin(a, b, c, d);
+
+    nodelay(win, true);
+    keypad(win, true);
+    return (win);
 }
 
 void Arcade::Graphical_Ncurses::openWindow()
@@ -23,12 +33,11 @@ void Arcade::Graphical_Ncurses::openWindow()
     assume_default_colors(COLOR_WHITE, -1);
     init_colors_pairs();
     noecho();
-    _window = newwin(product_y(HEIGHT), product_x(WIDTH), 0, 0);
+    _windows.push_back(init_new_window(product_y(HEIGHT), product_x(WIDTH), 0, 0));
+    _windows.push_back(init_new_window(product_y(108), product_x(192), product_y(540), product_x(540)));
     nodelay(stdscr, true);
-    nodelay(_window, true);
     curs_set(0);
     keypad(stdscr, true);
-    keypad(_window, true);
 }
 
 int colornum(int f, int bg)
@@ -49,7 +58,8 @@ void Arcade::Graphical_Ncurses::init_colors_pairs()
 
 void Arcade::Graphical_Ncurses::closeWindow()
 {
-    wclear(_window);
+    for (auto &n: _windows)
+        wclear(n);
     endwin();
 }
 
@@ -62,20 +72,40 @@ void Arcade::Graphical_Ncurses::drawText(graphical_text_t &text)
 {
     int pair = colornum(text.color.ncurse[0], text.color.ncurse[1]);
 
-    wattron(_window, COLOR_PAIR(pair));
-    mvwprintw(_window, product_y(text.pos.y), product_x(text.pos.x), text.text.c_str());
-    wattroff(_window, COLOR_PAIR(pair));
+    wattron(_windows[0], COLOR_PAIR(pair));
+    mvwprintw(_windows[0], product_y(text.pos.y), product_x(text.pos.x), text.text.c_str());
+    wattroff(_windows[0], COLOR_PAIR(pair));
 }
 
 void Arcade::Graphical_Ncurses::clear()
 {
-    werase(_window);
-    box(_window, 0, 0);
+    //for (auto &n: _windows) {
+    //    werase(n);
+    //    box(n, 0, 0);
+    //}
+    werase(_windows[1]);
+    werase(_windows[0]);
+    box(_windows[1], 0, 0);
+    box(_windows[0], 0, 0);
 }
 
 void Arcade::Graphical_Ncurses::refresh()
 {
-    wrefresh(_window);
+    //for (auto &n: _windows)
+    //    wrefresh(n);
+    wrefresh(_windows[1]);
+    wrefresh(_windows[0]);
+}
+
+void Arcade::Graphical_Ncurses::showInputBox(graphical_box_t &_box)
+{
+    static int i = 0;
+
+    getInput();
+
+    //if (!i++)
+    //_windows.push_back(init_new_window(product_y(_box.size.y), product_x(_box.size.x), product_y(_box.pos.y), product_x(_box.pos.x)));
+    //stream << "POS: " << _box.pos.x << "|" << _box.pos.y << std::endl << "SIZE: " << _box.size.x << "|" << _box.size.y << "|" << std::endl;
 }
 
 int Arcade::Graphical_Ncurses::check()

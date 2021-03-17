@@ -52,6 +52,13 @@ namespace Arcade
         graphical_vector_t pos;
         graphical_vector_t size;
     } graphical_sprite_t;
+
+    typedef struct graphical_box_s
+    {
+        graphical_vector_t pos;
+        graphical_vector_t size;
+        std::string input;
+    } graphical_box_t;
 }
 
 #endif /* !GRAPHICALSTRUCTURES_HPP_ */
