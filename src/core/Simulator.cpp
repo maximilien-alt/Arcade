@@ -33,9 +33,11 @@ void Arcade::Simulator::run()
                 break;
             case 2: _currentGraphicalIndex = _libraryManager.getNextGraphicalIndex(_currentGraphicalIndex);
                 break;
-            case 3: _currentGameIndex = (_currentGameIndex != 0) ? _libraryManager.getPreviousGameIndex(_currentGameIndex) : _currentGameIndex;
+            case 3: currentGraphical->reset();
+                    _currentGameIndex = (_currentGameIndex != 0) ? _libraryManager.getPreviousGameIndex(_currentGameIndex) : _currentGameIndex;
                 break;
-            case 4: _currentGameIndex = (_currentGameIndex != 0) ? _libraryManager.getNextGameIndex(_currentGameIndex) : _currentGameIndex;
+            case 4: currentGraphical->reset();
+                    _currentGameIndex = (_currentGameIndex != 0) ? _libraryManager.getNextGameIndex(_currentGameIndex) : _currentGameIndex;
                 break;
             case 5: currentGame->startGame();
                 break;

@@ -11,7 +11,7 @@ Arcade::LibraryManager::LibraryManager(const std::string &name): _startIndex(0)
 {
     int index = 0;
 
-    _gameModules.push_back(loadGame("lib/arcade_menu.so"));
+    //_gameModules.push_back(loadGame("lib/arcade_menu.so"));
     for (const auto & entry : std::filesystem::directory_iterator("lib")) {
         if (entry.path() == "lib/arcade_sfml.so" || entry.path() == "lib/arcade_sdl2.so" || entry.path() == "lib/arcade_ncurses.so") {
             _graphicalModules.push_back(loadLibrary(entry.path()));
