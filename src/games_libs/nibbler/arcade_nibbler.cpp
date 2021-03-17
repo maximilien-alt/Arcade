@@ -14,10 +14,12 @@ Arcade::Game_Nibbler::Game_Nibbler(): AGameModule()
 {
     graphical_text_t text;
 
+    text.id = 0;
     text.text = std::string("NIBBLER");
     text.pos = {WIDTH / 2, HEIGHT / 2, 0};
     text.color = {255, 0, 0, {Arcade::COLOR::RED, Arcade::COLOR::BLACK}};
     text.size = 12;
+    text.font = "ressources/font.ttf";
     _texts.push_back(text);
 }
 

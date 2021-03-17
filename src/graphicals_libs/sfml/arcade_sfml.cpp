@@ -33,14 +33,14 @@ void Arcade::Graphical_SFML::drawSprite(graphical_sprite_t &sprite)
 
 void Arcade::Graphical_SFML::drawText(graphical_text_t &text)
 {
-    if (_fonts.find("ressources/font.ttf") == _fonts.end()) {
+    if (_fonts.find(text.font) == _fonts.end()) {
         sf::Font *font = new sf::Font();
-        if (!font->loadFromFile("ressources/font.ttf"))
+        if (!font->loadFromFile(text.font))
             return;
-        _fonts["ressources/font.ttf"] = font;
+        _fonts[text.font] = font;
     }
     txt.setString(text.text);
-    txt.setFont(*(_fonts["ressources/font.ttf"]));
+    txt.setFont(*(_fonts[text.font]));
     txt.setCharacterSize(text.size);
     txt.setFillColor({text.color.r, text.color.g, text.color.b});
     txt.setPosition(text.pos.x, text.pos.y);

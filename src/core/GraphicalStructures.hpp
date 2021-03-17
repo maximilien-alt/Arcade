@@ -45,6 +45,7 @@ namespace Arcade
         graphical_vector_t pos;
         int size;
         graphical_color_t color;
+        std::string font;
     } graphical_text_t;
 
     typedef struct graphical_sprite_s
