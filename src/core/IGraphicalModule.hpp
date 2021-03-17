@@ -23,6 +23,7 @@
 #include <SFML/Audio.hpp>
 #include <list>
 #include <vector>
+#include <unordered_map>
 
 namespace Arcade
 {

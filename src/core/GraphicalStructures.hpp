@@ -40,6 +40,7 @@ namespace Arcade
 
     typedef struct graphical_text_s
     {
+        unsigned char id;
         std::string text;
         graphical_vector_t pos;
         int size;
