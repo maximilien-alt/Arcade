@@ -3,3 +3,4 @@ arcade
 *.o
 .build
 .vscode/*
+debug.txt
