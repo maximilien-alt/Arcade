@@ -4,3 +4,4 @@ arcade
 .build
 .vscode/*
 debug.txt
+vgcore.*
