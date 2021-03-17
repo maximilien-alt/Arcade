@@ -107,6 +107,11 @@ int Arcade::Graphical_SDL2::check()
     return (0);
 }
 
+void Arcade::Graphical_SDL2::reset()
+{
+
+}
+
 int Arcade::Graphical_SDL2::getInput()
 {
     if (SDL_PollEvent(&_event)) {

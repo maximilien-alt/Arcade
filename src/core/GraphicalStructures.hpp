@@ -48,6 +48,7 @@ namespace Arcade
 
     typedef struct graphical_sprite_s
     {
+        unsigned char id;
         std::string path;
         graphical_vector_t pos;
         graphical_vector_t size;

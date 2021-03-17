@@ -119,6 +119,11 @@ int Arcade::Graphical_Ncurses::check()
     return (0);
 }
 
+void Arcade::Graphical_Ncurses::reset()
+{
+
+}
+
 int Arcade::Graphical_Ncurses::getInput()
 {
     return (wgetch(stdscr));
