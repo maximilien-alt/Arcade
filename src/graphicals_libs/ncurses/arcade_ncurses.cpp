@@ -18,7 +18,7 @@ Arcade::Graphical_Ncurses::~Graphical_Ncurses()
 
 WINDOW *init_new_window(int a, int b, int c, int d)
 {
-    WINDOW *win = newwin(a, b, c, d);
+    WINDOW *win = subwin(stdscr, a, b, c, d);
 
     nodelay(win, true);
     keypad(win, true);
@@ -79,22 +79,16 @@ void Arcade::Graphical_Ncurses::drawText(graphical_text_t &text)
 
 void Arcade::Graphical_Ncurses::clear()
 {
-    //for (auto &n: _windows) {
-    //    werase(n);
-    //    box(n, 0, 0);
-    //}
-    werase(_windows[1]);
-    werase(_windows[0]);
-    box(_windows[1], 0, 0);
-    box(_windows[0], 0, 0);
+    for (auto &n: _windows) {
+       werase(n);
+       box(n, 0, 0);
+    }
 }
 
 void Arcade::Graphical_Ncurses::refresh()
 {
-    //for (auto &n: _windows)
-    //    wrefresh(n);
-    wrefresh(_windows[1]);
-    wrefresh(_windows[0]);
+    for (auto &n: _windows)
+       wrefresh(n);
 }
 
 void Arcade::Graphical_Ncurses::showInputBox(graphical_box_t &_box)
