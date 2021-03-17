@@ -12,6 +12,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
+#include <unordered_map>
 
 namespace Arcade
 {
@@ -34,6 +35,8 @@ namespace Arcade
             SDL_Renderer *_renderer = nullptr;
             SDL_Event _event;
             TTF_Font *_font = nullptr;
+            std::unordered_map<unsigned char, SDL_Texture *> _sprites;
+            std::unordered_map<unsigned char, SDL_Texture *> _texts;
             int getInput();
     };
 } // namespace Arcade

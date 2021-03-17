@@ -27,6 +27,7 @@ void Arcade::Graphical_SDL2::openWindow()
 
 void Arcade::Graphical_SDL2::closeWindow()
 {
+    reset();
     SDL_DestroyRenderer(_renderer);
     SDL_DestroyWindow(_window);
     TTF_CloseFont(_font);
@@ -48,18 +49,19 @@ void Arcade::Graphical_SDL2::drawSprite(graphical_sprite_t &sprite)
 void Arcade::Graphical_SDL2::drawText(graphical_text_t &text)
 {
     SDL_Color textColor = {text.color.r, text.color.g, text.color.b, 255};
-    SDL_Surface *surfaceText = TTF_RenderText_Solid(_font, text.text.c_str(), textColor);
-    SDL_Texture *texture = SDL_CreateTextureFromSurface(_renderer, surfaceText);
-    SDL_Rect rect;
 
+    if (_texts.find(text.id) == _texts.end()) {
+        SDL_Surface *surfaceText = TTF_RenderText_Solid(_font, text.text.c_str(), textColor);
+        SDL_Texture *texture = SDL_CreateTextureFromSurface(_renderer, surfaceText);
+        _texts[text.id] = texture;
+    }
+    SDL_Rect rect;
     rect.x = text.pos.x;
     rect.y = text.pos.y;
     rect.w = text.text.length() * (text.size * 2 / 3);
     rect.h = text.size + 4;
 
-    SDL_RenderCopy(_renderer, texture, NULL, &rect);
-    SDL_DestroyTexture(texture);
-    SDL_FreeSurface(surfaceText);
+    SDL_RenderCopy(_renderer, _texts[text.id], NULL, &rect);
 }
 
 void Arcade::Graphical_SDL2::clear()
@@ -109,7 +111,14 @@ int Arcade::Graphical_SDL2::check()
 
 void Arcade::Graphical_SDL2::reset()
 {
-
+    for (auto &texture : _sprites) {
+        SDL_DestroyTexture(texture.second);
+    }
+    _sprites.clear();
+    for (auto &texture : _texts) {
+        SDL_DestroyTexture(texture.second);
+    }
+    _texts.clear();
 }
 
 int Arcade::Graphical_SDL2::getInput()

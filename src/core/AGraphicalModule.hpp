@@ -27,9 +27,6 @@ namespace Arcade
         virtual int check() = 0;
         virtual void openWindow() = 0;
         virtual void closeWindow() = 0;
-    protected:
-        std::unordered_map<unsigned char, graphical_sprite_t> _sprites;
-        std::unordered_map<unsigned char, graphical_text_t> _texts;
     };
 }
 
