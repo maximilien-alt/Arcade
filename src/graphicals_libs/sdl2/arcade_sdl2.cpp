@@ -87,19 +87,19 @@ int Arcade::Graphical_SDL2::check()
     int input = getInput();
 
     switch (input) {
-        case SDLK_a:
+        case SDLK_F1:
             return (1);
-        case SDLK_z:
+        case SDLK_F2:
             return (2);
-        case SDLK_e:
+        case SDLK_F3:
             return (3);
-        case SDLK_r:
+        case SDLK_F4:
             return (4);
-        case SDLK_t:
+        case SDLK_F5:
             return (5);
-        case SDLK_y:
+        case SDLK_F6:
             return (6);
-        case SDLK_u:
+        case SDLK_F7:
             return (7);
         default:
             return (0);

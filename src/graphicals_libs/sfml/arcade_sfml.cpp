@@ -69,19 +69,19 @@ void Arcade::Graphical_SFML::showInputBox(graphical_box_t &box)
 
 int Arcade::Graphical_SFML::check()
 {
-    if (_key[sf::Keyboard::A])
+    if (_key[sf::Keyboard::F1])
         return (1);
-    if (_key[sf::Keyboard::Z])
+    if (_key[sf::Keyboard::F2])
         return (2);
-    if (_key[sf::Keyboard::E])
+    if (_key[sf::Keyboard::F3])
         return (3);
-    if (_key[sf::Keyboard::R])
+    if (_key[sf::Keyboard::F4])
         return (4);
-    if (_key[sf::Keyboard::T])
+    if (_key[sf::Keyboard::F5])
         return (5);
-    if (_key[sf::Keyboard::Y])
+    if (_key[sf::Keyboard::F6])
         return (6);
-    if (_key[sf::Keyboard::U])
+    if (_key[sf::Keyboard::F7])
         return (7);
     return (0);
 }
