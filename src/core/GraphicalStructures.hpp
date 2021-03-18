@@ -82,7 +82,7 @@ namespace Arcade
 
     typedef struct graphical_text_s
     {
-        unsigned char id;
+        unsigned int id;
         std::string text;
         graphical_vector_t pos;
         int size;
@@ -92,7 +92,7 @@ namespace Arcade
 
     typedef struct graphical_sprite_s
     {
-        unsigned char id;
+        unsigned int id;
         std::string path;
         std::string ncurses_path;
         bool ncursesBox;

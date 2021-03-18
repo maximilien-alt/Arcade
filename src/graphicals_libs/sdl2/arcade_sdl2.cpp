@@ -21,40 +21,51 @@ void Arcade::Graphical_SDL2::openWindow()
     SDL_CreateWindowAndRenderer(WIDTH, HEIGHT, SDL_WINDOW_SHOWN, &_window, &_renderer);
     SDL_SetWindowTitle(_window, "SDL window");
     TTF_Init();
-    _font = TTF_OpenFont("ressources/font.ttf", 200);
+    // _font = TTF_OpenFont("ressources/font.ttf", 200);
 
 }
 
 void Arcade::Graphical_SDL2::closeWindow()
 {
+    if (!_renderer)
+        return;
     reset();
     SDL_DestroyRenderer(_renderer);
+    _renderer = nullptr;
     SDL_DestroyWindow(_window);
-    TTF_CloseFont(_font);
+    if (_font)
+        TTF_CloseFont(_font);
     TTF_Quit();
 }
 
 void Arcade::Graphical_SDL2::drawSprite(graphical_sprite_t &sprite)
 {
-    int w, h;
+    if (!_renderer)
+        return;
+    graphical_vector_t size = {0, 0, 0};
     if (_sprites.find(sprite.id) == _sprites.end()) {
+        std::cout << sprite.path << std::endl;
         SDL_Texture *img = IMG_LoadTexture(_renderer, sprite.path.c_str());
+        int w, h;
         SDL_QueryTexture(img, NULL, NULL, &w, &h);
-        _sprites[sprite.id] = img;
+        size.x = w;
+        size.y = h;
+        _sprites[sprite.id] = std::make_pair(img, size);
     }
-
+    size = _sprites[sprite.id].second;
     SDL_Rect texr;
     texr.x = WIDTH / 2;
     texr.y = HEIGHT / 2;
-    texr.w = w * 2;
-    texr.h = h * 2;
+    texr.w = size.x * 2;
+    texr.h = size.y * 2;
 
-    SDL_RenderCopy(_renderer, _sprites[sprite.id], NULL, &texr);
-    SDL_DestroyTexture(_sprites[sprite.id]);
+    SDL_RenderCopy(_renderer, _sprites[sprite.id].first, NULL, &texr);
 }
 
 void Arcade::Graphical_SDL2::drawText(graphical_text_t &text)
 {
+    if (!_renderer)
+        return;
     SDL_Color textColor = {text.color.r, text.color.g, text.color.b, 255};
 
     if (_texts.find(text.id) != _texts.end()) {
@@ -79,9 +90,17 @@ void Arcade::Graphical_SDL2::drawText(graphical_text_t &text)
 
 void Arcade::Graphical_SDL2::clear()
 {
+    for (auto &key : _key) {
+        key.second = false;
+    }
     while (SDL_PollEvent(&_event)) {
+        std::cout << _event.type << std::endl;
         if (_event.type == SDL_QUIT) {
             closeWindow();
+            return;
+        }
+        if (_event.type == SDL_KEYDOWN) {
+            _key[_event.key.keysym.sym] = true;
         }
     }
     SDL_RenderClear(_renderer);
@@ -99,33 +118,21 @@ void Arcade::Graphical_SDL2::showInputBox(graphical_box_t &box)
 
 void Arcade::Graphical_SDL2::updateInputsMap()
 {
-    int input = getInput();
-
     for (int index = SDLK_F1; index <= SDLK_F7; index += 1)
-        if (input == index)
+        if (_key[index])
             _keys[index - SDLK_F1] = 1;
 }
 
 void Arcade::Graphical_SDL2::reset()
 {
     for (auto &texture : _sprites) {
-        SDL_DestroyTexture(texture.second);
+        SDL_DestroyTexture(texture.second.first);
     }
     _sprites.clear();
     for (auto &texture : _texts) {
         SDL_DestroyTexture(texture.second.first);
     }
     _texts.clear();
-}
-
-int Arcade::Graphical_SDL2::getInput()
-{
-    if (SDL_PollEvent(&_event)) {
-        if (_event.type == SDL_KEYDOWN) {
-            return (_event.key.keysym.sym);
-        }
-    }
-    return (0);
 }
 
 extern "C" Arcade::IGraphicalModule *entryPoint()
