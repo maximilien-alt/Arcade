@@ -7,7 +7,7 @@
 
 #include "arcade_menu.hpp"
 
-Arcade::Game_Menu::Game_Menu(): AGameModule()
+Arcade::Game_Menu::Game_Menu(): AGameModule(), _gindex(0)
 {
     graphical_text_t text;
     int index = 0;
@@ -32,6 +32,25 @@ Arcade::Game_Menu::Game_Menu(): AGameModule()
     }
     _box.pos = {WIDTH / 2, HEIGHT / 2, 0};
     _box.size = {WIDTH / 10, HEIGHT / 10, 0};
+    init_sprites();
+}
+
+void Arcade::Game_Menu::init_sprites()
+{
+    graphical_sprite_t sprite;
+    int id = 0;
+
+    for (auto &n: _texts) {
+        sprite.id = id;
+        sprite.path = "ressources/" + n.text + "_logo.png";
+        sprite.ncurses_path = "ressources/" + n.text + "_logo.txt";
+        sprite.size = {14, 50, 1};
+        sprite.pos = {725, 150, 0};
+        sprite.ncursesBox = 0;
+        sprite.color = {255, 0, 0, {RED, BLACK}};
+        id += 1;
+        _sprites.push_back(sprite);
+    }
 }
 
 Arcade::Game_Menu::~Game_Menu()
@@ -61,16 +80,30 @@ void Arcade::Game_Menu::updateGame()
 {
     _graphicalModule->resetKeys();
     _graphicalModule->clear();
-    _graphicalModule->updateInptsMap();
+    _graphicalModule->updateInputsMap();
     _keys = _graphicalModule->getInputsMap();
-
     updatePlayerName();
-    _box.input = _playerName;
-    for (auto &n: _texts)
-        _graphicalModule->drawText(n);
-    _graphicalModule->showInputBox(_box);
-
+    if (_keys[Arcade::KEYS::ARROW_LEFT])
+        _gindex = _gindex >= 1 ? _gindex - 1 : _sprites.size() - 1;
+    if (_keys[Arcade::KEYS::ARROW_RIGHT])
+        _gindex = (_gindex + 1) < _sprites.size() ? _gindex + 1 : 0;
+    draw();
     _graphicalModule->refresh();
+}
+
+void Arcade::Game_Menu::draw()
+{
+    size_t index = 0;
+
+    _box.input = _playerName;
+    for (auto &n: _sprites) {
+        if (index == _gindex) {
+            _graphicalModule->drawSprite(n);
+            break;
+        }
+        index += 1;
+    }
+    _graphicalModule->showInputBox(_box);
 }
 
 extern "C" Arcade::IGameModule *entryPoint(void)

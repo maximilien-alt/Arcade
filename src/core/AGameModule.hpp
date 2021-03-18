@@ -25,6 +25,7 @@ namespace Arcade {
         protected:
             IGraphicalModule *_graphicalModule = nullptr;
             std::list<graphical_text_t> _texts;
+            std::list<graphical_sprite_t> _sprites;
             std::string _playerName;
             graphical_box_t _box;
             std::unordered_map<int, bool> _keys;

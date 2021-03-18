@@ -97,7 +97,7 @@ void Arcade::Graphical_SDL2::showInputBox(graphical_box_t &box)
     (void)box;
 }
 
-void Arcade::Graphical_SDL2::updateInptsMap()
+void Arcade::Graphical_SDL2::updateInputsMap()
 {
     int input = getInput();
 

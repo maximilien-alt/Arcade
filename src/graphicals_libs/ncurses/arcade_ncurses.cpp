@@ -62,9 +62,38 @@ void Arcade::Graphical_Ncurses::closeWindow()
     endwin();
 }
 
+std::vector<std::string> Arcade::Graphical_Ncurses::readFileIntoVector(std::string filepath)
+{
+    std::vector<std::string> res;
+    std::ifstream file(filepath);
+    std::string temp;
+
+    if (file.is_open()) {
+        while (std::getline(file, temp)) {
+            res.push_back(temp);
+        }
+    }
+    return (res);
+}
+
 void Arcade::Graphical_Ncurses::drawSprite(graphical_sprite_t &sprite)
 {
-    (void)sprite;
+    int pair = colornum(sprite.color.ncurse[0], sprite.color.ncurse[1]);
+    WINDOW *win = nullptr;
+
+    if (_sprites.find(sprite.id) == _sprites.end()) {
+        std::vector<std::string> vector = readFileIntoVector(sprite.ncurses_path);
+        if (sprite.ncursesBox) {
+            win = init_new_window(sprite.size.y, sprite.size.y, sprite.pos.y, sprite.pos.x);
+        }
+        _sprites[sprite.id] = std::make_pair(vector, win);
+    }
+    win = (sprite.ncursesBox) ? _sprites[sprite.id].second : _windows[0];
+    wattron(win, COLOR_PAIR(pair));
+    for (size_t index = 0; index < _sprites[sprite.id].first.size(); index += 1) {
+        mvwprintw(win, product_y(sprite.pos.y) + index, product_x(sprite.pos.x), _sprites[sprite.id].first[index].c_str());
+    }
+    wattroff(win, COLOR_PAIR(pair));
 }
 
 void Arcade::Graphical_Ncurses::drawText(graphical_text_t &text)
@@ -83,6 +112,12 @@ void Arcade::Graphical_Ncurses::clear()
        werase(n);
        box(n, 0, 0);
     }
+    for (auto &n: _sprites) {
+        if (n.second.second != nullptr) {
+            werase(n.second.second);
+            box(n.second.second, 0, 0);
+        }
+    }
 }
 
 void Arcade::Graphical_Ncurses::refresh()
@@ -90,6 +125,11 @@ void Arcade::Graphical_Ncurses::refresh()
     wrefresh(_windows[0]);
     if (showBox)
         wrefresh(_windows[1]);
+    for (auto &n: _sprites) {
+        if (n.second.second != nullptr) {
+            wrefresh(n.second.second);
+        }
+    }
 }
 
 void Arcade::Graphical_Ncurses::showInputBox(graphical_box_t &_box)
@@ -109,7 +149,7 @@ void Arcade::Graphical_Ncurses::showInputBox(graphical_box_t &_box)
     showBox = true;
 }
 
-void Arcade::Graphical_Ncurses::updateInptsMap()
+void Arcade::Graphical_Ncurses::updateInputsMap()
 {
     int input = getInput();
 
@@ -133,7 +173,7 @@ void Arcade::Graphical_Ncurses::updateInptsMap()
 
 void Arcade::Graphical_Ncurses::reset()
 {
-
+    _sprites.clear();
 }
 
 int Arcade::Graphical_Ncurses::getInput()

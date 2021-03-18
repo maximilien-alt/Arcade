@@ -77,7 +77,7 @@ void Arcade::Graphical_SFML::reset()
 
 }
 
-void Arcade::Graphical_SFML::updateInptsMap()
+void Arcade::Graphical_SFML::updateInputsMap()
 {
     for (int index = sf::Keyboard::F1; index <= sf::Keyboard::F7; index += 1)
         if (_key[index])

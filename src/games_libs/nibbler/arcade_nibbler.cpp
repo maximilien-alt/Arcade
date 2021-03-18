@@ -36,7 +36,7 @@ void Arcade::Game_Nibbler::updateGame()
 {
     _graphicalModule->resetKeys();
     _graphicalModule->clear();
-    _graphicalModule->updateInptsMap();
+    _graphicalModule->updateInputsMap();
     _keys = _graphicalModule->getInputsMap();
     for (auto &n: _texts)
         _graphicalModule->drawText(n);

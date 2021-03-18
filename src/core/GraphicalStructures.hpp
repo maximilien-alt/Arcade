@@ -94,6 +94,9 @@ namespace Arcade
     {
         unsigned char id;
         std::string path;
+        std::string ncurses_path;
+        bool ncursesBox;
+        graphical_color_t color;
         graphical_vector_t pos;
         graphical_vector_t size;
     } graphical_sprite_t;

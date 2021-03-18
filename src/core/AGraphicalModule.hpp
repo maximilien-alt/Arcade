@@ -24,7 +24,7 @@ namespace Arcade
         virtual void showInputBox(graphical_box_t &box) = 0;
         virtual void clear() = 0;
         virtual void refresh() = 0;
-        virtual void updateInptsMap() = 0;
+        virtual void updateInputsMap() = 0;
         virtual void openWindow() = 0;
         virtual void closeWindow() = 0;
 

@@ -23,7 +23,7 @@ namespace Arcade
             void reset() final;
             void clear() final;
             void refresh() final;
-            void updateInptsMap() final;
+            void updateInputsMap() final;
             void openWindow() final;
             void closeWindow() final;
 

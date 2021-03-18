@@ -16,6 +16,7 @@
 #define product_y(y) (LINES * y / HEIGHT)
 
 #include "GraphicalStructures.hpp"
+#include "Tools.hpp"
 #include <memory>
 #include <iostream>
 #include <SFML/Graphics.hpp>
@@ -40,7 +41,7 @@ namespace Arcade
         virtual void reset() = 0;
         virtual void clear() = 0;
         virtual void refresh() = 0;
-        virtual void updateInptsMap() = 0;
+        virtual void updateInputsMap() = 0;
         virtual void openWindow() = 0;
         virtual void closeWindow() = 0;
     };

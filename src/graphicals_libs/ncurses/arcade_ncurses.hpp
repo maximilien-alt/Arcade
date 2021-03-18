@@ -24,7 +24,7 @@ namespace Arcade
             void reset() final;
             void clear() final;
             void refresh() final;
-            void updateInptsMap() final;
+            void updateInputsMap() final;
             void openWindow() final;
             void closeWindow() final;
 
@@ -32,11 +32,14 @@ namespace Arcade
             std::vector<WINDOW *> _windows;
             int colors[2][2][2];
             std::ofstream stream;
+            std::unordered_map<int, std::pair<std::vector<std::string>, WINDOW *>> _sprites;
+            bool showBox = false;
 
             int getInput();
             int getPair(Arcade::graphical_color_t color) const;
             void init_colors_pairs();
-            bool showBox = false;
+            std::vector<std::string> readFileIntoVector(std::string filepath);
+
     };
 } // namespace Arcade
 

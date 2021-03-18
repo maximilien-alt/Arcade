@@ -23,7 +23,11 @@ namespace Arcade
             void updateGame() final;
         
         private:
+            size_t _gindex;
+
             void updatePlayerName();
+            void init_sprites();
+            void draw();
     };
 }
 
