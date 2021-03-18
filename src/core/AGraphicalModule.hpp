@@ -24,9 +24,15 @@ namespace Arcade
         virtual void showInputBox(graphical_box_t &box) = 0;
         virtual void clear() = 0;
         virtual void refresh() = 0;
-        virtual int check() = 0;
+        virtual void updateInptsMap() = 0;
         virtual void openWindow() = 0;
         virtual void closeWindow() = 0;
+
+        std::unordered_map<int, bool> getInputsMap() const final;
+        void resetKeys() final;
+    
+    protected:
+        std::unordered_map<int, bool> _keys;
     };
 }
 

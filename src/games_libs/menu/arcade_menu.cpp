@@ -32,7 +32,6 @@ Arcade::Game_Menu::Game_Menu(): AGameModule()
     }
     _box.pos = {WIDTH / 2, HEIGHT / 2, 0};
     _box.size = {WIDTH / 10, HEIGHT / 10, 0};
-    _box.input = _playerName;
 }
 
 Arcade::Game_Menu::~Game_Menu()
@@ -44,12 +43,33 @@ void Arcade::Game_Menu::startGame()
 {
 }
 
+void Arcade::Game_Menu::updatePlayerName()
+{
+    char ch = 0;
+
+    for (int index = Arcade::KEYS::A; index <= Arcade::KEYS::Z; index += 1) {
+        if (_keys[index]) {
+            ch = index - Arcade::KEYS::A + 'a';
+            _playerName.insert(_playerName.end(), 1, ch);
+        }
+    }
+    if (_keys[Arcade::KEYS::BACKSPACE] && _playerName.length() > 0)
+        _playerName.erase(_playerName.length() - 1, 1);
+}
+
 void Arcade::Game_Menu::updateGame()
 {
+    _graphicalModule->resetKeys();
     _graphicalModule->clear();
-    //for (auto &n: _texts)
-    //    _graphicalModule->drawText(n);
-    //_graphicalModule->showInputBox(_box);
+    _graphicalModule->updateInptsMap();
+    _keys = _graphicalModule->getInputsMap();
+
+    updatePlayerName();
+    _box.input = _playerName;
+    for (auto &n: _texts)
+        _graphicalModule->drawText(n);
+    _graphicalModule->showInputBox(_box);
+
     _graphicalModule->refresh();
 }
 

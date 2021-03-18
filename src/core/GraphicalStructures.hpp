@@ -23,6 +23,48 @@ namespace Arcade
         WHITE
     };
 
+    enum KEYS {
+        F1,
+        F2,
+        F3,
+        F4,
+        F5,
+        F6,
+        F7,
+        A,
+        B,
+        C,
+        D,
+        E,
+        F,
+        G,
+        H,
+        I,
+        J,
+        K,
+        L,
+        M,
+        N,
+        O,
+        P,
+        Q,
+        R,
+        S,
+        T,
+        U,
+        V,
+        W,
+        X,
+        Y,
+        Z,
+        BACKSPACE,
+        ARROW_LEFT,
+        ARROW_UP,
+        ARROW_RIGHT,
+        ARROW_DOWN,
+        NONE
+    };
+
     typedef struct graphical_vector_s
     {
         float x;

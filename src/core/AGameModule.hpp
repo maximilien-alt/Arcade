@@ -17,7 +17,6 @@ namespace Arcade {
             AGameModule();
             virtual ~AGameModule() = default;
             void setGraphicalModule(IGraphicalModule *newModule, bool) final;
-            int check() final;
             virtual void startGame() = 0;
             virtual void updateGame() = 0;
             IGameModule *operator=(const IGameModule *copy) final;
@@ -28,6 +27,7 @@ namespace Arcade {
             std::list<graphical_text_t> _texts;
             std::string _playerName;
             graphical_box_t _box;
+            std::unordered_map<int, bool> _keys;
     };
 }
 

@@ -24,7 +24,7 @@ namespace Arcade
             void reset() final;
             void clear() final;
             void refresh() final;
-            int check() final;
+            void updateInptsMap() final;
             void openWindow() final;
             void closeWindow() final;
 

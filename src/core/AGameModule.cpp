@@ -34,8 +34,3 @@ Arcade::IGameModule *Arcade::AGameModule::operator=(const IGameModule *copy)
     _graphicalModule = copy->getGraphicalModule();
     return (this);
 }
-
-int Arcade::AGameModule::check()
-{
-    return (_graphicalModule->check());
-}

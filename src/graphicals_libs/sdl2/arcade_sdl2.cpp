@@ -97,29 +97,13 @@ void Arcade::Graphical_SDL2::showInputBox(graphical_box_t &box)
     (void)box;
 }
 
-int Arcade::Graphical_SDL2::check()
+void Arcade::Graphical_SDL2::updateInptsMap()
 {
     int input = getInput();
 
-    switch (input) {
-        case SDLK_F1:
-            return (1);
-        case SDLK_F2:
-            return (2);
-        case SDLK_F3:
-            return (3);
-        case SDLK_F4:
-            return (4);
-        case SDLK_F5:
-            return (5);
-        case SDLK_F6:
-            return (6);
-        case SDLK_F7:
-            return (7);
-        default:
-            return (0);
-    }
-    return (0);
+    for (int index = SDLK_F1; index <= SDLK_F7; index += 1)
+        if (input == index)
+            _keys[index - SDLK_F1] = 1;
 }
 
 void Arcade::Graphical_SDL2::reset()

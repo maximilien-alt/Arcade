@@ -96,19 +96,39 @@ void Arcade::Graphical_Ncurses::showInputBox(graphical_box_t &_box)
 {
     static int i = 0;
 
-    if (!i++)
-        _windows.push_back(init_new_window(product_y(_box.size.y), product_x(_box.size.x), product_y(_box.pos.y), product_x(_box.pos.x)));
+    if (!i) {
+        int size_y = product_y(_box.size.y);
+        int size_x = product_x(_box.size.x);
+        int pos_y = product_y(_box.pos.y);
+        int pos_x = product_x(_box.pos.x);
+
+        _windows.push_back(init_new_window(size_y, size_x, pos_y - size_y / 2, pos_x - size_x / 2));
+        i = 1;
+    }
+    mvwprintw(_windows[1], 1, 1, _box.input.c_str());
     showBox = true;
 }
 
-int Arcade::Graphical_Ncurses::check()
+void Arcade::Graphical_Ncurses::updateInptsMap()
 {
     int input = getInput();
 
     for (int index = 1; index < 8; index += 1)
         if (input == KEY_F(index))
-            return (index);
-    return (0);
+            _keys[index - 1] = 1;
+    for (int index = 'a'; index <= 'z'; index += 1)
+        if (input == index)
+            _keys[index - 'a' + Arcade::KEYS::A] = 1;
+    if (input == KEY_RIGHT)
+        _keys[Arcade::KEYS::ARROW_RIGHT] = 1;
+    if (input == KEY_LEFT)
+        _keys[Arcade::KEYS::ARROW_LEFT] = 1;
+    if (input == KEY_UP)
+        _keys[Arcade::KEYS::ARROW_UP] = 1;
+    if (input == KEY_DOWN)
+        _keys[Arcade::KEYS::ARROW_DOWN] = 1;
+    if (input == KEY_BACKSPACE || input == KEY_DC)
+        _keys[Arcade::KEYS::BACKSPACE] = 1;
 }
 
 void Arcade::Graphical_Ncurses::reset()

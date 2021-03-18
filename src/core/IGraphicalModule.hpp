@@ -35,10 +35,12 @@ namespace Arcade
         virtual void drawText(graphical_text_t &text) = 0;
         virtual void drawSprite(graphical_sprite_t &sprite) = 0;
         virtual void showInputBox(graphical_box_t &box) = 0;
+        virtual std::unordered_map<int, bool> getInputsMap() const = 0;
+        virtual void resetKeys() = 0;
         virtual void reset() = 0;
         virtual void clear() = 0;
         virtual void refresh() = 0;
-        virtual int check() = 0;
+        virtual void updateInptsMap() = 0;
         virtual void openWindow() = 0;
         virtual void closeWindow() = 0;
     };

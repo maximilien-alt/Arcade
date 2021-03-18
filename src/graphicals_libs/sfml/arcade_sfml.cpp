@@ -77,23 +77,16 @@ void Arcade::Graphical_SFML::reset()
 
 }
 
-int Arcade::Graphical_SFML::check()
+void Arcade::Graphical_SFML::updateInptsMap()
 {
-    if (_key[sf::Keyboard::F1])
-        return (1);
-    if (_key[sf::Keyboard::F2])
-        return (2);
-    if (_key[sf::Keyboard::F3])
-        return (3);
-    if (_key[sf::Keyboard::F4])
-        return (4);
-    if (_key[sf::Keyboard::F5])
-        return (5);
-    if (_key[sf::Keyboard::F6])
-        return (6);
-    if (_key[sf::Keyboard::F7])
-        return (7);
-    return (0);
+    for (int index = sf::Keyboard::F1; index <= sf::Keyboard::F7; index += 1)
+        if (_key[index])
+            _keys[index - sf::Keyboard::F1] = 1;
+    for (int index = sf::Keyboard::A; index <= sf::Keyboard::Z; index += 1)
+        if (_key[index])
+            _keys[index - sf::Keyboard::A + Arcade::KEYS::A] = 1;
+    if (_key[sf::Keyboard::BackSpace])
+        _keys[Arcade::KEYS::BACKSPACE] = 1;
 }
 
 extern "C" Arcade::IGraphicalModule *entryPoint()

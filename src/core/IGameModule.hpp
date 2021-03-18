@@ -18,7 +18,6 @@ namespace Arcade {
             virtual void startGame() = 0;
             virtual void updateGame() = 0;
             virtual void setGraphicalModule(IGraphicalModule *newModule, bool) = 0;
-            virtual int check() = 0;
             virtual IGameModule *operator=(const IGameModule *copy) = 0;
             virtual IGraphicalModule *getGraphicalModule() const = 0;
     };

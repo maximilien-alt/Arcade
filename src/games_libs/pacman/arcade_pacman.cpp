@@ -34,7 +34,10 @@ void Arcade::Game_Pacman::startGame()
 
 void Arcade::Game_Pacman::updateGame()
 {
+    _graphicalModule->resetKeys();
     _graphicalModule->clear();
+    _graphicalModule->updateInptsMap();
+    _keys = _graphicalModule->getInputsMap();
     for (auto &n : _texts)
         _graphicalModule->drawText(n);
     _graphicalModule->refresh();

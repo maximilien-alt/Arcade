@@ -21,6 +21,9 @@ namespace Arcade
         
             void startGame() final;
             void updateGame() final;
+        
+        private:
+            void updatePlayerName();
     };
 }
 
