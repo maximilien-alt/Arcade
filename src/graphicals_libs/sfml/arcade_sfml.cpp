@@ -83,7 +83,7 @@ void Arcade::Graphical_SFML::showInputBox(graphical_box_t &box)
 
     rectangle.setPosition(sf::Vector2f(box.pos.x - box.size.x / 2, box.pos.y - box.size.y / 2));
     rectangle.setFillColor(sf::Color::Black);
-    rectangle.setOutlineThickness(5);
+    rectangle.setOutlineThickness(1);
     rectangle.setOutlineColor(sf::Color::White);
     txt.setString(box.input);
     txt.setCharacterSize(18);
