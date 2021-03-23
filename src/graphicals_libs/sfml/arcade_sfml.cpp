@@ -79,7 +79,18 @@ void Arcade::Graphical_SFML::refresh()
 
 void Arcade::Graphical_SFML::showInputBox(graphical_box_t &box)
 {
-    (void)box;
+    sf::RectangleShape rectangle(sf::Vector2f(box.size.x, box.size.y));
+
+    rectangle.setPosition(sf::Vector2f(box.pos.x - box.size.x / 2, box.pos.y - box.size.y / 2));
+    rectangle.setFillColor(sf::Color::Black);
+    rectangle.setOutlineThickness(5);
+    rectangle.setOutlineColor(sf::Color::White);
+    txt.setString(box.input);
+    txt.setCharacterSize(18);
+    txt.setFillColor(sf::Color::White);
+    txt.setPosition(box.pos.x - box.size.x / 2 + 18, box.pos.y - 18);
+    _window->draw(rectangle);
+    _window->draw(txt);
 }
 
 void Arcade::Graphical_SFML::reset()

@@ -30,8 +30,8 @@ Arcade::Game_Menu::Game_Menu(): AGameModule(), _gindex(0), nbGames(0)
         y += 100;
         i++;
     }
-    _box.pos = {WIDTH / 2, HEIGHT / 2, 0};
-    _box.size = {WIDTH / 10, HEIGHT / 10, 0};
+    _box.pos = {WIDTH / 2, HEIGHT / 2 + 100, 0};
+    _box.size = {WIDTH / 10, HEIGHT / 15, 0};
     init_sprites();
 }
 
@@ -77,7 +77,7 @@ void Arcade::Game_Menu::updatePlayerName()
     char ch = 0;
 
     for (int index = Arcade::KEYS::A; index <= Arcade::KEYS::Z; index += 1) {
-        if (_keys[index]) {
+        if (_keys[index] && _playerName.size() < 10) {
             ch = index - Arcade::KEYS::A + 'a';
             _playerName.insert(_playerName.end(), 1, ch);
         }
