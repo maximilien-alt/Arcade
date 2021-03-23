@@ -21,7 +21,7 @@ void Arcade::Graphical_SDL2::openWindow()
     SDL_CreateWindowAndRenderer(WIDTH, HEIGHT, SDL_WINDOW_SHOWN, &_window, &_renderer);
     SDL_SetWindowTitle(_window, "SDL window");
     TTF_Init();
-    // _font = TTF_OpenFont("ressources/font.ttf", 200);
+    _font = TTF_OpenFont("ressources/font.ttf", 200);
 
 }
 
@@ -53,10 +53,10 @@ void Arcade::Graphical_SDL2::drawSprite(graphical_sprite_t &sprite)
     }
     size = _sprites[sprite.id].second;
     SDL_Rect texr;
-    texr.x = WIDTH / 2;
-    texr.y = HEIGHT / 2;
-    texr.w = size.x * 2;
-    texr.h = size.y * 2;
+    texr.x = sprite.pos.x - size.x / 2;
+    texr.y = sprite.pos.y - size.y / 2;
+    texr.w = size.x;
+    texr.h = size.y;
 
     SDL_RenderCopy(_renderer, _sprites[sprite.id].first, NULL, &texr);
 }
@@ -119,6 +119,13 @@ void Arcade::Graphical_SDL2::updateInputsMap()
     for (int index = SDLK_F1; index <= SDLK_F7; index += 1)
         if (_key[index])
             _keys[index - SDLK_F1] = 1;
+    for (int index = SDLK_a; index <= SDLK_z; index += 1)
+        if (_key[index])
+            _keys[index - SDLK_a + Arcade::KEYS::A] = 1;
+    _keys[Arcade::KEYS::ARROW_LEFT] = _key[SDLK_LEFT];
+    _keys[Arcade::KEYS::ARROW_RIGHT] = _key[SDLK_RIGHT];
+    _keys[Arcade::KEYS::ARROW_UP] = _key[SDLK_UP];
+    _keys[Arcade::KEYS::ARROW_DOWN] = _key[SDLK_DOWN];
 }
 
 void Arcade::Graphical_SDL2::reset()

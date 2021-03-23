@@ -7,7 +7,7 @@
 
 #include "Simulator.hpp"
 
-Arcade::Simulator::Simulator(const std::string &path): _libraryManager(path)
+Arcade::Simulator::Simulator(const std::string path): _libraryManager(path)
 {
     _currentGameIndex = 0;
     _currentGraphicalIndex = _libraryManager.getStartIndex();

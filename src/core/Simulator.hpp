@@ -13,7 +13,7 @@
 namespace Arcade {
     class Simulator {
         public:
-            Simulator(const std::string &path);
+            Simulator(const std::string path);
             ~Simulator();
 
             void run();

@@ -86,19 +86,24 @@ void Arcade::Graphical_Ncurses::drawSprite(graphical_sprite_t &sprite)
 {
     int pair = colornum(sprite.color.ncurse[0], sprite.color.ncurse[1]);
     WINDOW *win = nullptr;
-    int size_y = sprite.size.y + 2;
-    int size_x = sprite.size.x + 1;
+    int size_y = 0;
+    int size_x = 0;
     int pos_y = product_y(sprite.pos.y);
     int pos_x = product_x(sprite.pos.x);
 
     stream << sprite.path << std::endl;
     if (_sprites.find(sprite.id) == _sprites.end()) {
-        std::vector<std::string> vector = readFileIntoVector(sprite.path.replace(sprite.path.length() - 3, 3, "txt"));
+        std::string temp(sprite.path);
+        std::vector<std::string> vector = readFileIntoVector(temp.replace(temp.length() - 3, 3, "txt"));
+        size_y = vector.size() + 2;
+        size_x = vector[0].length() + 2;
         if (sprite.ncursesBox) {
             win = init_new_window(size_y, size_x, pos_y - size_y / 2, pos_x - size_x / 2);
         }
         _sprites[sprite.id] = std::make_pair(vector, win);
     }
+    size_y = _sprites[sprite.id].first.size() + 2;
+    size_x = _sprites[sprite.id].first[0].length() + 1;
     wattron((sprite.ncursesBox) ? _sprites[sprite.id].second : _windows[0], COLOR_PAIR(pair));
     for (size_t index = 0; index < _sprites[sprite.id].first.size(); index += 1) {
         if (sprite.ncursesBox)
