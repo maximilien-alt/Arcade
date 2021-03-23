@@ -12,6 +12,11 @@
 
 namespace Arcade
 {
+    typedef struct sfml_sprite_s {
+        sf::Sprite _sprite;
+        sf::Texture _texture;
+    } sfml_sprite_t;
+
     class Graphical_SFML : public AGraphicalModule {
         public:
             Graphical_SFML();
@@ -32,6 +37,7 @@ namespace Arcade
             sf::Event _event;
             sf::Text txt;
             std::unordered_map<std::string, sf::Font *> _fonts;
+            std::unordered_map<int, sfml_sprite_t> _sprites;
             bool _key[sf::Keyboard::KeyCount];
     };
 } // namespace Arcade

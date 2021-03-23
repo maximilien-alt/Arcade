@@ -28,7 +28,17 @@ void Arcade::Graphical_SFML::closeWindow()
 
 void Arcade::Graphical_SFML::drawSprite(graphical_sprite_t &sprite)
 {
-    (void)sprite;
+    if (_sprites.find(sprite.id) == _sprites.end()) {
+        sf::Texture texture;
+        if (!texture.loadFromFile(sprite.path))
+            return;
+        sf::Sprite newsprite(texture);
+        newsprite.setOrigin(texture.getSize().x / 2, texture.getSize().y / 2);
+        _sprites[sprite.id] = {._sprite = newsprite, ._texture = texture};
+    }
+    _sprites[sprite.id]._sprite.setTexture(_sprites[sprite.id]._texture);
+    _sprites[sprite.id]._sprite.setPosition(sprite.pos.x, sprite.pos.y);
+    _window->draw(_sprites[sprite.id]._sprite);
 }
 
 void Arcade::Graphical_SFML::drawText(graphical_text_t &text)
@@ -87,6 +97,10 @@ void Arcade::Graphical_SFML::updateInputsMap()
             _keys[index - sf::Keyboard::A + Arcade::KEYS::A] = 1;
     if (_key[sf::Keyboard::BackSpace])
         _keys[Arcade::KEYS::BACKSPACE] = 1;
+    _keys[Arcade::KEYS::ARROW_LEFT] = _key[sf::Keyboard::Left];
+    _keys[Arcade::KEYS::ARROW_RIGHT] = _key[sf::Keyboard::Right];
+    _keys[Arcade::KEYS::ARROW_UP] = _key[sf::Keyboard::Up];
+    _keys[Arcade::KEYS::ARROW_DOWN] = _key[sf::Keyboard::Down];
 }
 
 extern "C" Arcade::IGraphicalModule *entryPoint()

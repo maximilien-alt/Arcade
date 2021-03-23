@@ -24,7 +24,7 @@ Arcade::Game_Menu::Game_Menu(): AGameModule(), _gindex(0), nbGames(0)
         text.text = std::string(path.substr(11, index - 11));
         text.pos = {x, y, 0};
         text.color = {0, 0, 255, {Arcade::COLOR::BLUE, Arcade::COLOR::BLACK}};
-        text.size = 12;
+        text.size = 24;
         text.font = "ressources/font.ttf";
         _texts.push_back(text);
         y += 100;
@@ -88,35 +88,34 @@ void Arcade::Game_Menu::updatePlayerName()
 
 void Arcade::Game_Menu::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *list)
 {
-    size_t index = 0;
-
     updatePlayerName();
     if (_keys[Arcade::KEYS::ARROW_LEFT])
         _gindex = _gindex >= 1 ? _gindex - 1 : nbGames - 1;
     if (_keys[Arcade::KEYS::ARROW_RIGHT])
         _gindex = (_gindex + 1) < nbGames ? _gindex + 1 : 0;
     _box.input = _playerName;
-    for (auto &n: _sprites) {
-        if (index == _gindex || index >= nbGames) {
-            list->push_back(std::make_pair(SPRITE, &n));
-        }
-        index += 1;
-    }
     draw(list);
 }
 
 void Arcade::Game_Menu::draw(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *list)
 {
+    size_t index = 0;
     size_t text_index = 0;
     size_t previous_index = 0;
     size_t next_index = 0;
 
     next_index = (_gindex + 1 >= nbGames) ? 0 : _gindex + 1;
     previous_index = (_gindex == 0) ? nbGames - 1 : _gindex - 1;
+    for (auto &n: _sprites) {
+        if (index == _gindex || index >= nbGames) {
+            list->push_back(std::make_pair(SPRITE, &n));
+        }
+        index += 1;
+    }
     for (auto &n: _texts) {
         if (text_index == next_index) {
             n.pos.y = HEIGHT / 2 - 100;
-            n.pos.x = WIDTH - 100;
+            n.pos.x = WIDTH - 200;
             list->push_back(std::make_pair(TEXT, &n));
         }
         if (text_index == previous_index) {
