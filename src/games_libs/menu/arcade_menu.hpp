@@ -24,6 +24,7 @@ namespace Arcade
         
         private:
             size_t _gindex;
+            size_t nbGames;
 
             void updatePlayerName();
             void init_sprites();

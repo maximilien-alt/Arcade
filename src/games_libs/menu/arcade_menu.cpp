@@ -7,7 +7,7 @@
 
 #include "arcade_menu.hpp"
 
-Arcade::Game_Menu::Game_Menu(): AGameModule(), _gindex(0)
+Arcade::Game_Menu::Game_Menu(): AGameModule(), _gindex(0), nbGames(0)
 {
     graphical_text_t text;
     int index = 0;
@@ -49,7 +49,18 @@ void Arcade::Game_Menu::init_sprites()
         sprite.color = {255, 0, 0, {RED, BLACK}};
         id += 1;
         _sprites.push_back(sprite);
+        nbGames += 1;
     }
+    sprite.id = id;
+    sprite.path = "ressources/arrow_left.png";
+    sprite.size = {14, 9, 1};
+    sprite.color = {0, 255, 0, {CYAN, BLACK}};
+    sprite.pos = {90, HEIGHT / 2 + 30, 0};
+    _sprites.push_back(sprite);
+    sprite.id = ++id;
+    sprite.pos = {WIDTH - 90, HEIGHT / 2 + 30, 0};
+    sprite.path = "ressources/arrow_right.png";
+    _sprites.push_back(sprite);
 }
 
 Arcade::Game_Menu::~Game_Menu()
@@ -77,25 +88,43 @@ void Arcade::Game_Menu::updatePlayerName()
 
 void Arcade::Game_Menu::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *list)
 {
+    size_t index = 0;
+
     updatePlayerName();
     if (_keys[Arcade::KEYS::ARROW_LEFT])
-        _gindex = _gindex >= 1 ? _gindex - 1 : _sprites.size() - 1;
+        _gindex = _gindex >= 1 ? _gindex - 1 : nbGames - 1;
     if (_keys[Arcade::KEYS::ARROW_RIGHT])
-        _gindex = (_gindex + 1) < _sprites.size() ? _gindex + 1 : 0;
+        _gindex = (_gindex + 1) < nbGames ? _gindex + 1 : 0;
+    _box.input = _playerName;
+    for (auto &n: _sprites) {
+        if (index == _gindex || index >= nbGames) {
+            list->push_back(std::make_pair(SPRITE, &n));
+        }
+        index += 1;
+    }
     draw(list);
 }
 
 void Arcade::Game_Menu::draw(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *list)
 {
-    size_t index = 0;
+    size_t text_index = 0;
+    size_t previous_index = 0;
+    size_t next_index = 0;
 
-    _box.input = _playerName;
-    for (auto &n: _sprites) {
-        if (index == _gindex) {
-            list->push_back(std::make_pair(SPRITE, &n));
-            break;
+    next_index = (_gindex + 1 >= nbGames) ? 0 : _gindex + 1;
+    previous_index = (_gindex == 0) ? nbGames - 1 : _gindex - 1;
+    for (auto &n: _texts) {
+        if (text_index == next_index) {
+            n.pos.y = HEIGHT / 2 - 100;
+            n.pos.x = WIDTH - 100;
+            list->push_back(std::make_pair(TEXT, &n));
         }
-        index += 1;
+        if (text_index == previous_index) {
+            n.pos.y = HEIGHT / 2 - 100;
+            n.pos.x = 40;
+            list->push_back(std::make_pair(TEXT, &n));
+        }
+        text_index += 1;
     }
     list->push_back(std::make_pair(BOX, &_box));
 }
