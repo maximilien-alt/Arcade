@@ -16,10 +16,14 @@ Arcade::Graphical_Ncurses::~Graphical_Ncurses()
     stream.close();
 }
 
-WINDOW *init_new_window(int a, int b, int c, int d)
+WINDOW *Arcade::Graphical_Ncurses::init_new_window(int a, int b, int c, int d)
 {
     WINDOW *win = subwin(stdscr, a, b, c, d);
 
+    if (!win) {
+        return nullptr;
+    }
+    stream << a << "|" << b << "|" << c << "|" << d << "|" << std::endl;
     nodelay(win, true);
     keypad(win, true);
     return (win);
@@ -27,16 +31,18 @@ WINDOW *init_new_window(int a, int b, int c, int d)
 
 void Arcade::Graphical_Ncurses::openWindow()
 {
-    initscr();
+    if (_windows.empty()) {
+        initscr();
 
-    start_color();
-    assume_default_colors(COLOR_WHITE, -1);
-    init_colors_pairs();
-    noecho();
-    _windows.push_back(init_new_window(product_y(HEIGHT), product_x(WIDTH), 0, 0));
-    nodelay(stdscr, true);
-    curs_set(0);
-    keypad(stdscr, true);
+        start_color();
+        assume_default_colors(COLOR_WHITE, -1);
+        init_colors_pairs();
+        noecho();
+        _windows.push_back(init_new_window(product_y(HEIGHT), product_x(WIDTH), 0, 0));
+        nodelay(stdscr, true);
+        curs_set(0);
+        keypad(stdscr, true);
+    }
 }
 
 int colornum(int f, int bg)
@@ -82,18 +88,25 @@ void Arcade::Graphical_Ncurses::drawSprite(graphical_sprite_t &sprite)
     WINDOW *win = nullptr;
 
     if (_sprites.find(sprite.id) == _sprites.end()) {
-        std::vector<std::string> vector = readFileIntoVector(sprite.ncurses_path);
+        std::vector<std::string> vector = readFileIntoVector(sprite.path.replace(sprite.path.length() - 3, 3, "txt"));
         if (sprite.ncursesBox) {
-            win = init_new_window(sprite.size.y, sprite.size.y, sprite.pos.y, sprite.pos.x);
+            int size_y = sprite.size.y + 2;
+            int size_x = sprite.size.x + 1;
+            int pos_y = product_y(sprite.pos.y);
+            int pos_x = product_x(sprite.pos.x);
+
+            win = init_new_window(size_y, size_x, pos_y - size_y / 2, pos_x - size_x / 2);
         }
         _sprites[sprite.id] = std::make_pair(vector, win);
     }
-    win = (sprite.ncursesBox) ? _sprites[sprite.id].second : _windows[0];
-    wattron(win, COLOR_PAIR(pair));
+    wattron((sprite.ncursesBox) ? _sprites[sprite.id].second : _windows[0], COLOR_PAIR(pair));
     for (size_t index = 0; index < _sprites[sprite.id].first.size(); index += 1) {
-        mvwprintw(win, product_y(sprite.pos.y) + index, product_x(sprite.pos.x), _sprites[sprite.id].first[index].c_str());
+        if (sprite.ncursesBox)
+            mvwprintw(_sprites[sprite.id].second, index + 1, 1, _sprites[sprite.id].first[index].c_str());
+        else
+            mvwprintw(_windows[0], product_y(sprite.pos.y) + index, product_x(sprite.pos.x), _sprites[sprite.id].first[index].c_str());
     }
-    wattroff(win, COLOR_PAIR(pair));
+    wattroff((sprite.ncursesBox) ? _sprites[sprite.id].second : _windows[0], COLOR_PAIR(pair));
 }
 
 void Arcade::Graphical_Ncurses::drawText(graphical_text_t &text)
@@ -114,6 +127,7 @@ void Arcade::Graphical_Ncurses::clear()
     }
     for (auto &n: _sprites) {
         if (n.second.second != nullptr) {
+            stream << "erasing" << std::endl;
             werase(n.second.second);
             box(n.second.second, 0, 0);
         }
@@ -127,6 +141,7 @@ void Arcade::Graphical_Ncurses::refresh()
         wrefresh(_windows[1]);
     for (auto &n: _sprites) {
         if (n.second.second != nullptr) {
+            stream << "refreshing" << std::endl;
             wrefresh(n.second.second);
         }
     }

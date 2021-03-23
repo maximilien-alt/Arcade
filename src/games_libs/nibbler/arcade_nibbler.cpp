@@ -32,15 +32,10 @@ void Arcade::Game_Nibbler::startGame()
 {
 }
 
-void Arcade::Game_Nibbler::updateGame()
+void Arcade::Game_Nibbler::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *list)
 {
-    _graphicalModule->resetKeys();
-    _graphicalModule->clear();
-    _graphicalModule->updateInputsMap();
-    _keys = _graphicalModule->getInputsMap();
     for (auto &n: _texts)
-        _graphicalModule->drawText(n);
-    _graphicalModule->refresh();
+        list->push_back(std::make_pair(TEXT, &n));
 }
 
 extern "C" Arcade::IGameModule *entryPoint(void)

@@ -20,14 +20,14 @@ namespace Arcade
             ~Game_Menu();
         
             void startGame() final;
-            void updateGame() final;
+            void updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *_list) final;
         
         private:
             size_t _gindex;
 
             void updatePlayerName();
             void init_sprites();
-            void draw();
+            void draw(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *_list);
     };
 }
 

@@ -39,6 +39,7 @@ namespace Arcade
             int getPair(Arcade::graphical_color_t color) const;
             void init_colors_pairs();
             std::vector<std::string> readFileIntoVector(std::string filepath);
+            WINDOW *init_new_window(int a, int b, int c, int d);
 
     };
 } // namespace Arcade

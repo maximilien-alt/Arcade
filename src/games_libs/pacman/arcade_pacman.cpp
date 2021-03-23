@@ -32,15 +32,10 @@ void Arcade::Game_Pacman::startGame()
 {
 }
 
-void Arcade::Game_Pacman::updateGame()
+void Arcade::Game_Pacman::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *_list)
 {
-    _graphicalModule->resetKeys();
-    _graphicalModule->clear();
-    _graphicalModule->updateInputsMap();
-    _keys = _graphicalModule->getInputsMap();
     for (auto &n : _texts)
-        _graphicalModule->drawText(n);
-    _graphicalModule->refresh();
+        _list->push_back(std::make_pair(TEXT, &n));
 }
 
 extern "C" Arcade::IGameModule *entryPoint(void)

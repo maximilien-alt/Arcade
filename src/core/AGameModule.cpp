@@ -13,24 +13,7 @@ Arcade::AGameModule::AGameModule()
     _box.size = {0, 0, 0};
 }
 
-void Arcade::AGameModule::setGraphicalModule(IGraphicalModule *newModule, bool update)
+void Arcade::AGameModule::setKeys(std::unordered_map<int, bool> keys)
 {
-    if (_graphicalModule && update)
-        _graphicalModule->closeWindow();
-    if (newModule) {
-        _graphicalModule = newModule;
-        if (update)
-            _graphicalModule->openWindow();
-    }
-}
-
-Arcade::IGraphicalModule *Arcade::AGameModule::getGraphicalModule() const
-{
-    return (_graphicalModule);
-}
-
-Arcade::IGameModule *Arcade::AGameModule::operator=(const IGameModule *copy)
-{
-    _graphicalModule = copy->getGraphicalModule();
-    return (this);
+    _keys = keys;
 }

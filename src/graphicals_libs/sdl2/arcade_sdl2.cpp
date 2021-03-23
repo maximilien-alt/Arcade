@@ -44,7 +44,6 @@ void Arcade::Graphical_SDL2::drawSprite(graphical_sprite_t &sprite)
         return;
     graphical_vector_t size = {0, 0, 0};
     if (_sprites.find(sprite.id) == _sprites.end()) {
-        std::cout << sprite.path << std::endl;
         SDL_Texture *img = IMG_LoadTexture(_renderer, sprite.path.c_str());
         int w, h;
         SDL_QueryTexture(img, NULL, NULL, &w, &h);
@@ -94,7 +93,6 @@ void Arcade::Graphical_SDL2::clear()
         key.second = false;
     }
     while (SDL_PollEvent(&_event)) {
-        std::cout << _event.type << std::endl;
         if (_event.type == SDL_QUIT) {
             closeWindow();
             return;

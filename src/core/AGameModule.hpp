@@ -16,14 +16,11 @@ namespace Arcade {
         public:
             AGameModule();
             virtual ~AGameModule() = default;
-            void setGraphicalModule(IGraphicalModule *newModule, bool) final;
             virtual void startGame() = 0;
-            virtual void updateGame() = 0;
-            IGameModule *operator=(const IGameModule *copy) final;
-            IGraphicalModule *getGraphicalModule() const;
+            virtual void updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *_list) = 0;
+            void setKeys(std::unordered_map<int, bool> keys) final;
 
         protected:
-            IGraphicalModule *_graphicalModule = nullptr;
             std::list<graphical_text_t> _texts;
             std::list<graphical_sprite_t> _sprites;
             std::string _playerName;

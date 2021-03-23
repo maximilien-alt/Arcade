@@ -20,9 +20,12 @@ namespace Arcade {
 
         private:
             LibraryManager _libraryManager;
+            std::list<std::pair<Arcade::FLAGS, IStruct_t *>> _list;
 
             size_t _currentGraphicalIndex;
             size_t _currentGameIndex;
+
+            void parseList(Arcade::IGraphicalModule *currentGraphical, Arcade::IGameModule *currentGame);
 
     };
 }

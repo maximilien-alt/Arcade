@@ -65,6 +65,18 @@ namespace Arcade
         NONE
     };
 
+    enum FLAGS
+    {
+        SPRITE,
+        TEXT,
+        BOX
+    };
+
+    typedef struct IStruct_s
+    {
+        virtual ~IStruct_s() = default;
+    } IStruct_t;
+
     typedef struct graphical_vector_s
     {
         float x;
@@ -80,7 +92,7 @@ namespace Arcade
         Arcade::COLOR ncurse[2];
     } graphical_color_t;
 
-    typedef struct graphical_text_s
+    typedef struct graphical_text_s: IStruct_t
     {
         unsigned int id;
         std::string text;
@@ -90,18 +102,17 @@ namespace Arcade
         std::string font;
     } graphical_text_t;
 
-    typedef struct graphical_sprite_s
+    typedef struct graphical_sprite_s: IStruct_t
     {
         unsigned int id;
         std::string path;
-        std::string ncurses_path;
         bool ncursesBox;
         graphical_color_t color;
         graphical_vector_t pos;
         graphical_vector_t size;
     } graphical_sprite_t;
 
-    typedef struct graphical_box_s
+    typedef struct graphical_box_s: IStruct_t
     {
         graphical_vector_t pos;
         graphical_vector_t size;
