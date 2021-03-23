@@ -124,7 +124,7 @@ void Arcade::Graphical_SDL2::showInputBox(graphical_box_t &box)
     graphical_text_t text;
     text.id = 999;
     text.text = box.input;
-    text.pos = (graphical_vector_t){(float)(rect.x + 18), box.pos.y - 48, 0};
+    text.pos = (graphical_vector_t){(float)(rect.x + 18), box.pos.y - 18, 0};
     text.size = 18;
     text.color = (graphical_color_t){255, 255, 255, {WHITE, WHITE}};
     text.font = "ressources/font.ttf";
