@@ -43,7 +43,6 @@ void Arcade::Game_Menu::init_sprites()
     for (auto &n: _texts) {
         sprite.id = id;
         sprite.path = "ressources/" + n.text + "_logo.png";
-        sprite.size = {52, 14, 1};
         sprite.pos = {WIDTH / 2, HEIGHT / 4, 0};
         sprite.ncursesBox = 1;
         sprite.color = {255, 0, 0, {RED, BLACK}};
@@ -53,12 +52,11 @@ void Arcade::Game_Menu::init_sprites()
     }
     sprite.id = id;
     sprite.path = "ressources/arrow_left.png";
-    sprite.size = {14, 9, 1};
     sprite.color = {0, 255, 0, {CYAN, BLACK}};
-    sprite.pos = {90, HEIGHT / 2 + 30, 0};
+    sprite.pos = {120, HEIGHT / 2 + 30, 0};
     _sprites.push_back(sprite);
     sprite.id = ++id;
-    sprite.pos = {WIDTH - 90, HEIGHT / 2 + 30, 0};
+    sprite.pos = {WIDTH - 120, HEIGHT / 2 + 30, 0};
     sprite.path = "ressources/arrow_right.png";
     _sprites.push_back(sprite);
 }
