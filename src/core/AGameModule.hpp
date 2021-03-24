@@ -29,7 +29,7 @@ namespace Arcade {
             std::string _playerName;
             graphical_box_t _box;
             std::unordered_map<int, bool> _keys;
-            graphical_vector_t _mousePosition;
+            graphical_vector_t _mousePosition = {0, 0, 0};
             bool _tick = false;
             int _fps = 10;
             int _clock = 0;
