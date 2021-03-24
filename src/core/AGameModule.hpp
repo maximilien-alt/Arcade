@@ -19,6 +19,7 @@ namespace Arcade {
             virtual void startGame() = 0;
             virtual void updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *_list) = 0;
             void setKeys(std::unordered_map<int, bool> keys) final;
+            void runClock();
 
         protected:
             std::list<graphical_text_t> _texts;
@@ -26,6 +27,9 @@ namespace Arcade {
             std::string _playerName;
             graphical_box_t _box;
             std::unordered_map<int, bool> _keys;
+            bool _tick = false;
+            int _fps = 10;
+            int _clock = 0;
     };
 }
 

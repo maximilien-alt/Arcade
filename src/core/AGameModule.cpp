@@ -17,3 +17,13 @@ void Arcade::AGameModule::setKeys(std::unordered_map<int, bool> keys)
 {
     _keys = keys;
 }
+
+void Arcade::AGameModule::runClock()
+{
+    _tick = false;
+    _clock++;
+    if (_clock >= _fps) {
+        _tick = true;
+        _clock = 0;
+    }
+}

@@ -14,10 +14,11 @@ namespace Arcade {
     class IGameModule {
         public:
             virtual ~IGameModule() = default;
-        
+
             virtual void startGame() = 0;
             virtual void updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *_list) = 0;
             virtual void setKeys(std::unordered_map<int, bool> keys) = 0;
+            virtual void runClock() = 0;
     };
 }
 
