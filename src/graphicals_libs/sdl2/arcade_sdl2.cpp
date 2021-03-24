@@ -134,7 +134,6 @@ void Arcade::Graphical_SDL2::showInputBox(graphical_box_t &box)
     SDL_SetRenderDrawColor(_renderer, 255, 255, 255, 255);
     SDL_RenderDrawRect(_renderer, &rect);
     SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 255);
-    SDL_RenderPresent(_renderer);
 }
 
 void Arcade::Graphical_SDL2::updateInputsMap()

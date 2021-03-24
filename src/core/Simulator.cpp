@@ -51,8 +51,10 @@ void Arcade::Simulator::run()
         }
         if (keys[Arcade::KEYS::F5])
             currentGame->startGame();
-        if (keys[Arcade::KEYS::F6])
+        if (keys[Arcade::KEYS::F6]) {
+            _libraryManager.reset();
             _currentGameIndex = 0;
+        }
         if (keys[Arcade::KEYS::F7] || ret == -1) {
             currentGraphical->closeWindow();
             break;
