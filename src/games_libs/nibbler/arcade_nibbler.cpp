@@ -53,7 +53,7 @@ int Arcade::Game_Nibbler::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_
         _apple.x = rand() % 15;
         _apple.y = rand() % 15;
     }
-    if (_tick) {
+    if (_mainClock.getElapsedTime() > 0.2) {
         _keyPressed = false;
         graphical_vector_t tmp = _snake[_snake.size() - 1];
         for (int i = _snake.size() - 1; i > 0; i--) {
@@ -66,6 +66,7 @@ int Arcade::Game_Nibbler::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_
             _apple.x = -1;
             _snake.push_back(tmp);
         }
+        _mainClock.reset();
     }
     if (checkDeath()) {
         _snake.clear();

@@ -34,6 +34,7 @@ namespace Arcade {
             graphical_vector_t _apple;
             graphical_vector_t _speed;
             bool _keyPressed = false;
+            GameClock _mainClock;
     };
 }
 

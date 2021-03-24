@@ -10,6 +10,7 @@
 
 #include "IGameModule.hpp"
 #include "GraphicalStructures.hpp"
+#include "GameClock.hpp"
 
 namespace Arcade {
     class AGameModule: public IGameModule {
@@ -21,7 +22,6 @@ namespace Arcade {
             void setKeys(std::unordered_map<int, bool> keys) final;
             void setMousePosition(graphical_vector_t pos) final;
             bool isMouseOnSpriteHitbox(graphical_sprite_t sprite) final;
-            void runClock();
 
         protected:
             std::list<graphical_text_t> _texts;
@@ -30,9 +30,6 @@ namespace Arcade {
             graphical_box_t _box;
             std::unordered_map<int, bool> _keys;
             graphical_vector_t _mousePosition = {0, 0, 0};
-            bool _tick = false;
-            int _fps = 10;
-            int _clock = 0;
     };
 }
 

@@ -18,7 +18,6 @@ Arcade::Graphical_SFML::~Graphical_SFML()
 void Arcade::Graphical_SFML::openWindow()
 {
     _window = new sf::RenderWindow(sf::VideoMode(WIDTH, HEIGHT), "SFML window");
-    _window->setFramerateLimit(60);
 }
 
 void Arcade::Graphical_SFML::closeWindow()
@@ -97,7 +96,14 @@ void Arcade::Graphical_SFML::showInputBox(graphical_box_t &box)
 
 void Arcade::Graphical_SFML::reset()
 {
-
+    // for (auto &texture : _sprites)
+    // {
+    // }
+    _sprites.clear();
+    // for (auto &texture : _fonts)
+    // {
+    // }
+    _fonts.clear();
 }
 
 Arcade::graphical_vector_t Arcade::Graphical_SFML::getMousePosition()

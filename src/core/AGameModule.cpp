@@ -30,13 +30,3 @@ bool Arcade::AGameModule::isMouseOnSpriteHitbox(graphical_sprite_t sprite)
             _mousePosition.x < sprite.pos.x - sprite.size.x  / 2|| \
             _mousePosition.x > sprite.pos.x + sprite.size.x / 2));
 }
-
-void Arcade::AGameModule::runClock()
-{
-    _tick = false;
-    _clock++;
-    if (_clock >= _fps) {
-        _tick = true;
-        _clock = 0;
-    }
-}

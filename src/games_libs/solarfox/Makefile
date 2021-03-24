@@ -14,7 +14,8 @@ CPPFLAGS	=	-W -Wall -Wextra -std=c++17 -fPIC
 LDFLAGS	=	-shared
 
 SRC	=	$(wildcard *.cpp)	\
-		../../core/AGameModule.cpp
+		../../core/AGameModule.cpp	\
+		../../core/GameClock.cpp
 
 OBJ	=	$(SRC:.cpp=.o)
 
