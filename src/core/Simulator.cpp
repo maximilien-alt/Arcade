@@ -7,9 +7,9 @@
 
 #include "Simulator.hpp"
 
-Arcade::Simulator::Simulator(const std::string path): _libraryManager(path)
+Arcade::Simulator::Simulator(const std::string path) : _libraryManager(path)
 {
-    _currentGameIndex = 0;
+    _currentGameIndex = 1;
     _currentGraphicalIndex = _libraryManager.getStartIndex();
 }
 
@@ -32,6 +32,8 @@ void Arcade::Simulator::run()
             _libraryManager.reset();
             _currentGameIndex = ret;
         }
+        currentGame->runClock();
+        currentGame->updateGame(&_list);
         keys = currentGraphical->getInputsMap();
         if (keys[Arcade::KEYS::F1]) {
             currentGraphical->closeWindow();
@@ -77,14 +79,14 @@ void Arcade::Simulator::parseList(Arcade::IGraphicalModule *currentGraphical, Ar
     currentGame->setMousePosition(currentGraphical->getMousePosition());
     for (auto &n: _list) {
         switch (n.first) {
+            case BOX:
+                currentGraphical->showInputBox(*dynamic_cast<Arcade::graphical_box_t *>(n.second));
+                break;
             case SPRITE:
                 currentGraphical->drawSprite(*dynamic_cast<Arcade::graphical_sprite_t *>(n.second));
                 break;
             case TEXT:
                 currentGraphical->drawText(*dynamic_cast<Arcade::graphical_text_t *>(n.second));
-                break;
-            case BOX:
-                currentGraphical->showInputBox(*dynamic_cast<Arcade::graphical_box_t *>(n.second));
                 break;
             default:
                 break;

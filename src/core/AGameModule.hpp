@@ -22,6 +22,7 @@ namespace Arcade {
             void setMouseClickedStatus(bool status) final;
             void setMousePosition(graphical_vector_t pos) final;
             bool isMouseClickedOnSprite(graphical_sprite_t sprite) final;
+            void runClock();
 
         protected:
             std::list<graphical_text_t> _texts;
@@ -31,6 +32,9 @@ namespace Arcade {
             std::unordered_map<int, bool> _keys;
             bool _mouseClicked;
             graphical_vector_t _mousePosition;
+            bool _tick = false;
+            int _fps = 10;
+            int _clock = 0;
     };
 }
 
