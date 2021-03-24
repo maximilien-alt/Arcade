@@ -59,6 +59,7 @@ namespace Arcade
         Z,
         BACKSPACE,
         RETURN,
+        MOUSE,
         ARROW_LEFT,
         ARROW_UP,
         ARROW_RIGHT,

@@ -77,6 +77,7 @@ int Arcade::Game_Nibbler::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_
         _snake.push_back({4, 7, 0});
     }
     draw(list);
+    return (0);
 }
 
 void Arcade::Game_Nibbler::draw(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *list)

@@ -7,7 +7,7 @@
 
 #include "AGameModule.hpp"
 
-Arcade::AGameModule::AGameModule(): _mouseClicked(0)
+Arcade::AGameModule::AGameModule()
 {
     _box.pos = {0, 0, 0};
     _box.size = {0, 0, 0};
@@ -18,11 +18,6 @@ void Arcade::AGameModule::setKeys(std::unordered_map<int, bool> keys)
     _keys = keys;
 }
 
-void Arcade::AGameModule::setMouseClickedStatus(bool status)
-{
-    _mouseClicked = status;
-}
-
 void Arcade::AGameModule::setMousePosition(graphical_vector_t pos)
 {
     _mousePosition = pos;
@@ -30,18 +25,10 @@ void Arcade::AGameModule::setMousePosition(graphical_vector_t pos)
 
 bool Arcade::AGameModule::isMouseOnSpriteHitbox(graphical_sprite_t sprite)
 {
-
-    if (_mouseClicked) {
-        //std::cout << sprite.path << std::endl;
-        //std::cout << "mousePosition: y: " << _mousePosition.y << "| x: " << _mousePosition.x << std::endl;
-        //std::cout << "spritePosition: y: " << sprite.pos.y << "| x: " << sprite.pos.x << std::endl;
-        //std::cout << "spriteSize: y: " << sprite.size.y << "| x: " << sprite.size.x << std::endl;
-        return (!(_mousePosition.y < sprite.pos.y - sprite.size.y  / 2 || \
-                _mousePosition.y > sprite.pos.y + sprite.size.y  / 2|| \
-                _mousePosition.x < sprite.pos.x - sprite.size.x  / 2|| \
-                _mousePosition.x > sprite.pos.x + sprite.size.x / 2));
-    }
-    return 0;
+    return (!(_mousePosition.y < sprite.pos.y - sprite.size.y  / 2 || \
+            _mousePosition.y > sprite.pos.y + sprite.size.y  / 2|| \
+            _mousePosition.x < sprite.pos.x - sprite.size.x  / 2|| \
+            _mousePosition.x > sprite.pos.x + sprite.size.x / 2));
 }
 
 void Arcade::AGameModule::runClock()

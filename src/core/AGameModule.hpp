@@ -19,7 +19,6 @@ namespace Arcade {
             virtual void startGame() = 0;
             virtual int updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *_list) = 0;
             void setKeys(std::unordered_map<int, bool> keys) final;
-            void setMouseClickedStatus(bool status) final;
             void setMousePosition(graphical_vector_t pos) final;
             bool isMouseOnSpriteHitbox(graphical_sprite_t sprite) final;
             void runClock();
@@ -30,7 +29,6 @@ namespace Arcade {
             std::string _playerName;
             graphical_box_t _box;
             std::unordered_map<int, bool> _keys;
-            bool _mouseClicked;
             graphical_vector_t _mousePosition;
             bool _tick = false;
             int _fps = 10;

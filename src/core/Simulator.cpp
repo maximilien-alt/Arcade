@@ -74,7 +74,6 @@ void Arcade::Simulator::parseList(Arcade::IGraphicalModule *currentGraphical, Ar
     currentGraphical->clear();
     currentGraphical->updateInputsMap();
     currentGame->setKeys(currentGraphical->getInputsMap());
-    currentGame->setMouseClickedStatus(currentGraphical->isMouseClicked());
     currentGame->setMousePosition(currentGraphical->getMousePosition());
     for (auto &n: _list) {
         switch (n.first) {

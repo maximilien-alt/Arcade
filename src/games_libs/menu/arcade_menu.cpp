@@ -113,17 +113,17 @@ int Arcade::Game_Menu::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_t *
     ret_1 = isMouseOnSpriteHitbox(_sprites[_sprites.size() - 2]);
     if (ret_1) {
         _choiceIndex = 0;
-        if (_mouseClicked)
+        if (_keys[Arcade::KEYS::MOUSE])
             ret_1 = _gindex + 1;
     }
     ret_2 = isMouseOnSpriteHitbox(_sprites[_sprites.size() - 1]);
     if (ret_2) {
         _choiceIndex = 1;
-        if (_mouseClicked)
+        if (_keys[Arcade::KEYS::MOUSE])
             ret_2 = -1;
     }
     draw(list);
-    return (ret_1 != 0 && _mouseClicked) ? ret_1 : (ret_2 != 0 && _mouseClicked) ? ret_2 : 0;
+    return (ret_1 != 0 && _keys[Arcade::KEYS::MOUSE]) ? ret_1 : (ret_2 != 0 && _keys[Arcade::KEYS::MOUSE]) ? ret_2 : 0;
 }
 
 void Arcade::Game_Menu::draw(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *list)

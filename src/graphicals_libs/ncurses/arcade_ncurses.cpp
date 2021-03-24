@@ -33,7 +33,6 @@ WINDOW *Arcade::Graphical_Ncurses::init_new_window(int a, int b, int c, int d)
     if (!win) {
         return nullptr;
     }
-    stream << a << "|" << b << "|" << c << "|" << d << "|" << std::endl;
     nodelay(win, true);
     keypad(win, true);
     return (win);
@@ -45,6 +44,8 @@ void Arcade::Graphical_Ncurses::openWindow()
         initscr();
 
         start_color();
+        cbreak();
+        mousemask(REPORT_MOUSE_POSITION, NULL);
         assume_default_colors(COLOR_WHITE, -1);
         init_colors_pairs();
         noecho();
@@ -53,6 +54,7 @@ void Arcade::Graphical_Ncurses::openWindow()
         curs_set(0);
         keypad(stdscr, true);
     }
+    printf("\033[?1003h\n");
 }
 
 int colornum(int f, int bg)
@@ -75,6 +77,7 @@ void Arcade::Graphical_Ncurses::closeWindow()
 {
     for (auto &n: _windows)
         wclear(n);
+    printf("\033[?1003l\n");
     endwin();
 }
 
@@ -101,7 +104,6 @@ void Arcade::Graphical_Ncurses::drawSprite(graphical_sprite_t &sprite)
     int pos_y = product_y(sprite.pos.y);
     int pos_x = product_x(sprite.pos.x);
 
-    stream << sprite.path << std::endl;
     if (_sprites.find(sprite.id) == _sprites.end()) {
         std::string temp(sprite.path);
         std::vector<std::string> vector = readFileIntoVector(temp.replace(temp.length() - 3, 3, "txt"));
@@ -114,8 +116,8 @@ void Arcade::Graphical_Ncurses::drawSprite(graphical_sprite_t &sprite)
     }
     size_y = _sprites[sprite.id].first.size() + 2;
     size_x = _sprites[sprite.id].first[0].length() + 2;
-    sprite.size.y = size_y;
-    sprite.size.x = size_x;
+    sprite.size.y = size_y * HEIGHT / LINES;
+    sprite.size.x = size_x * WIDTH / COLS;
     wattron((sprite.ncursesBox) ? _sprites[sprite.id].second : _windows[0], COLOR_PAIR(pair));
     for (size_t index = 0; index < _sprites[sprite.id].first.size(); index += 1) {
         if (sprite.ncursesBox)
@@ -179,6 +181,7 @@ void Arcade::Graphical_Ncurses::showInputBox(graphical_box_t &_box)
 void Arcade::Graphical_Ncurses::updateInputsMap()
 {
     int input = getInput();
+    MEVENT event;
 
     for (int index = 1; index < 8; index += 1)
         if (input == KEY_F(index))
@@ -197,6 +200,7 @@ void Arcade::Graphical_Ncurses::updateInputsMap()
         _keys[Arcade::KEYS::ARROW_DOWN] = 1;
     if (input == KEY_BACKSPACE || input == KEY_DC)
         _keys[Arcade::KEYS::BACKSPACE] = 1;
+    _keys[Arcade::KEYS::MOUSE] = getmouse(&event) == OK && input == KEY_MOUSE && (event.bstate & BUTTON1_PRESSED);
 }
 
 void Arcade::Graphical_Ncurses::reset()
@@ -217,14 +221,23 @@ void Arcade::Graphical_Ncurses::reset()
 
 bool Arcade::Graphical_Ncurses::isMouseClicked()
 {
-    return getInput() == KEY_MOUSE;
+    int c = getInput();
+    return c != ERR && c == KEY_MOUSE;
 }
 
 Arcade::graphical_vector_t Arcade::Graphical_Ncurses::getMousePosition()
 {
     MEVENT event;
-    getmouse(&event);
-    return {(float)event.x, (float)event.y, 0};
+    float x = 0;
+    float y = 0;
+
+    if (getmouse(&event) == OK) {
+        x = event.x * WIDTH / COLS;
+        y = event.y * HEIGHT / LINES;
+        stream << y << "|" << x << std::endl;
+        return {x, y, 0};
+    }
+    return {0, 0, 0};
 }
 
 int Arcade::Graphical_Ncurses::getInput()
