@@ -32,10 +32,10 @@ bool Arcade::AGameModule::isMouseOnSpriteHitbox(graphical_sprite_t sprite)
 {
 
     if (_mouseClicked) {
-        std::cout << sprite.path << std::endl;
-        std::cout << "mousePosition: y: " << _mousePosition.y << "| x: " << _mousePosition.x << std::endl;
-        std::cout << "spritePosition: y: " << sprite.pos.y << "| x: " << sprite.pos.x << std::endl;
-        std::cout << "spriteSize: y: " << sprite.size.y << "| x: " << sprite.size.x << std::endl;
+        //std::cout << sprite.path << std::endl;
+        //std::cout << "mousePosition: y: " << _mousePosition.y << "| x: " << _mousePosition.x << std::endl;
+        //std::cout << "spritePosition: y: " << sprite.pos.y << "| x: " << sprite.pos.x << std::endl;
+        //std::cout << "spriteSize: y: " << sprite.size.y << "| x: " << sprite.size.x << std::endl;
         return (!(_mousePosition.y < sprite.pos.y - sprite.size.y  / 2 || \
                 _mousePosition.y > sprite.pos.y + sprite.size.y  / 2|| \
                 _mousePosition.x < sprite.pos.x - sprite.size.x  / 2|| \

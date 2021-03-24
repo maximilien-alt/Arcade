@@ -27,13 +27,12 @@ void Arcade::Simulator::run()
     currentGraphical->openWindow();
     currentGame->startGame();
     while (1) {
+        currentGame->runClock();
         ret = currentGame->updateGame(&_list);
         if (ret > 0) {
             _libraryManager.reset();
             _currentGameIndex = ret;
         }
-        currentGame->runClock();
-        currentGame->updateGame(&_list);
         keys = currentGraphical->getInputsMap();
         if (keys[Arcade::KEYS::F1]) {
             currentGraphical->closeWindow();
