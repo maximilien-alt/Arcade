@@ -43,6 +43,8 @@ bool Arcade::AGameModule::isMouseClickedOnSprite(graphical_sprite_t sprite)
     }/* else
         std::cout << "not clicked mouse" << std::endl;*/
     return 0;
+}
+
 void Arcade::AGameModule::runClock()
 {
     _tick = false;
