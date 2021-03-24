@@ -52,6 +52,8 @@ void Arcade::Graphical_SDL2::drawSprite(graphical_sprite_t &sprite)
         _sprites[sprite.id] = std::make_pair(img, size);
     }
     size = _sprites[sprite.id].second;
+    sprite.size.y = size.y;
+    sprite.size.x = size.x;
     SDL_Rect texr;
     texr.x = sprite.pos.x - size.x / 2;
     texr.y = sprite.pos.y - size.y / 2;
@@ -148,6 +150,17 @@ void Arcade::Graphical_SDL2::updateInputsMap()
     _keys[Arcade::KEYS::ARROW_UP] = _key[SDLK_UP];
     _keys[Arcade::KEYS::ARROW_DOWN] = _key[SDLK_DOWN];
     _keys[Arcade::KEYS::BACKSPACE] = _key[SDLK_BACKSPACE];
+    _keys[Arcade::KEYS::RETURN] = _key[SDLK_RETURN];
+}
+
+bool Arcade::Graphical_SDL2::isMouseClicked()
+{
+    return true;
+}
+
+Arcade::graphical_vector_t Arcade::Graphical_SDL2::getMousePosition()
+{
+    return {0, 0, 0};
 }
 
 void Arcade::Graphical_SDL2::reset()

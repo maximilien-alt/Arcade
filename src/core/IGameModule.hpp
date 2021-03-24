@@ -16,8 +16,11 @@ namespace Arcade {
             virtual ~IGameModule() = default;
         
             virtual void startGame() = 0;
-            virtual void updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *_list) = 0;
+            virtual int updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *_list) = 0;
             virtual void setKeys(std::unordered_map<int, bool> keys) = 0;
+            virtual void setMouseClickedStatus(bool status) = 0;
+            virtual void setMousePosition(graphical_vector_t pos) = 0;
+            virtual bool isMouseClickedOnSprite(graphical_sprite_t sprite) = 0;
     };
 }
 

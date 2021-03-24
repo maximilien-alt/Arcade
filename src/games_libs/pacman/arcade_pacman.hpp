@@ -17,7 +17,7 @@ namespace Arcade {
             ~Game_Pacman();
         
             void startGame() final;
-            void updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *_list) final;
+            int updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *_list) final;
     };
 }
 

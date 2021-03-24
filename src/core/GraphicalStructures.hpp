@@ -58,6 +58,7 @@ namespace Arcade
         Y,
         Z,
         BACKSPACE,
+        RETURN,
         ARROW_LEFT,
         ARROW_UP,
         ARROW_RIGHT,

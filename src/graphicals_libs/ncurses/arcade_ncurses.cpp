@@ -14,6 +14,16 @@ Arcade::Graphical_Ncurses::Graphical_Ncurses() : AGraphicalModule(), stream("deb
 Arcade::Graphical_Ncurses::~Graphical_Ncurses()
 {
     stream.close();
+    if (!_sprites.empty()) {
+        for (auto &n: _sprites) {
+            if (n.second.second) {
+                delwin(n.second.second);
+            }
+        }
+        _sprites.clear();
+    }
+    for (auto &n: _windows)
+        delwin(n);
 }
 
 WINDOW *Arcade::Graphical_Ncurses::init_new_window(int a, int b, int c, int d)
@@ -103,7 +113,9 @@ void Arcade::Graphical_Ncurses::drawSprite(graphical_sprite_t &sprite)
         _sprites[sprite.id] = std::make_pair(vector, win);
     }
     size_y = _sprites[sprite.id].first.size() + 2;
-    size_x = _sprites[sprite.id].first[0].length() + 1;
+    size_x = _sprites[sprite.id].first[0].length() + 2;
+    sprite.size.y = size_y;
+    sprite.size.x = size_x;
     wattron((sprite.ncursesBox) ? _sprites[sprite.id].second : _windows[0], COLOR_PAIR(pair));
     for (size_t index = 0; index < _sprites[sprite.id].first.size(); index += 1) {
         if (sprite.ncursesBox)
@@ -132,7 +144,6 @@ void Arcade::Graphical_Ncurses::clear()
     }
     for (auto &n: _sprites) {
         if (n.second.second != nullptr) {
-            stream << "erasing" << std::endl;
             werase(n.second.second);
             box(n.second.second, 0, 0);
         }
@@ -146,7 +157,6 @@ void Arcade::Graphical_Ncurses::refresh()
         wrefresh(_windows[1]);
     for (auto &n: _sprites) {
         if (n.second.second != nullptr) {
-            stream << "refreshing" << std::endl;
             wrefresh(n.second.second);
         }
     }
@@ -154,16 +164,13 @@ void Arcade::Graphical_Ncurses::refresh()
 
 void Arcade::Graphical_Ncurses::showInputBox(graphical_box_t &_box)
 {
-    static int i = 0;
-
-    if (!i) {
+    if (_windows.size() == 1) {
         int size_y = product_y(_box.size.y);
         int size_x = product_x(_box.size.x);
         int pos_y = product_y(_box.pos.y);
         int pos_x = product_x(_box.pos.x);
 
         _windows.push_back(init_new_window(size_y, size_x, pos_y - size_y / 2, pos_x - size_x / 2));
-        i = 1;
     }
     mvwprintw(_windows[1], 1, 1, _box.input.c_str());
     showBox = true;
@@ -179,6 +186,7 @@ void Arcade::Graphical_Ncurses::updateInputsMap()
     for (int index = 'a'; index <= 'z'; index += 1)
         if (input == index)
             _keys[index - 'a' + Arcade::KEYS::A] = 1;
+    _keys[Arcade::KEYS::RETURN] = (input == '\n');
     if (input == KEY_RIGHT)
         _keys[Arcade::KEYS::ARROW_RIGHT] = 1;
     if (input == KEY_LEFT)
@@ -193,7 +201,30 @@ void Arcade::Graphical_Ncurses::updateInputsMap()
 
 void Arcade::Graphical_Ncurses::reset()
 {
-    _sprites.clear();
+    if (!_sprites.empty()) {
+        for (auto &n: _sprites) {
+            if (n.second.second) {
+                delwin(n.second.second);
+            }
+        }
+        _sprites.clear();
+    }
+    if (_windows.size() == 2) {
+        delwin(_windows[1]);
+        _windows.erase(++_windows.begin());
+    }
+}
+
+bool Arcade::Graphical_Ncurses::isMouseClicked()
+{
+    return getInput() == KEY_MOUSE;
+}
+
+Arcade::graphical_vector_t Arcade::Graphical_Ncurses::getMousePosition()
+{
+    MEVENT event;
+    getmouse(&event);
+    return {(float)event.x, (float)event.y, 0};
 }
 
 int Arcade::Graphical_Ncurses::getInput()

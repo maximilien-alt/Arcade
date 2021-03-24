@@ -44,6 +44,8 @@ namespace Arcade
         virtual void updateInputsMap() = 0;
         virtual void openWindow() = 0;
         virtual void closeWindow() = 0;
+        virtual bool isMouseClicked() = 0;
+        virtual graphical_vector_t getMousePosition() = 0;
     };
 }
 

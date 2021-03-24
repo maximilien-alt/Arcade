@@ -33,6 +33,7 @@ namespace Arcade {
         size_t getNextGameIndex(size_t index) const;
         size_t getPreviousGraphicalIndex(size_t index) const;
         size_t getNextGraphicalIndex(size_t index) const;
+        void reset();
 
     private:
         std::vector<Arcade::IGraphicalModule *> _graphicalModules;

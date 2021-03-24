@@ -7,7 +7,7 @@
 
 #include "arcade_menu.hpp"
 
-Arcade::Game_Menu::Game_Menu(): AGameModule(), _gindex(0), nbGames(0)
+Arcade::Game_Menu::Game_Menu(): AGameModule(), _gindex(0), _choiceIndex(0), nbGames(0)
 {
     graphical_text_t text;
     int index = 0;
@@ -30,7 +30,7 @@ Arcade::Game_Menu::Game_Menu(): AGameModule(), _gindex(0), nbGames(0)
         y += 100;
         i++;
     }
-    _box.pos = {WIDTH / 2, HEIGHT / 2 + 100, 0};
+    _box.pos = {WIDTH / 2, HEIGHT / 2 + 50, 0};
     _box.size = {WIDTH / 10, HEIGHT / 15, 0};
     init_sprites();
 }
@@ -59,6 +59,16 @@ void Arcade::Game_Menu::init_sprites()
     sprite.pos = {WIDTH - 120, HEIGHT / 2 + 30, 0};
     sprite.path = "ressources/arrow_right.png";
     _sprites.push_back(sprite);
+    sprite.id = ++id;
+    sprite.pos = {WIDTH / 2, HEIGHT / 2 + 200, 0};
+    sprite.path = "ressources/start_button.png";
+    sprite.color = {0, 0, 255, {BLUE, BLACK}};
+    _sprites.push_back(sprite);
+    sprite.id = ++id;
+    sprite.pos = {WIDTH / 2, HEIGHT / 2 + 400, 0};
+    sprite.path = "ressources/exit_button.png";
+    sprite.color = {0, 0, 255, {BLUE, BLACK}};
+    _sprites.push_back(sprite);
 }
 
 Arcade::Game_Menu::~Game_Menu()
@@ -84,15 +94,25 @@ void Arcade::Game_Menu::updatePlayerName()
         _playerName.erase(_playerName.length() - 1, 1);
 }
 
-void Arcade::Game_Menu::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *list)
+int Arcade::Game_Menu::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *list)
 {
     updatePlayerName();
     if (_keys[Arcade::KEYS::ARROW_LEFT])
         _gindex = _gindex >= 1 ? _gindex - 1 : nbGames - 1;
     if (_keys[Arcade::KEYS::ARROW_RIGHT])
         _gindex = (_gindex + 1) < nbGames ? _gindex + 1 : 0;
+    if (_keys[Arcade::KEYS::ARROW_DOWN] || _keys[Arcade::KEYS::ARROW_UP])
+        _choiceIndex = _choiceIndex == 1 ? 0 : 1;
+    if (_keys[Arcade::KEYS::RETURN]) {
+        return (_choiceIndex == 0) ? (_gindex + 1) : -1;
+    }
     _box.input = _playerName;
     draw(list);
+    if (isMouseClickedOnSprite(_sprites[_sprites.size() - 2]))
+        return (_gindex + 1);
+    //if (isMouseClickedOnSprite(_sprites[_sprites.size() - 1]))
+    //    return (-1);
+    return (0);
 }
 
 void Arcade::Game_Menu::draw(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *list)
@@ -101,11 +121,19 @@ void Arcade::Game_Menu::draw(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *l
     size_t text_index = 0;
     size_t previous_index = 0;
     size_t next_index = 0;
+    size_t temp = 0;
 
     next_index = (_gindex + 1 >= nbGames) ? 0 : _gindex + 1;
     previous_index = (_gindex == 0) ? nbGames - 1 : _gindex - 1;
     for (auto &n: _sprites) {
         if (index == _gindex || index >= nbGames) {
+            if (n.path == "ressources/start_button.png" || n.path == "ressources/exit_button.png") {
+                if (temp == _choiceIndex)
+                    n.color = {0, 0, 255, {YELLOW, BLACK}};
+                else
+                    n.color = {0, 255, 255, {BLUE, BLACK}};
+                temp += 1;
+            }
             list->push_back(std::make_pair(SPRITE, &n));
         }
         index += 1;

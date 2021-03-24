@@ -32,10 +32,11 @@ void Arcade::Game_Solarfox::startGame()
 {
 }
 
-void Arcade::Game_Solarfox::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *_list)
+int Arcade::Game_Solarfox::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *_list)
 {
     for (auto &n : _texts)
         _list->push_back(std::make_pair(TEXT, &n));
+    return (0);
 }
 
 extern "C" Arcade::IGameModule *entryPoint(void)

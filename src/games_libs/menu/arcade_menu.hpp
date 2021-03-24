@@ -20,10 +20,11 @@ namespace Arcade
             ~Game_Menu();
         
             void startGame() final;
-            void updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *_list) final;
+            int updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *_list) final;
         
         private:
             size_t _gindex;
+            size_t _choiceIndex;
             size_t nbGames;
 
             void updatePlayerName();

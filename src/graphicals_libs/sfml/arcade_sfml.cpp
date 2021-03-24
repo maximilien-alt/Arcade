@@ -36,6 +36,8 @@ void Arcade::Graphical_SFML::drawSprite(graphical_sprite_t &sprite)
         newsprite.setOrigin(texture.getSize().x / 2, texture.getSize().y / 2);
         _sprites[sprite.id] = {._sprite = newsprite, ._texture = texture};
     }
+    sprite.size.y = _sprites[sprite.id]._texture.getSize().y;
+    sprite.size.x = _sprites[sprite.id]._texture.getSize().x;
     _sprites[sprite.id]._sprite.setTexture(_sprites[sprite.id]._texture);
     _sprites[sprite.id]._sprite.setPosition(sprite.pos.x, sprite.pos.y);
     _window->draw(_sprites[sprite.id]._sprite);
@@ -98,6 +100,16 @@ void Arcade::Graphical_SFML::reset()
 
 }
 
+Arcade::graphical_vector_t Arcade::Graphical_SFML::getMousePosition()
+{
+    return {(float)sf::Mouse::getPosition().x, (float)sf::Mouse::getPosition().y, 0};
+}
+
+bool Arcade::Graphical_SFML::isMouseClicked()
+{
+    return sf::Mouse::isButtonPressed(sf::Mouse::Left);
+}
+
 void Arcade::Graphical_SFML::updateInputsMap()
 {
     for (int index = sf::Keyboard::F1; index <= sf::Keyboard::F7; index += 1)
@@ -112,6 +124,7 @@ void Arcade::Graphical_SFML::updateInputsMap()
     _keys[Arcade::KEYS::ARROW_RIGHT] = _key[sf::Keyboard::Right];
     _keys[Arcade::KEYS::ARROW_UP] = _key[sf::Keyboard::Up];
     _keys[Arcade::KEYS::ARROW_DOWN] = _key[sf::Keyboard::Down];
+    _keys[Arcade::KEYS::RETURN] = _key[sf::Keyboard::Return];
 }
 
 extern "C" Arcade::IGraphicalModule *entryPoint()

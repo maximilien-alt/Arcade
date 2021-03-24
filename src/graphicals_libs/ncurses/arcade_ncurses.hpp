@@ -21,6 +21,8 @@ namespace Arcade
             void drawText(graphical_text_t &text) final;
             void drawSprite(graphical_sprite_t &sprite) final;
             void showInputBox(graphical_box_t &box) final;
+            bool isMouseClicked() final;
+            graphical_vector_t getMousePosition() final;
             void reset() final;
             void clear() final;
             void refresh() final;

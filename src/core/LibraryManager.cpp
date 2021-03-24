@@ -23,6 +23,12 @@ Arcade::LibraryManager::LibraryManager(const std::string &name): _startIndex(0)
     }
 }
 
+void Arcade::LibraryManager::LibraryManager::reset()
+{
+    for (auto &n: _graphicalModules)
+        n->reset();
+}
+
 Arcade::LibraryManager::~LibraryManager()
 {
     // for (auto graphicalModules : _graphicalModules)

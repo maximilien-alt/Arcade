@@ -22,6 +22,8 @@ namespace Arcade
         virtual void drawSprite(graphical_sprite_t &sprite) = 0;
         virtual void reset() = 0;
         virtual void showInputBox(graphical_box_t &box) = 0;
+        virtual bool isMouseClicked() = 0;
+        virtual graphical_vector_t getMousePosition() = 0;
         virtual void clear() = 0;
         virtual void refresh() = 0;
         virtual void updateInputsMap() = 0;
