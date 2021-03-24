@@ -28,7 +28,7 @@ void Arcade::AGameModule::setMousePosition(graphical_vector_t pos)
     _mousePosition = pos;
 }
 
-bool Arcade::AGameModule::isMouseClickedOnSprite(graphical_sprite_t sprite)
+bool Arcade::AGameModule::isMouseOnSpriteHitbox(graphical_sprite_t sprite)
 {
 
     if (_mouseClicked) {
@@ -36,12 +36,11 @@ bool Arcade::AGameModule::isMouseClickedOnSprite(graphical_sprite_t sprite)
         std::cout << "mousePosition: y: " << _mousePosition.y << "| x: " << _mousePosition.x << std::endl;
         std::cout << "spritePosition: y: " << sprite.pos.y << "| x: " << sprite.pos.x << std::endl;
         std::cout << "spriteSize: y: " << sprite.size.y << "| x: " << sprite.size.x << std::endl;
-        return (_mousePosition.y >= sprite.pos.y - sprite.size.y / 2 && \
-                _mousePosition.y <= sprite.pos.y + sprite.size.y / 2 && \
-                _mousePosition.x >= sprite.pos.x - sprite.size.x / 2 && \
-                _mousePosition.x <= sprite.pos.x + sprite.size.x / 2);
-    }/* else
-        std::cout << "not clicked mouse" << std::endl;*/
+        return (!(_mousePosition.y < sprite.pos.y - sprite.size.y  / 2 || \
+                _mousePosition.y > sprite.pos.y + sprite.size.y  / 2|| \
+                _mousePosition.x < sprite.pos.x - sprite.size.x  / 2|| \
+                _mousePosition.x > sprite.pos.x + sprite.size.x / 2));
+    }
     return 0;
 }
 

@@ -21,7 +21,7 @@ namespace Arcade {
             void setKeys(std::unordered_map<int, bool> keys) final;
             void setMouseClickedStatus(bool status) final;
             void setMousePosition(graphical_vector_t pos) final;
-            bool isMouseClickedOnSprite(graphical_sprite_t sprite) final;
+            bool isMouseOnSpriteHitbox(graphical_sprite_t sprite) final;
             void runClock();
 
         protected:

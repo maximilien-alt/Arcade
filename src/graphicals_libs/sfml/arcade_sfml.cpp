@@ -102,7 +102,7 @@ void Arcade::Graphical_SFML::reset()
 
 Arcade::graphical_vector_t Arcade::Graphical_SFML::getMousePosition()
 {
-    return {(float)sf::Mouse::getPosition().x, (float)sf::Mouse::getPosition().y, 0};
+    return {(float)sf::Mouse::getPosition(*_window).x, (float)sf::Mouse::getPosition(*_window).y, 0};
 }
 
 bool Arcade::Graphical_SFML::isMouseClicked()

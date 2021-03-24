@@ -9,7 +9,7 @@
 
 Arcade::Simulator::Simulator(const std::string path) : _libraryManager(path)
 {
-    _currentGameIndex = 1;
+    _currentGameIndex = 0;
     _currentGraphicalIndex = _libraryManager.getStartIndex();
 }
 

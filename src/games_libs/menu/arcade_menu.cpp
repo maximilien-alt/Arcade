@@ -96,6 +96,9 @@ void Arcade::Game_Menu::updatePlayerName()
 
 int Arcade::Game_Menu::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *list)
 {
+    int ret_1 = 0;
+    int ret_2 = 0;
+
     updatePlayerName();
     if (_keys[Arcade::KEYS::ARROW_LEFT])
         _gindex = _gindex >= 1 ? _gindex - 1 : nbGames - 1;
@@ -107,12 +110,20 @@ int Arcade::Game_Menu::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_t *
         return (_choiceIndex == 0) ? (_gindex + 1) : -1;
     }
     _box.input = _playerName;
+    ret_1 = isMouseOnSpriteHitbox(_sprites[_sprites.size() - 2]);
+    if (ret_1) {
+        _choiceIndex = 0;
+        if (_mouseClicked)
+            ret_1 = _gindex + 1;
+    }
+    ret_2 = isMouseOnSpriteHitbox(_sprites[_sprites.size() - 1]);
+    if (ret_2) {
+        _choiceIndex = 1;
+        if (_mouseClicked)
+            ret_2 = -1;
+    }
     draw(list);
-    if (isMouseClickedOnSprite(_sprites[_sprites.size() - 2]))
-        return (_gindex + 1);
-    //if (isMouseClickedOnSprite(_sprites[_sprites.size() - 1]))
-    //    return (-1);
-    return (0);
+    return (ret_1 != 0 && _mouseClicked) ? ret_1 : (ret_2 != 0 && _mouseClicked) ? ret_2 : 0;
 }
 
 void Arcade::Game_Menu::draw(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *list)
