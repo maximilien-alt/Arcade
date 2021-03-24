@@ -17,7 +17,7 @@ Arcade::Graphical_SFML::~Graphical_SFML()
 
 void Arcade::Graphical_SFML::openWindow()
 {
-    _window = new sf::RenderWindow(sf::VideoMode(WIDTH, HEIGHT), "SFML window");
+    _window = new sf::RenderWindow(sf::VideoMode(WIDTH, HEIGHT), "Arcade");
 }
 
 void Arcade::Graphical_SFML::closeWindow()
