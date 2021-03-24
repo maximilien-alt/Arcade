@@ -29,7 +29,7 @@ namespace Arcade {
             bool checkDeath();
 
         private:
-            std::size_t _indexsprite = 0;
+            std::size_t _indexsprite;
             std::vector<graphical_vector_t> _snake;
             graphical_vector_t _apple;
             graphical_vector_t _speed;

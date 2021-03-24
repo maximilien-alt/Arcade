@@ -16,10 +16,24 @@ Arcade::Game_Nibbler::Game_Nibbler(): AGameModule()
     _box.size = {40 * 15, 40 * 15, 0};
     _apple = {-1, 0, 0};
     _speed = {1, 0, 0};
-    _snake.push_back({7, 7, 0});
-    _snake.push_back({6, 7, 0});
-    _snake.push_back({5, 7, 0});
-    _snake.push_back({4, 7, 0});
+    _indexsprite = 1;
+    graphical_sprite_t sprite;
+    sprite.id = 0;
+    sprite.path = "ressources/snake_apple.png";
+    sprite.color = {255, 0, 0, {RED, RED}};
+    sprite.pos = {(_box.pos.x - _box.size.x / 2) + _apple.x * 40 + 20, (_box.pos.y - _box.size.y / 2) + _apple.y * 40 + 20, 0};
+    sprite.size = {40, 40, 0};
+    _sprites.push_back(sprite);
+    for (float i = 0; i < 4; i++) {
+        _snake.push_back({7 - i, 7, 0});
+        graphical_sprite_t sprite;
+        sprite.path = "ressources/snake_tail.png";
+        sprite.color = {0, 255, 0, {GREEN, GREEN}};
+        sprite.pos = {(_box.pos.x - _box.size.x / 2) + _snake[_indexsprite-1].x * 40 + 20, (_box.pos.y - _box.size.y / 2) + _snake[_indexsprite-1].y * 40 + 20, 0};
+        sprite.size = {40, 40, 0};
+        sprite.id = _indexsprite++;
+        _sprites.push_back(sprite);
+    }
 }
 
 Arcade::Game_Nibbler::~Game_Nibbler()
@@ -65,17 +79,39 @@ int Arcade::Game_Nibbler::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_
         if (_snake[0].x == _apple.x && _snake[0].y == _apple.y) {
             _apple.x = -1;
             _snake.push_back(tmp);
+            graphical_sprite_t sprite;
+            sprite.path = "ressources/snake_tail.png";
+            sprite.color = {0, 255, 0, {GREEN, GREEN}};
+            sprite.pos = {(_box.pos.x - _box.size.x / 2) + _snake[_indexsprite-1].x * 40 + 20, (_box.pos.y - _box.size.y / 2) + _snake[_indexsprite-1].y * 40 + 20, 0};
+            sprite.size = {40, 40, 0};
+            sprite.id = _indexsprite++;
+            _sprites.push_back(sprite);
         }
         _mainClock.reset();
     }
     if (checkDeath()) {
         _snake.clear();
-        _apple = {-1, 0, 0};
+        _sprites.clear();
+        _indexsprite = 1;
         _speed = {1, 0, 0};
-        _snake.push_back({7, 7, 0});
-        _snake.push_back({6, 7, 0});
-        _snake.push_back({5, 7, 0});
-        _snake.push_back({4, 7, 0});
+        _apple = {-1, 0, 0};
+        graphical_sprite_t sprite;
+        sprite.id = 0;
+        sprite.path = "ressources/snake_apple.png";
+        sprite.color = {255, 0, 0, {RED, RED}};
+        sprite.pos = {(_box.pos.x - _box.size.x / 2) + _apple.x * 40 + 20, (_box.pos.y - _box.size.y / 2) + _apple.y * 40 + 20, 0};
+        sprite.size = {40, 40, 0};
+        _sprites.push_back(sprite);
+        for (float i = 0; i < 4; i++) {
+            _snake.push_back({7 - i, 7, 0});
+            graphical_sprite_t sprite;
+            sprite.path = "ressources/snake_tail.png";
+            sprite.color = {0, 255, 0, {GREEN, GREEN}};
+            sprite.pos = {(_box.pos.x - _box.size.x / 2) + _snake[_indexsprite-1].x * 40 + 20, (_box.pos.y - _box.size.y / 2) + _snake[_indexsprite-1].y * 40 + 20, 0};
+            sprite.size = {40, 40, 0};
+            sprite.id = _indexsprite++;
+            _sprites.push_back(sprite);
+        }
     }
     draw(list);
     return (0);
@@ -83,25 +119,9 @@ int Arcade::Game_Nibbler::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_
 
 void Arcade::Game_Nibbler::draw(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *list)
 {
-    _sprites.clear();
-    for (auto snake : _snake) {
-        graphical_sprite_t sprite;
-        sprite.id = _indexsprite++;
-        sprite.path = "ressources/snake_tail.png";
-        sprite.color = {0, 255, 0, {GREEN, GREEN}};
-        sprite.pos = {(_box.pos.x - _box.size.x / 2) + snake.x * 40 + 20, (_box.pos.y - _box.size.y / 2) + snake.y * 40 + 20, 0};
-        sprite.size = {40, 40, 0};
-        _sprites.push_back(sprite);
-    }
-    if (_apple.x != -1) {
-        graphical_sprite_t sprite;
-        sprite.id = _indexsprite++;
-        sprite.path = "ressources/snake_apple.png";
-        sprite.color = {255, 0, 0, {RED, RED}};
-        sprite.pos = {(_box.pos.x - _box.size.x / 2) + _apple.x * 40 + 20, (_box.pos.y - _box.size.y / 2) + _apple.y * 40 + 20, 0};
-        sprite.size = {40, 40, 0};
-        _sprites.push_back(sprite);
-    }
+    for (int i = 1; i < _sprites.size(); i++)
+        _sprites[i].pos = {(_box.pos.x - _box.size.x / 2) + _snake[i-1].x * 40 + 20, (_box.pos.y - _box.size.y / 2) + _snake[i-1].y * 40 + 20, 0};
+    _sprites[0].pos = {(_box.pos.x - _box.size.x / 2) + _apple.x * 40 + 20, (_box.pos.y - _box.size.y / 2) + _apple.y * 40 + 20, 0};
     list->push_back(std::make_pair(BOX, &_box));
     for (auto &n : _sprites)
         list->push_back(std::make_pair(SPRITE, &n));
