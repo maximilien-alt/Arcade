@@ -35,13 +35,12 @@ void Arcade::Game_Nibbler::startGame()
     sprite.pos = {(_box.pos.x - _box.size.x / 2) + _apple.x * 40 + 20, (_box.pos.y - _box.size.y / 2) + _apple.y * 40 + 20, 0};
     sprite.size = {40, 40, 0};
     _sprites.push_back(sprite);
+    sprite.path = "ressources/snake_tail.png";
+    sprite.color = {0, 255, 0, {GREEN, GREEN}};
+    sprite.size = {40, 40, 0};
     for (float i = 0; i < 4; i++) {
         _snake.push_back({7 - i, 7, 0});
-        graphical_sprite_t sprite;
-        sprite.path = "ressources/snake_tail.png";
-        sprite.color = {0, 255, 0, {GREEN, GREEN}};
         sprite.pos = {(_box.pos.x - _box.size.x / 2) + _snake[_indexsprite-1].x * 40 + 20, (_box.pos.y - _box.size.y / 2) + _snake[_indexsprite-1].y * 40 + 20, 0};
-        sprite.size = {40, 40, 0};
         sprite.id = _indexsprite++;
         _sprites.push_back(sprite);
     }
@@ -82,6 +81,7 @@ int Arcade::Game_Nibbler::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_
             _apple.x = -1;
             _snake.push_back(tmp);
             graphical_sprite_t sprite;
+            sprite.ncursesBox = 0;
             sprite.path = "ressources/snake_tail.png";
             sprite.color = {0, 255, 0, {GREEN, GREEN}};
             sprite.pos = {(_box.pos.x - _box.size.x / 2) + _snake[_indexsprite-1].x * 40 + 20, (_box.pos.y - _box.size.y / 2) + _snake[_indexsprite-1].y * 40 + 20, 0};
@@ -98,6 +98,7 @@ int Arcade::Game_Nibbler::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_
         _speed = {1, 0, 0};
         _apple = {-1, 0, 0};
         graphical_sprite_t sprite;
+        sprite.ncursesBox = 0;
         sprite.id = 0;
         sprite.path = "ressources/snake_apple.png";
         sprite.color = {255, 0, 0, {RED, RED}};
@@ -107,6 +108,7 @@ int Arcade::Game_Nibbler::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_
         for (float i = 0; i < 4; i++) {
             _snake.push_back({7 - i, 7, 0});
             graphical_sprite_t sprite;
+            sprite.ncursesBox = 0;
             sprite.path = "ressources/snake_tail.png";
             sprite.color = {0, 255, 0, {GREEN, GREEN}};
             sprite.pos = {(_box.pos.x - _box.size.x / 2) + _snake[_indexsprite-1].x * 40 + 20, (_box.pos.y - _box.size.y / 2) + _snake[_indexsprite-1].y * 40 + 20, 0};
