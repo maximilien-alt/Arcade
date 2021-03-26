@@ -12,6 +12,15 @@
 
 Arcade::Game_Solarfox::Game_Solarfox(): AGameModule()
 {
+}
+
+Arcade::Game_Solarfox::~Game_Solarfox()
+{
+
+}
+
+void Arcade::Game_Solarfox::startGame()
+{
     _box.pos = {WIDTH / 2, HEIGHT / 2, 0};
     _box.size = {40 * 15, 40 * 15, 0};
 
@@ -27,15 +36,6 @@ Arcade::Game_Solarfox::Game_Solarfox(): AGameModule()
     _ennemiesDirection[1] = 1;
     _ennemiesDirection[2] = -1;
     _ennemiesDirection[3] = -1;
-}
-
-Arcade::Game_Solarfox::~Game_Solarfox()
-{
-
-}
-
-void Arcade::Game_Solarfox::startGame()
-{
 }
 
 int Arcade::Game_Solarfox::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *list)

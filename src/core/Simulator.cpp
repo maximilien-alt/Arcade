@@ -49,8 +49,10 @@ void Arcade::Simulator::run()
             _libraryManager.reset();
             _currentGameIndex = (_currentGameIndex != 0) ? _libraryManager.getNextGameIndex(_currentGameIndex) : _currentGameIndex;
         }
-        if (keys[Arcade::KEYS::F5])
+        if (keys[Arcade::KEYS::F5]) {
+            _libraryManager.reset();
             currentGame->startGame();
+        }
         if (keys[Arcade::KEYS::F6]) {
             _libraryManager.reset();
             _currentGameIndex = 0;
@@ -63,9 +65,12 @@ void Arcade::Simulator::run()
         currentGame = _libraryManager.getGameModule(_currentGameIndex);
         if (keys[Arcade::KEYS::F1] || keys[Arcade::KEYS::F2])
             currentGraphical->openWindow();
-        parseList(currentGraphical, currentGame);
-        if (!_list.empty())
+        if (keys[Arcade::KEYS::F3] || keys[Arcade::KEYS::F4] || ret > 0 || keys[Arcade::KEYS::F6]) {
+            currentGame->startGame();
             _list.clear();
+        }
+        parseList(currentGraphical, currentGame);
+        _list.clear();
     }
 }
 

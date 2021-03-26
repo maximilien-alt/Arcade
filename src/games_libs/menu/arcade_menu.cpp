@@ -7,32 +7,8 @@
 
 #include "arcade_menu.hpp"
 
-Arcade::Game_Menu::Game_Menu(): AGameModule(), _gindex(0), _choiceIndex(0), nbGames(0)
+Arcade::Game_Menu::Game_Menu(): AGameModule()
 {
-    graphical_text_t text;
-    int index = 0;
-    float x = 100;
-    float y = 100;
-    int i = 0;
-
-    for (const auto & entry : std::filesystem::directory_iterator("lib")) {
-        if (entry.path() == "lib/arcade_sfml.so" || entry.path() == "lib/arcade_sdl2.so" || entry.path() == "lib/arcade_ncurses.so" || entry.path() == "lib/arcade_menu.so" || entry.path() == "lib/.gitkeep")
-            continue;
-        std::string path(entry.path());
-        index = path.find(".so");
-        text.id = i;
-        text.text = std::string(path.substr(11, index - 11));
-        text.pos = {x, y, 0};
-        text.color = {0, 0, 255, {Arcade::COLOR::BLUE, Arcade::COLOR::BLACK}};
-        text.size = 24;
-        text.font = "ressources/font.ttf";
-        _texts.push_back(text);
-        y += 100;
-        i++;
-    }
-    _box.pos = {WIDTH / 2, HEIGHT / 2 + 50, 0};
-    _box.size = {WIDTH / 10, HEIGHT / 15, 0};
-    init_sprites();
 }
 
 void Arcade::Game_Menu::init_sprites()
@@ -79,6 +55,33 @@ Arcade::Game_Menu::~Game_Menu()
 
 void Arcade::Game_Menu::startGame()
 {
+    graphical_text_t text;
+    int index = 0;
+    float x = 100;
+    float y = 100;
+    int i = 0;
+    _gindex = 0;
+    _choiceIndex = 0;
+    nbGames = 0;
+
+    for (const auto & entry : std::filesystem::directory_iterator("lib")) {
+        if (entry.path() == "lib/arcade_sfml.so" || entry.path() == "lib/arcade_sdl2.so" || entry.path() == "lib/arcade_ncurses.so" || entry.path() == "lib/arcade_menu.so" || entry.path() == "lib/.gitkeep")
+            continue;
+        std::string path(entry.path());
+        index = path.find(".so");
+        text.id = i;
+        text.text = std::string(path.substr(11, index - 11));
+        text.pos = {x, y, 0};
+        text.color = {0, 0, 255, {Arcade::COLOR::BLUE, Arcade::COLOR::BLACK}};
+        text.size = 24;
+        text.font = "ressources/font.ttf";
+        _texts.push_back(text);
+        y += 100;
+        i++;
+    }
+    _box.pos = {WIDTH / 2, HEIGHT / 2 + 50, 0};
+    _box.size = {WIDTH / 10, HEIGHT / 15, 0};
+    init_sprites();
 }
 
 void Arcade::Game_Menu::updatePlayerName()

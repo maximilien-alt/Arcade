@@ -20,6 +20,7 @@ namespace Arcade {
             virtual void setKeys(std::unordered_map<int, bool> keys) = 0;
             virtual void setMousePosition(graphical_vector_t pos) = 0;
             virtual bool isMouseOnSpriteHitbox(graphical_sprite_t sprite) = 0;
+            virtual void reset() = 0;
     };
 }
 

@@ -27,6 +27,8 @@ void Arcade::LibraryManager::LibraryManager::reset()
 {
     for (auto &n: _graphicalModules)
         n->reset();
+    for (auto &n: _gameModules)
+        n->reset();
 }
 
 Arcade::LibraryManager::~LibraryManager()

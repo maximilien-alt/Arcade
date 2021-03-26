@@ -30,3 +30,9 @@ bool Arcade::AGameModule::isMouseOnSpriteHitbox(graphical_sprite_t sprite)
             _mousePosition.x < sprite.pos.x - sprite.size.x  / 2|| \
             _mousePosition.x > sprite.pos.x + sprite.size.x / 2));
 }
+
+void Arcade::AGameModule::reset()
+{
+    _sprites.clear();
+    _texts.clear();
+}

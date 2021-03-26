@@ -12,12 +12,23 @@
 
 Arcade::Game_Nibbler::Game_Nibbler(): AGameModule()
 {
+}
+
+Arcade::Game_Nibbler::~Game_Nibbler()
+{
+
+}
+
+void Arcade::Game_Nibbler::startGame()
+{
     _box.pos = {WIDTH / 2, HEIGHT / 2, 0};
     _box.size = {40 * 15, 40 * 15, 0};
     _apple = {-1, 0, 0};
     _speed = {1, 0, 0};
     _indexsprite = 1;
     graphical_sprite_t sprite;
+
+    sprite.ncursesBox = 0;
     sprite.id = 0;
     sprite.path = "ressources/snake_apple.png";
     sprite.color = {255, 0, 0, {RED, RED}};
@@ -34,15 +45,6 @@ Arcade::Game_Nibbler::Game_Nibbler(): AGameModule()
         sprite.id = _indexsprite++;
         _sprites.push_back(sprite);
     }
-}
-
-Arcade::Game_Nibbler::~Game_Nibbler()
-{
-
-}
-
-void Arcade::Game_Nibbler::startGame()
-{
 }
 
 int Arcade::Game_Nibbler::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *list)
