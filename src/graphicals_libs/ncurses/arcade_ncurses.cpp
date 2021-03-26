@@ -70,7 +70,7 @@ void Arcade::Graphical_Ncurses::init_colors_pairs()
 {
     for (int f = 0; f <= 7; f += 1)
         for (int b = 0; b <= 7; b += 1)
-            init_pair(colornum(f, b), f, b);
+            init_pair(colornum(f, b), f, (b == 0) ? -1 : b);
 }
 
 void Arcade::Graphical_Ncurses::closeWindow()

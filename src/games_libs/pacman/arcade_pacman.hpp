@@ -18,6 +18,12 @@ namespace Arcade {
         
             void startGame() final;
             int updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *_list) final;
+
+        private:
+            int _currentMapIndex;
+            std::vector<std::string> _map;
+
+            std::vector<std::string> readFileIntoVector(std::string filepath) const;
     };
 }
 

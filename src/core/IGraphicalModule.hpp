@@ -25,6 +25,7 @@
 #include <list>
 #include <vector>
 #include <unordered_map>
+#include <string>
 
 namespace Arcade
 {
