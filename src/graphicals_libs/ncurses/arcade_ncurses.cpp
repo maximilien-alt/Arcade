@@ -167,10 +167,10 @@ void Arcade::Graphical_Ncurses::refresh()
 void Arcade::Graphical_Ncurses::showInputBox(graphical_box_t &_box)
 {
     if (_windows.size() == 1) {
-        int size_y = product_y(_box.size.y);
-        int size_x = product_x(_box.size.x);
-        int pos_y = product_y(_box.pos.y);
-        int pos_x = product_x(_box.pos.x);
+        int size_y = product_y(_box.size.y) + 1;
+        int size_x = product_x(_box.size.x) + 1;
+        int pos_y = product_y(_box.pos.y) - 1;
+        int pos_x = product_x(_box.pos.x) - 1;
 
         _windows.push_back(init_new_window(size_y, size_x, pos_y - size_y / 2, pos_x - size_x / 2));
     }
