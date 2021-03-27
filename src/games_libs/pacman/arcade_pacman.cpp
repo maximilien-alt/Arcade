@@ -13,6 +13,9 @@
 Arcade::Game_Pacman::Game_Pacman(): AGameModule()
 {
     _currentMapIndex = 0;
+    _level = 10;
+    _score = 0;
+    _beginId = 0;
     initValues();
 }
 
@@ -28,8 +31,10 @@ void Arcade::Game_Pacman::initValues()
     _pac.buffer = {0, 0, 0};
     _start_y = 0;
     _start_x = 0;
-    _score = 0;
     _ghosts.clear();
+    _pacgums = 0;
+    _pacgumsTotal = 0;
+    _map.clear();
 }
 
 Arcade::Game_Pacman::~Game_Pacman()
@@ -37,10 +42,8 @@ Arcade::Game_Pacman::~Game_Pacman()
 
 }
 
-void Arcade::Game_Pacman::startGame()
+void Arcade::Game_Pacman::loadMap()
 {
-    initValues();
-
     std::string path("ressources/pacman/maps/map_" + std::to_string(_currentMapIndex) + ".txt");
     _map = readFileIntoVector(path);
     graphical_sprite_t sprite;
@@ -51,46 +54,60 @@ void Arcade::Game_Pacman::startGame()
     temp.isfree = 0;
     sprite.ncursesBox = 0;
     sprite.color = {0, 0, 255, {BLUE, BLACK}};
-    sprite.id = 0;
+    sprite.id = _beginId;
     sprite.path = "ressources/pacman/wall.png";
     sprite.size = {20, 20, 0};
     _start_y = HEIGHT / 2 - (_map.size() / 2) * 19;
     _start_x = WIDTH / 2 - (_map[0].length() / 2) * 9.5;
     for (size_t y = 0; y < _map.size(); y += 1) {
         for (size_t x = 0; x < _map[y].length(); x += 1) {
+            std::cout << _map[y][x];
             sprite.pos = {(float)_start_x + x * 9.5, (float)_start_y + y * 19, 0};
             sprite.id += 1;
             sprite.visible = 1;
-            if (_map[y][x] == '#' || _map[y][x] == '.' || _map[y][x] == '*') {
-                sprite.path = (_map[y][x] == '#') ? "ressources/pacman/wall.png" : _map[y][x] == '.' ? "ressources/pacman/coins.png" : "ressources/pacman/star.png";
-                if (_map[y][x] == '#')
+            switch (_map[y][x]) {
+                case '#':
+                    sprite.path = "ressources/pacman/wall.png";
                     sprite.color = {0, 0, 255, {BLUE, BLUE}};
-                else 
+                    _sprites.push_back(sprite);
+                    continue;
+                case '.':
+                    sprite.path = "ressources/pacman/coins.png";
                     sprite.color = {255, 255, 255, {WHITE, BLACK}};
-                _sprites.push_back(sprite);
-                continue;
-            }
-            if (_map[y][x] == 'M') {
-                sprite.color = {0, 0, 0, {Arcade::COLOR(rand() % 7 + 1), BLACK}};
-                sprite.path = "ressources/pacman/ghost_up.png";
-                temp.position[0] = x;
-                temp.position[1] = y;
-                temp.sprite = sprite;
-                _ghosts.push_back(temp);
+                    _pacgumsTotal += 1;
+                    _sprites.push_back(sprite);
+                    continue;
+                case '*':
+                    sprite.path = "ressources/pacman/star.png";
+                    sprite.color = {255, 255, 255, {WHITE, BLACK}};
+                    _pacgumsTotal += 1;
+                    _sprites.push_back(sprite);
+                    continue;
+                case 'M':
+                    sprite.color = {0, 0, 0, {Arcade::COLOR(rand() % 7 + 1), BLACK}};
+                    sprite.path = "ressources/pacman/ghost_up.png";
+                    temp.position[0] = x;
+                    temp.position[1] = y;
+                    temp.sprite = sprite;
+                    _ghosts.push_back(temp);
+                    break;
+                case 'S':
+                    _pac.position[0] = x;
+                    _pac.position[1] = y;
+                    _pac.previousPosition[0] = x;
+                    _pac.previousPosition[1] = y;
+                    break;
+                case 'G':
+                    spawn[0] = x;
+                    spawn[1] = y;
+                    break;
+                default:
+                    break;
             }
             sprite.visible = 0;
-            if (_map[y][x] == 'S') {
-                _pac.position[0] = x;
-                _pac.position[1] = y;
-                _pac.previousPosition[0] = x;
-                _pac.previousPosition[1] = y;
-            }
-            if (_map[y][x] == 'G') {
-                spawn[0] = x;
-                spawn[1] = y;
-            }
             _sprites.push_back(sprite);
         }
+        std::cout << std::endl;
     }
     sprite.color = {255, 0, 0, {RED, BLACK}};
     sprite.id++;
@@ -117,6 +134,12 @@ void Arcade::Game_Pacman::startGame()
     }
 }
 
+void Arcade::Game_Pacman::startGame()
+{
+    initValues();
+    loadMap();
+}
+
 std::vector<std::string> Arcade::Game_Pacman::readFileIntoVector(std::string filepath) const
 {
     std::vector<std::string> res;
@@ -126,7 +149,9 @@ std::vector<std::string> Arcade::Game_Pacman::readFileIntoVector(std::string fil
     if (file.is_open()) {
         while (std::getline(file, temp)) {
             res.push_back(temp);
+            //std::cout << temp << std::endl;
         }
+        file.close();
     }
     return (res);
 }
@@ -230,7 +255,7 @@ void Arcade::Game_Pacman::updateGhosts()
 {
     for (auto &n: _ghosts) {
         if (!n.isfree) {
-            if (n.clock.getElapsedTime() > 2) {
+            if (n.clock.getElapsedTime() > 1) {
                 n.isfree = 1;
                 n.position[0] = n.spwanPosition[0];
                 n.position[1] = n.spwanPosition[1];
@@ -242,10 +267,28 @@ void Arcade::Game_Pacman::updateGhosts()
                 break;
             }
         } else {
-            if (n.clock.getElapsedTime() > 0.15) {
+            if (n.clock.getElapsedTime() > _level / 20) {
                 ghostMovement(n);
                 n.clock.reset();
             }
+        }
+    }
+}
+
+void Arcade::Game_Pacman::updatePacGums()
+{
+    int i = _pac.position[1] * _map[0].length() + _pac.position[0];
+    if (_sprites[i].visible && _sprites[i].path.substr(18, 5) != "ghost") {
+        _sprites[i].visible = 0;
+        _score += 1;
+        _pacgums += 1;
+        if (_pacgumsTotal == _pacgums) {
+            _currentMapIndex = (_currentMapIndex == 1) ? 0 : 1;
+            _level -= 1;
+            _beginId = _sprites.size() * _currentMapIndex;
+            _sprites.clear();
+            initValues();
+            loadMap();
         }
     }
 }
@@ -264,12 +307,7 @@ int Arcade::Game_Pacman::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_t
         _keyPressed = 0;
     }
     updateGhosts();
-    //UPDATE SCORES
-    int i = _pac.position[1] * _map[0].length() + _pac.position[0];
-    if (_sprites[i].visible && _sprites[i].path.substr(18, 5) != "ghost") {
-        _sprites[i].visible = 0;
-        _score += 1;
-    }
+    updatePacGums();
     //DRAW
     draw(_list);
     return (0);

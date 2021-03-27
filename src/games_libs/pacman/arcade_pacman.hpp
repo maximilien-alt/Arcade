@@ -52,11 +52,17 @@ namespace Arcade {
             GameClock _mainClock;
             float _start_y;
             float _start_x;
+            float _level;
+            int _pacgums;
+            int _pacgumsTotal;
+            int _beginId;
 
             std::vector<std::string> readFileIntoVector(std::string filepath) const;
             void getPacVelocity();
             void updateGhosts();
             void ghostMovement(ghost_t &ghost);
+            void loadMap();
+            void updatePacGums();
     };
 }
 
