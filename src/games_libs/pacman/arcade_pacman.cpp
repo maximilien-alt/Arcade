@@ -10,8 +10,9 @@
 #include <stdio.h>
 #include "arcade_pacman.hpp"
 
-Arcade::Game_Pacman::Game_Pacman(): AGameModule(), _currentMapIndex(0)
+Arcade::Game_Pacman::Game_Pacman(): AGameModule()
 {
+    _currentMapIndex = 0;
     initValues();
 }
 
@@ -27,6 +28,7 @@ void Arcade::Game_Pacman::initValues()
     _pac.buffer = {0, 0, 0};
     _start_y = 0;
     _start_x = 0;
+    _score = 0;
 }
 
 Arcade::Game_Pacman::~Game_Pacman()
@@ -55,14 +57,18 @@ void Arcade::Game_Pacman::startGame()
             if (_map[y][x] == '#' || _map[y][x] == '.' || _map[y][x] == '*') {
                 sprite.path = (_map[y][x] == '#') ? "ressources/pacman/wall.png" : _map[y][x] == '.' ? "ressources/pacman/coins.png" : "ressources/pacman/star.png";
                 sprite.id += 1;
+                sprite.visible = 1;
                 _sprites.push_back(sprite);
+                continue;
             }
+            sprite.visible = 0;
             if (_map[y][x] == 'S') {
                 _pac.position[0] = x;
                 _pac.position[1] = y;
                 _pac.previousPosition[0] = x;
                 _pac.previousPosition[1] = y;
             }
+            _sprites.push_back(sprite);
         }
     }
     sprite.color = {255, 0, 0, {RED, BLACK}};
@@ -79,6 +85,10 @@ void Arcade::Game_Pacman::startGame()
     sprite.id++;
     _sprites.push_back(sprite);
     _pac.velocity = {1, 0, 0};
+
+    _box.input = _playerName;
+    _box.size = {WIDTH / 10, HEIGHT / 15, 0};
+    _box.pos = {WIDTH / 2, 100, 0};
 }
 
 std::vector<std::string> Arcade::Game_Pacman::readFileIntoVector(std::string filepath) const
@@ -95,41 +105,34 @@ std::vector<std::string> Arcade::Game_Pacman::readFileIntoVector(std::string fil
     return (res);
 }
 
-void Arcade::Game_Pacman::simulate()
+bool Arcade::Game_Pacman::simulate()
 {
-    int proj_x = _pac.position[0] + _pac.velocity.x;
-    int proj_y = _pac.position[1] + _pac.velocity.y;
-    if (!((size_t)proj_y < _map.size() && (size_t)proj_x < _map[0].length() && (_map[proj_y][proj_x] == '#' || _map[proj_y][proj_x] == 'x'))) {
-        _pac.position[0] += _pac.velocity.x;
-        _pac.position[1] += _pac.velocity.y;
-        _pac.previousVelocity.x = _pac.velocity.x;
-        _pac.previousVelocity.y = _pac.velocity.y;
-        if ((_pac.buffer.x != 0 || _pac.buffer.y != 0) && !_keyPressed) {
-            _pac.velocity.x = _pac.buffer.x;
-            _pac.velocity.y = _pac.buffer.y;
+    int proj_x = 0;
+    int proj_y = 0;
+
+    if (_pac.buffer.x != 0 || _pac.buffer.y != 0) {
+        proj_x = _pac.position[0] + _pac.buffer.x;
+        proj_y = _pac.position[1] + _pac.buffer.y;
+        if (!((size_t)proj_y < _map.size() && (size_t)proj_x < _map[0].length() && (_map[proj_y][proj_x] == '#' || _map[proj_y][proj_x] == 'x'))) {
+            _pac.previousVelocity = _pac.velocity;
+            _pac.velocity = _pac.buffer;
             _pac.buffer = {0, 0, 0};
-            //simulate();
+            return 1;
         }
-        return;
     }
-    if (_keyPressed) {
-        _pac.buffer.x = _pac.velocity.x;
-        _pac.buffer.y = _pac.velocity.y;
-    }
-    _pac.velocity.x = _pac.previousVelocity.x;
-    _pac.velocity.y = _pac.previousVelocity.y;
     proj_x = _pac.position[0] + _pac.velocity.x;
     proj_y = _pac.position[1] + _pac.velocity.y;
     if (!((size_t)proj_y < _map.size() && (size_t)proj_x < _map[0].length() && (_map[proj_y][proj_x] == '#' || _map[proj_y][proj_x] == 'x'))) {
-        _pac.position[0] += _pac.velocity.x;
-        _pac.position[1] += _pac.velocity.y;
-        if ((_pac.buffer.x != 0 || _pac.buffer.y != 0) && !_keyPressed) {
-            _pac.velocity.x = _pac.buffer.x;
-            _pac.velocity.y = _pac.buffer.y;
-            _pac.buffer = {0, 0, 0};
-            //simulate();
-        }
+        _pac.previousVelocity = _pac.velocity;
+        return 1;
     }
+    proj_x = _pac.position[0] + _pac.previousVelocity.x;
+    proj_y = _pac.position[1] + _pac.previousVelocity.y;
+    if (!((size_t)proj_y < _map.size() && (size_t)proj_x < _map[0].length() && (_map[proj_y][proj_x] == '#' || _map[proj_y][proj_x] == 'x'))) {
+        _pac.velocity = _pac.previousVelocity;
+        return 1;
+    }
+    return 0;
 }
 
 int Arcade::Game_Pacman::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *_list)
@@ -139,23 +142,36 @@ int Arcade::Game_Pacman::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_t
     if (_keys[ARROW_DOWN] && !_keyPressed) {
         _keyPressed = 1;
         _pac.velocity = {0, 1, 0};
+        _pac.buffer = {0, 1, 0};
     }
     if (_keys[ARROW_UP] && !_keyPressed) {
         _keyPressed = 1;
         _pac.velocity = {0, -1, 0};
+        _pac.buffer = {0, -1, 0};
     }
     if (_keys[ARROW_RIGHT] && !_keyPressed) {
         _keyPressed = 1;
         _pac.velocity = {1, 0, 0};
+        _pac.buffer = {1, 0, 0};
     }
     if (_keys[ARROW_LEFT] && !_keyPressed) {
         _keyPressed = 1;
         _pac.velocity = {-1, 0, 0};
+        _pac.buffer = {-1, 0, 0};
     }
+    bool status = simulate();
     if ((_pac.velocity.y != 0 && _mainClock.getElapsedTime() > 0.15) || (_pac.velocity.x != 0 && _mainClock.getElapsedTime() > 0.1)) {
-        simulate();
+        if (status) {
+            _pac.position[0] += _pac.velocity.x;
+            _pac.position[1] += _pac.velocity.y;
+        }
         _mainClock.reset();
         _keyPressed = 0;
+    }
+    int i = _pac.position[1] * _map[0].length() + _pac.position[0];
+    if (_sprites[i].visible) {
+        _sprites[i].visible = 0;
+        _score += 1;
     }
     draw(_list);
     return (0);
@@ -164,30 +180,27 @@ int Arcade::Game_Pacman::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_t
 void Arcade::Game_Pacman::draw(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *_list)
 {
     graphical_vector_t goodVelocity;
+    int goodIndex = 0;
 
-    for (size_t index = 0; index < _sprites.size() - 4; index += 1)
-        _list->push_back(std::make_pair(SPRITE, &_sprites[index]));
-    goodVelocity = (_pac.velocity.x != 0 && _pac.velocity.y != 0) ? _pac.velocity : _pac.previousVelocity;
+    for (int index = 0; index < _sprites.size() - 4; index += 1)
+        if (_sprites[index].visible)
+            _list->push_back(std::make_pair(SPRITE, &_sprites[index]));
+    goodVelocity = ((_pac.velocity.x != 0 || _pac.velocity.y != 0) && !_keyPressed) ? _pac.velocity : _pac.previousVelocity;
     if (goodVelocity.x == 1) {
-        _sprites[_sprites.size() - 1].pos.x = _start_x + _pac.position[0] * 9.5;
-        _sprites[_sprites.size() - 1].pos.y = _start_y + _pac.position[1] * 19;
-        _list->push_back(std::make_pair(SPRITE, &_sprites[_sprites.size() - 1]));
-    }
-    else if (goodVelocity.x == -1) {
-        _sprites[_sprites.size() - 2].pos.x = _start_x + _pac.position[0] * 9.5;
-        _sprites[_sprites.size() - 2].pos.y = _start_y + _pac.position[1] * 19;
-        _list->push_back(std::make_pair(SPRITE, &_sprites[_sprites.size() - 2]));
-    }
-    else if (goodVelocity.y == 1) {
-        _sprites[_sprites.size() - 3].pos.x = _start_x + _pac.position[0] * 9.5;
-        _sprites[_sprites.size() - 3].pos.y = _start_y + _pac.position[1] * 19;
-        _list->push_back(std::make_pair(SPRITE, &_sprites[_sprites.size() - 3]));
-    }
-    else {
-        _sprites[_sprites.size() - 4].pos.x = _start_x + _pac.position[0] * 9.5;
-        _sprites[_sprites.size() - 4].pos.y = _start_y + _pac.position[1] * 19;
-        _list->push_back(std::make_pair(SPRITE, &_sprites[_sprites.size() - 4]));
-    }
+        goodIndex = _sprites.size() - 1;
+    } else if (goodVelocity.x == -1) {
+        goodIndex = _sprites.size() - 2;
+    } else if (goodVelocity.y == 1)
+        goodIndex = _sprites.size() - 3;
+    else
+        goodIndex = _sprites.size() - 4;
+    graphical_sprite_t &sprite = _sprites[goodIndex];
+
+    sprite.pos.x = _start_x + _pac.position[0] * 9.5;
+    sprite.pos.y = _start_y + _pac.position[1] * 19;
+    _list->push_back(std::make_pair(SPRITE, &sprite));
+    _box.input = _playerName + " " + std::to_string(_score);
+    _list->push_back(std::make_pair(BOX, &_box));
 }
 
 extern "C" Arcade::IGameModule *entryPoint(void)

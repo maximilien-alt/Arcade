@@ -27,8 +27,10 @@ void Arcade::LibraryManager::LibraryManager::reset()
 {
     for (auto &n: _graphicalModules)
         n->reset();
-    for (auto &n: _gameModules)
+    for (auto &n: _gameModules) {
         n->reset();
+        n->setPlayerName(_gameModules[0]->getPlayerName());
+    }
 }
 
 Arcade::LibraryManager::~LibraryManager()

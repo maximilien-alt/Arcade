@@ -112,6 +112,7 @@ namespace Arcade
         graphical_color_t color;
         graphical_vector_t pos;
         graphical_vector_t size;
+        bool visible;
     } graphical_sprite_t;
 
     typedef struct graphical_box_s: IStruct_t

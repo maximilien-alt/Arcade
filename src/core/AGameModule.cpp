@@ -36,3 +36,13 @@ void Arcade::AGameModule::reset()
     _sprites.clear();
     _texts.clear();
 }
+
+std::string Arcade::AGameModule::getPlayerName() const
+{
+    return (_playerName);
+}
+
+void Arcade::AGameModule::setPlayerName(const std::string &name)
+{
+    _playerName = name;
+}

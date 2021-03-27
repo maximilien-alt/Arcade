@@ -9,6 +9,7 @@
 #define ARCADE_PACMAN_HPP_
 
 #include "../../core/AGameModule.hpp"
+#include <unordered_map>
 
 namespace Arcade {
     typedef struct pacman_s
@@ -28,12 +29,13 @@ namespace Arcade {
             void startGame() final;
             int updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *_list) final;
             void draw(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *_list);
-            void simulate();
+            bool simulate();
             void initValues();
 
         private:
             int _currentMapIndex;
             std::vector<std::string> _map;
+            int _score;
             pacman_t _pac;
             bool _keyPressed;
             GameClock _mainClock;

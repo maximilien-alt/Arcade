@@ -22,6 +22,8 @@ namespace Arcade {
             void setKeys(std::unordered_map<int, bool> keys) final;
             void setMousePosition(graphical_vector_t pos) final;
             bool isMouseOnSpriteHitbox(graphical_sprite_t sprite) final;
+            std::string getPlayerName() const final;
+            void setPlayerName(const std::string &name) final;
             void reset() final;
 
         protected:
