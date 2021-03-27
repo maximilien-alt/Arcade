@@ -18,6 +18,7 @@ namespace Arcade {
         graphical_vector_t velocity;
         graphical_vector_t previousVelocity;
         graphical_vector_t buffer;
+        int spwanPosition[2];
         int previousPosition[2];
     } pacman_t;
 
@@ -29,6 +30,7 @@ namespace Arcade {
         GameClock clock;
         int spwanPosition[2];
         graphical_sprite_t sprite;
+        int jail[2];
     } ghost_t;
 
     class Game_Pacman: public AGameModule {
@@ -56,6 +58,7 @@ namespace Arcade {
             int _pacgums;
             int _pacgumsTotal;
             int _beginId;
+            int _life;
 
             std::vector<std::string> readFileIntoVector(std::string filepath) const;
             void getPacVelocity();
