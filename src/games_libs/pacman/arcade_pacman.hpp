@@ -21,6 +21,16 @@ namespace Arcade {
         int previousPosition[2];
     } pacman_t;
 
+    typedef struct ghost_s
+    {
+        int position[2];
+        graphical_vector_t velocity;
+        bool isfree;
+        GameClock clock;
+        int spwanPosition[2];
+        graphical_sprite_t sprite;
+    } ghost_t;
+
     class Game_Pacman: public AGameModule {
         public:
             Game_Pacman();
@@ -37,12 +47,16 @@ namespace Arcade {
             std::vector<std::string> _map;
             int _score;
             pacman_t _pac;
+            std::vector<ghost_t> _ghosts;
             bool _keyPressed;
             GameClock _mainClock;
             float _start_y;
             float _start_x;
 
             std::vector<std::string> readFileIntoVector(std::string filepath) const;
+            void getPacVelocity();
+            void updateGhosts();
+            void ghostMovement(ghost_t &ghost);
     };
 }
 
