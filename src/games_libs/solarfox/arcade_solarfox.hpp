@@ -19,9 +19,16 @@ namespace Arcade {
             void startGame() final;
             int updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *_list) final;
             void draw(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *list);
+            void createEnnemies();
+            void createPlayer();
+            void calcEnnemiesPositions();
+            void calcPlayerPosition();
+            void handleKeys();
         private:
             GameClock _mainClock;
-            std::unordered_map<size_t, int> _ennemiesDirection;
+            std::unordered_map<size_t, float> _ennemiesDirection;
+            size_t _playerDirection = 0;
+            graphical_vector_t _playerPosition;
     };
 }
 

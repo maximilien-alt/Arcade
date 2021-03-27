@@ -19,7 +19,7 @@ Arcade::Graphical_SDL2::~Graphical_SDL2()
 void Arcade::Graphical_SDL2::openWindow()
 {
     SDL_CreateWindowAndRenderer(WIDTH, HEIGHT, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE, &_window, &_renderer);
-    SDL_SetWindowTitle(_window, "Arcade");
+    SDL_SetWindowTitle(_window, "Arcade (SDL)");
     TTF_Init();
     _font = TTF_OpenFont("ressources/font.ttf", 200);
 }
