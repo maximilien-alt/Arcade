@@ -24,8 +24,11 @@ namespace Arcade {
             void calcEnnemiesPositions();
             void calcPlayerPosition();
             void handleKeys();
+            int distanceBetween(graphical_vector_t pos1, graphical_vector_t pos2);
+            void ennemyShot(graphical_sprite_t sprite, GameClock clock);
         private:
             GameClock _mainClock;
+            std::vector<GameClock> _ennemiesClocks;
             std::unordered_map<size_t, float> _ennemiesDirection;
             size_t _playerDirection = 0;
             graphical_vector_t _playerPosition;
