@@ -17,6 +17,7 @@ void Arcade::Game_Menu::init_sprites()
     int id = 0;
 
     sprite.size = {0, 0, 0};
+    sprite.angle = 0;
     for (auto &n: _texts) {
         sprite.id = id;
         sprite.path = "ressources/" + n.text + "_logo.png";

@@ -112,6 +112,7 @@ namespace Arcade
         graphical_color_t color;
         graphical_vector_t pos;
         graphical_vector_t size;
+        float angle;
         bool visible;
     } graphical_sprite_t;
 

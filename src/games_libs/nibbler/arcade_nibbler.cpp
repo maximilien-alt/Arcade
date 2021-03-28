@@ -34,6 +34,7 @@ void Arcade::Game_Nibbler::startGame()
     sprite.color = {255, 0, 0, {RED, RED}};
     sprite.pos = {(_box.pos.x - _box.size.x / 2) + _apple.x * 40 + 20, (_box.pos.y - _box.size.y / 2) + _apple.y * 40 + 20, 0};
     sprite.size = {40, 40, 0};
+    sprite.angle = 0;
     _sprites.push_back(sprite);
     sprite.path = "ressources/snake_tail.png";
     sprite.color = {0, 255, 0, {GREEN, GREEN}};
@@ -86,6 +87,7 @@ int Arcade::Game_Nibbler::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_
             sprite.color = {0, 255, 0, {GREEN, GREEN}};
             sprite.pos = {(_box.pos.x - _box.size.x / 2) + _snake[_indexsprite-1].x * 40 + 20, (_box.pos.y - _box.size.y / 2) + _snake[_indexsprite-1].y * 40 + 20, 0};
             sprite.size = {40, 40, 0};
+            sprite.angle = 0;
             sprite.id = _indexsprite++;
             _sprites.push_back(sprite);
         }

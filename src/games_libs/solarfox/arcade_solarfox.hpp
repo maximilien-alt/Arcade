@@ -31,7 +31,6 @@ namespace Arcade {
             std::vector<GameClock> _ennemiesClocks;
             std::unordered_map<size_t, float> _ennemiesDirection;
             size_t _playerDirection = 0;
-            graphical_vector_t _playerPosition;
     };
 }
 

@@ -58,6 +58,7 @@ void Arcade::Game_Pacman::loadMap()
     sprite.id = _beginId;
     sprite.path = "ressources/pacman/wall.png";
     sprite.size = {20, 20, 0};
+    sprite.angle = 0;
     _start_y = HEIGHT / 2 - (_map.size() / 2) * 19;
     _start_x = WIDTH / 2 - (_map[0].length() / 2) * 9.5;
     for (size_t y = 0; y < _map.size(); y += 1) {
@@ -121,15 +122,19 @@ void Arcade::Game_Pacman::loadMap()
         _sprites.push_back(sprite);
     }
     sprite.id++;
-    sprite.path = "ressources/pacman/pacman_up.png";
+    sprite.path = "ressources/pacman/pacman.png";
+    sprite.angle = 180;
     _sprites.push_back(sprite);
-    sprite.path = "ressources/pacman/pacman_down.png";
+    sprite.path = "ressources/pacman/pacman.png";
+    sprite.angle = 0;
     sprite.id++;
     _sprites.push_back(sprite);
-    sprite.path = "ressources/pacman/pacman_left.png";
+    sprite.path = "ressources/pacman/pacman.png";
+    sprite.angle = 90;
     sprite.id++;
     _sprites.push_back(sprite);
-    sprite.path = "ressources/pacman/pacman_right.png";
+    sprite.path = "ressources/pacman/pacman.png";
+    sprite.angle = 270;
     sprite.id++;
     _sprites.push_back(sprite);
     _pac.velocity = {1, 0, 0};

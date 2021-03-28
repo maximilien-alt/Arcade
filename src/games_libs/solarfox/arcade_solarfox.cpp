@@ -29,25 +29,29 @@ void Arcade::Game_Solarfox::createEnnemies()
 {
     graphical_sprite_t sprite;
     sprite.id = 0;
-    sprite.path = "ressources/solarfox/solarfox_ennemy_up.png";
+    sprite.path = "ressources/solarfox/solarfox_ennemy.png";
     sprite.color = {255, 0, 0, {RED, BLACK}};
     sprite.pos = {_box.pos.x - _box.size.x / 2 + 120, _box.pos.y - _box.size.y / 2 + 8, 0};
     sprite.size = {36, 18, 0};
+    sprite.angle = 180;
     sprite.ncursesBox = 0;
     _sprites.push_back(sprite);
 
     sprite.id++;
-    sprite.path = "ressources/solarfox/solarfox_ennemy_right.png";
+    sprite.path = "ressources/solarfox/solarfox_ennemy.png";
     sprite.pos = {_box.pos.x + _box.size.x / 2 - 10, _box.pos.y - _box.size.y / 2 + 120, 0};
+    sprite.angle = 270;
     _sprites.push_back(sprite);
 
     sprite.id++;
     sprite.path = "ressources/solarfox/solarfox_ennemy.png";
     sprite.pos = {(_box.pos.x + _box.size.x / 2 - 120), (_box.pos.y + _box.size.y / 2 - 8), 0};
+    sprite.angle = 0;
     _sprites.push_back(sprite);
 
     sprite.id++;
-    sprite.path = "ressources/solarfox/solarfox_ennemy_left.png";
+    sprite.path = "ressources/solarfox/solarfox_ennemy.png";
+    sprite.angle = 90;
     sprite.pos = {(_box.pos.x - _box.size.x / 2 + 8), (_box.pos.y + _box.size.y / 2 - 120), 0};
     _sprites.push_back(sprite);
 
@@ -60,27 +64,16 @@ void Arcade::Game_Solarfox::createEnnemies()
 
 void Arcade::Game_Solarfox::createPlayer()
 {
-    _playerPosition = {(_box.pos.x + _box.size.x / 4), (_box.pos.y + _box.size.y / 4 - 120), 0};
+    _sprites[4].pos = {(_box.pos.x + _box.size.x / 4), (_box.pos.y + _box.size.y / 4 - 120), 0};
 
     graphical_sprite_t player;
     player.id = 4;
     player.path = "ressources/solarfox/solarfox_player.png";
     player.color = {255, 0, 0, {WHITE, BLACK}};
-    player.pos = _playerPosition;
+    player.pos = _sprites[4].pos;
     player.size = {36, 18, 0};
+    player.angle = 0;
     player.ncursesBox = 0;
-    _sprites.push_back(player);
-
-    player.id++;
-    player.path = "ressources/solarfox/solarfox_player_left.png";
-    _sprites.push_back(player);
-
-    player.id++;
-    player.path = "ressources/solarfox/solarfox_player_up.png";
-    _sprites.push_back(player);
-
-    player.id++;
-    player.path = "ressources/solarfox/solarfox_player_right.png";
     _sprites.push_back(player);
 }
 
@@ -127,22 +120,22 @@ void Arcade::Game_Solarfox::calcEnnemiesPositions()
 
 void Arcade::Game_Solarfox::calcPlayerPosition()
 {
-    switch (_playerDirection) {
+    switch ((int)(_sprites[4].angle)) {
         case 0:
-            if (_playerPosition.y > _box.pos.y - _box.size.y / 2 + 60)
-                _playerPosition.y -= 1;
+            if (_sprites[4].pos.y > _box.pos.y - _box.size.y / 2 + 60)
+                _sprites[4].pos.y -= 1;
             break;
-        case 1:
-            if (_playerPosition.x < _box.pos.x - _box.size.x / 2 + _box.size.x - 60)
-                _playerPosition.x += 1;
+        case 90:
+            if (_sprites[4].pos.x < _box.pos.x - _box.size.x / 2 + _box.size.x - 60)
+                _sprites[4].pos.x += 1;
             break;
-        case 2:
-            if (_playerPosition.y < _box.pos.y - _box.size.y / 2 + _box.size.y - 60)
-                _playerPosition.y += 1;
+        case 180:
+            if (_sprites[4].pos.y < _box.pos.y - _box.size.y / 2 + _box.size.y - 60)
+                _sprites[4].pos.y += 1;
             break;
-        case 3:
-            if (_playerPosition.x > _box.pos.x - _box.size.x / 2 + 60)
-                _playerPosition.x -= 1;
+        case 270:
+            if (_sprites[4].pos.x > _box.pos.x - _box.size.x / 2 + 60)
+                _sprites[4].pos.x -= 1;
             break;
     }
 }
@@ -150,7 +143,7 @@ void Arcade::Game_Solarfox::calcPlayerPosition()
 void Arcade::Game_Solarfox::ennemyShot(graphical_sprite_t sprite, GameClock clock)
 {
     if (clock.getElapsedTime() > 2) {
-        const int distance = distanceBetween(sprite.pos, _sprites[_playerDirection + 4].pos);
+        const int distance = distanceBetween(sprite.pos, _sprites[4].pos);
         if (distance < 200) {
             // shot
         }
@@ -159,14 +152,15 @@ void Arcade::Game_Solarfox::ennemyShot(graphical_sprite_t sprite, GameClock cloc
 
 void Arcade::Game_Solarfox::handleKeys()
 {
-    if (_keys[ARROW_UP] && _playerDirection != 2) {
+    if (_keys[ARROW_UP] && _sprites[4].angle != 180) {
         _playerDirection = 0;
-    } else if (_keys[ARROW_RIGHT] && _playerDirection != 3) {
-        _playerDirection = 1;
-    } else if (_keys[ARROW_DOWN] && _playerDirection != 0) {
-        _playerDirection = 2;
-    } else if (_keys[ARROW_LEFT] && _playerDirection != 1) {
-        _playerDirection = 3;
+        _sprites[4].angle = 0;
+    } else if (_keys[ARROW_RIGHT] && _sprites[4].angle != 270) {
+        _sprites[4].angle = 90;
+    } else if (_keys[ARROW_DOWN] && _sprites[4].angle != 0) {
+        _sprites[4].angle = 180;
+    } else if (_keys[ARROW_LEFT] && _playerDirection != 90) {
+        _sprites[4].angle = 270;
     }
 }
 
@@ -190,10 +184,7 @@ void Arcade::Game_Solarfox::draw(std::list<std::pair<Arcade::FLAGS, IStruct_t *>
     for (auto &n : _texts)
         list->push_back(std::make_pair(TEXT, &n));
     for (auto &n : _sprites) {
-        if (n.id - 4 == _playerDirection)
-            n.pos = _playerPosition;
-        if ((n.id < 4 || n.id > 7) || (n.id - 4 == _playerDirection))
-            list->push_back(std::make_pair(SPRITE, &n));
+        list->push_back(std::make_pair(SPRITE, &n));
     }
 }
 

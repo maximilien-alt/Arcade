@@ -60,7 +60,7 @@ void Arcade::Graphical_SDL2::drawSprite(graphical_sprite_t &sprite)
     texr.w = size.x;
     texr.h = size.y;
 
-    SDL_RenderCopy(_renderer, _sprites[sprite.id].first, NULL, &texr);
+    SDL_RenderCopyEx(_renderer, _sprites[sprite.id].first, NULL, &texr, sprite.angle, NULL, SDL_FLIP_NONE);
 }
 
 void Arcade::Graphical_SDL2::drawText(graphical_text_t &text)

@@ -39,6 +39,7 @@ void Arcade::Graphical_SFML::drawSprite(graphical_sprite_t &sprite)
     sprite.size.x = _sprites[sprite.id]._texture.getSize().x;
     _sprites[sprite.id]._sprite.setTexture(_sprites[sprite.id]._texture);
     _sprites[sprite.id]._sprite.setPosition(sprite.pos.x, sprite.pos.y);
+    _sprites[sprite.id]._sprite.setRotation(sprite.angle);
     _window->draw(_sprites[sprite.id]._sprite);
 }
 
