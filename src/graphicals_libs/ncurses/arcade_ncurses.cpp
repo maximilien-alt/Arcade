@@ -200,6 +200,8 @@ void Arcade::Graphical_Ncurses::updateInputsMap()
         _keys[Arcade::KEYS::ARROW_DOWN] = 1;
     if (input == KEY_BACKSPACE || input == KEY_DC)
         _keys[Arcade::KEYS::BACKSPACE] = 1;
+    if (input == 32)
+        _keys[Arcade::KEYS::SPACE] = 1;
     _keys[Arcade::KEYS::MOUSE] = getmouse(&event) == OK && input == KEY_MOUSE && (event.bstate & BUTTON1_PRESSED);
 }
 

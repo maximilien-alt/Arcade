@@ -132,6 +132,7 @@ void Arcade::Graphical_SFML::updateInputsMap()
     _keys[Arcade::KEYS::ARROW_UP] = _key[sf::Keyboard::Up];
     _keys[Arcade::KEYS::ARROW_DOWN] = _key[sf::Keyboard::Down];
     _keys[Arcade::KEYS::RETURN] = _key[sf::Keyboard::Return];
+    _keys[Arcade::KEYS::SPACE] = _key[sf::Keyboard::Space];
     _keys[Arcade::KEYS::MOUSE] = sf::Mouse::isButtonPressed(sf::Mouse::Left);
 }
 

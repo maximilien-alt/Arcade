@@ -150,6 +150,7 @@ void Arcade::Graphical_SDL2::updateInputsMap()
     _keys[Arcade::KEYS::ARROW_DOWN] = _key[SDLK_DOWN];
     _keys[Arcade::KEYS::BACKSPACE] = _key[SDLK_BACKSPACE];
     _keys[Arcade::KEYS::RETURN] = _key[SDLK_RETURN];
+    _keys[Arcade::KEYS::SPACE] = _key[SDLK_SPACE];
 }
 
 bool Arcade::Graphical_SDL2::isMouseClicked()

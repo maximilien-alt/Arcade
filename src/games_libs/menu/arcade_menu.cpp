@@ -16,6 +16,7 @@ void Arcade::Game_Menu::init_sprites()
     graphical_sprite_t sprite;
     int id = 0;
 
+    sprite.visible = 1;
     sprite.size = {0, 0, 0};
     sprite.angle = 0;
     for (auto &n: _texts) {

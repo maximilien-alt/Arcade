@@ -28,6 +28,7 @@ void Arcade::Game_Nibbler::startGame()
     _indexsprite = 1;
     graphical_sprite_t sprite;
 
+    sprite.visible = 1;
     sprite.ncursesBox = 0;
     sprite.id = 0;
     sprite.path = "ressources/snake_apple.png";
@@ -82,6 +83,7 @@ int Arcade::Game_Nibbler::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_
             _apple.x = -1;
             _snake.push_back(tmp);
             graphical_sprite_t sprite;
+            sprite.visible = 1;
             sprite.ncursesBox = 0;
             sprite.path = "ressources/snake_tail.png";
             sprite.color = {0, 255, 0, {GREEN, GREEN}};
@@ -104,7 +106,7 @@ int Arcade::Game_Nibbler::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_
 
 void Arcade::Game_Nibbler::draw(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *list)
 {
-    for (int i = 1; i < _sprites.size(); i++)
+    for (size_t i = 1; i < _sprites.size(); i++)
         _sprites[i].pos = {(_box.pos.x - _box.size.x / 2) + _snake[i-1].x * 40 + 20, (_box.pos.y - _box.size.y / 2) + _snake[i-1].y * 40 + 20, 0};
     _sprites[0].pos = {(_box.pos.x - _box.size.x / 2) + _apple.x * 40 + 20, (_box.pos.y - _box.size.y / 2) + _apple.y * 40 + 20, 0};
     list->push_back(std::make_pair(BOX, &_box));

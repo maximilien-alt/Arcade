@@ -64,6 +64,7 @@ namespace Arcade
         ARROW_UP,
         ARROW_RIGHT,
         ARROW_DOWN,
+        SPACE,
         NONE
     };
 
