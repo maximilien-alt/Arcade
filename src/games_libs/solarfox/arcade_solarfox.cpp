@@ -37,19 +37,16 @@ void Arcade::Game_Solarfox::createEnnemies()
     _sprites.push_back(sprite);
 
     sprite.id++;
-    sprite.path = "ressources/solarfox/solarfox_ennemy.png";
     sprite.pos = {_box.pos.x + _box.size.x / 2 - 10, _box.pos.y - _box.size.y / 2 + 120, 0};
     sprite.angle = 270;
     _sprites.push_back(sprite);
 
     sprite.id++;
-    sprite.path = "ressources/solarfox/solarfox_ennemy.png";
     sprite.pos = {(_box.pos.x + _box.size.x / 2 - 120), (_box.pos.y + _box.size.y / 2 - 8), 0};
     sprite.angle = 0;
     _sprites.push_back(sprite);
 
     sprite.id++;
-    sprite.path = "ressources/solarfox/solarfox_ennemy.png";
     sprite.angle = 90;
     sprite.pos = {(_box.pos.x - _box.size.x / 2 + 8), (_box.pos.y + _box.size.y / 2 - 120), 0};
     _sprites.push_back(sprite);
