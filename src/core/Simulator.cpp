@@ -81,13 +81,17 @@ void Arcade::Simulator::parseList(Arcade::IGraphicalModule *currentGraphical, Ar
     currentGraphical->updateInputsMap();
     currentGame->setKeys(currentGraphical->getInputsMap());
     currentGame->setMousePosition(currentGraphical->getMousePosition());
+    Arcade::graphical_sprite_t *sprite = nullptr;
+
     for (auto &n: _list) {
         switch (n.first) {
             case BOX:
                 currentGraphical->showInputBox(*dynamic_cast<Arcade::graphical_box_t *>(n.second));
                 break;
             case SPRITE:
-                currentGraphical->drawSprite(*dynamic_cast<Arcade::graphical_sprite_t *>(n.second));
+                sprite = dynamic_cast<Arcade::graphical_sprite_t *>(n.second);
+                if (sprite->visible)
+                    currentGraphical->drawSprite(*sprite);
                 break;
             case TEXT:
                 currentGraphical->drawText(*dynamic_cast<Arcade::graphical_text_t *>(n.second));
