@@ -12,13 +12,6 @@
 
 namespace Arcade {
     class Game_Nibbler: public AGameModule {
-
-        enum NIBBLER {
-            VOID,
-            SNAKE,
-            APPLE
-        };
-
         public:
             Game_Nibbler();
             ~Game_Nibbler();
@@ -27,14 +20,18 @@ namespace Arcade {
             int updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *_list) final;
             void draw(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *_list);
             bool checkDeath();
+            void loadMap(int i);
+            std::vector<std::string> readFileIntoVector(std::string filepath) const;
 
         private:
-            std::size_t _indexsprite;
+            std::size_t _indexsnake;
             std::vector<graphical_vector_t> _snake;
+            std::vector<graphical_vector_t> _wall;
             graphical_vector_t _apple;
             graphical_vector_t _speed;
             bool _keyPressed = false;
             GameClock _mainClock;
+            std::size_t _score;
     };
 }
 
