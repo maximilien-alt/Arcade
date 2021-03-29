@@ -27,7 +27,7 @@ namespace Arcade {
             void reset() final;
 
         protected:
-            std::list<graphical_text_t> _texts;
+            std::vector<graphical_text_t> _texts;
             std::vector<graphical_sprite_t> _sprites;
             std::string _playerName;
             graphical_box_t _box;

@@ -174,10 +174,9 @@ void Arcade::Game_Nibbler::draw(std::list<std::pair<Arcade::FLAGS, IStruct_t *>>
     _sprites[0].pos = {(WIDTH / 2 - 40 * 10) + _apple.x * 40 + 20, (HEIGHT / 2 - 40 * 10) + _apple.y * 40 + 20, 0};
     for (auto &n : _sprites)
         list->push_back(std::make_pair(SPRITE, &n));
-    for (auto &n : _texts) {
-        n.text = std::to_string(_score);
+    _texts[0].text = std::to_string(_score);
+    for (auto &n : _texts)
         list->push_back(std::make_pair(TEXT, &n));
-    }
 }
 
 bool Arcade::Game_Nibbler::checkDeath()
