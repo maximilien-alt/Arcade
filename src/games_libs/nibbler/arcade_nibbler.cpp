@@ -112,6 +112,8 @@ void Arcade::Game_Nibbler::appleNewPos()
 
 int Arcade::Game_Nibbler::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *list)
 {
+    float clockSpeed = 0.2;
+
     if (_keys[ARROW_DOWN] && _speed.y != -1 && !_keyPressed) {
         _speed = {0, 1, 0};
         _keyPressed = true;
@@ -128,7 +130,9 @@ int Arcade::Game_Nibbler::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_
         _speed = {1, 0, 0};
         _keyPressed = true;
     }
-    if (_mainClock.getElapsedTime() > 0.2) {
+    if (_keys[SPACE])
+        clockSpeed = 0.05;
+    if (_mainClock.getElapsedTime() > clockSpeed) {
         _keyPressed = false;
         graphical_vector_t tmp = _snake[_snake.size() - 1];
         for (int i = _snake.size() - 1; i > 0; i--) {
