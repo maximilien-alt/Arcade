@@ -63,7 +63,7 @@ void Arcade::Game_Nibbler::startGame()
 {
     _snake.clear();
     _wall.clear();
-    _apple = {-1, 0, 0};
+    appleNewPos();
     _speed = {1, 0, 0};
     _score = 0;
     graphical_text_t text;
@@ -98,6 +98,18 @@ void Arcade::Game_Nibbler::startGame()
     }
 }
 
+void Arcade::Game_Nibbler::appleNewPos()
+{
+    _apple.x = rand() % 20;
+    _apple.y = rand() % 20;
+    for (std::size_t i = 0; i < _wall.size(); i++)
+        if (_apple.x == _wall[i].x && _apple.y == _wall[i].y)
+            appleNewPos();
+    for (std::size_t i = 0; i < _snake.size(); i++)
+        if (_apple.x == _snake[i].x && _apple.y == _snake[i].y)
+            appleNewPos();
+}
+
 int Arcade::Game_Nibbler::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *list)
 {
     if (_keys[ARROW_DOWN] && _speed.y != -1 && !_keyPressed) {
@@ -116,10 +128,6 @@ int Arcade::Game_Nibbler::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_
         _speed = {1, 0, 0};
         _keyPressed = true;
     }
-    if (_apple.x == -1) {
-        _apple.x = rand() % 15;
-        _apple.y = rand() % 15;
-    }
     if (_mainClock.getElapsedTime() > 0.2) {
         _keyPressed = false;
         graphical_vector_t tmp = _snake[_snake.size() - 1];
@@ -131,8 +139,7 @@ int Arcade::Game_Nibbler::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_
         _snake[0].y += _speed.y;
         if (_snake[0].x == _apple.x && _snake[0].y == _apple.y) {
             _score++;
-            _apple.x = rand() % 15;
-            _apple.y = rand() % 15;
+            appleNewPos();
             _snake.push_back(tmp);
             graphical_sprite_t sprite;
             sprite.visible = 1;
@@ -175,10 +182,10 @@ void Arcade::Game_Nibbler::draw(std::list<std::pair<Arcade::FLAGS, IStruct_t *>>
 
 bool Arcade::Game_Nibbler::checkDeath()
 {
-    for (int i = _snake.size() - 1; i > 0; i--)
+    for (std::size_t i = _snake.size() - 1; i > 0; i--)
         if (_snake[0].x == _snake[i].x && _snake[0].y == _snake[i].y)
             return true;
-    for (int i = 0; i < _wall.size(); i++)
+    for (std::size_t i = 0; i < _wall.size(); i++)
         if (_snake[0].x == _wall[i].x && _snake[0].y == _wall[i].y)
             return true;
     if (_snake.size() == 15 * 15)

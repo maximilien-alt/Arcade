@@ -22,6 +22,7 @@ namespace Arcade {
             bool checkDeath();
             void loadMap(int i);
             std::vector<std::string> readFileIntoVector(std::string filepath) const;
+            void appleNewPos();
 
         private:
             std::size_t _indexsnake;
