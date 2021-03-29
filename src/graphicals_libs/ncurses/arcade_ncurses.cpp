@@ -95,6 +95,45 @@ std::vector<std::string> Arcade::Graphical_Ncurses::readFileIntoVector(std::stri
     return (res);
 }
 
+std::vector<std::string> rotate(std::vector<std::string> toRotate, float angle)
+{
+    std::vector<std::string> ret;
+    std::string temp;
+    int i = 0;
+
+    switch ((int)angle) {
+        case 0: return toRotate;
+        case 90:
+            for (int x = 0; x < (int)toRotate[0].length(); x += 1) {
+                temp.clear();
+                i = 0;
+                for (int y = (int)toRotate.size() - 1; y >= 0; y -= 1)
+                    temp.insert(temp.begin() + i++, 1, toRotate[y][x]);
+                ret.push_back(temp);
+            }
+            break;
+        case 180:
+            for (int y = (int)toRotate.size() - 1; y >= 0; y -= 1) {
+                temp.clear();
+                i = 0;
+                for (int x = (int)toRotate[y].length() - 1; x >= 0; x -= 1)
+                    temp.insert(temp.begin() + i++, 1, toRotate[y][x]);
+                ret.push_back(temp);
+            }
+            break;
+        case 270: 
+            for (int x = (int)toRotate[0].length() - 1; x >= 0; x -= 1) {
+                temp.clear();
+                i = 0;
+                for (int y = 0; y < (int)toRotate.size(); y += 1)
+                    temp.insert(temp.begin() + i++, 1, toRotate[y][x]);
+                ret.push_back(temp);
+            }
+            break;
+    }
+    return ret;
+}
+
 void Arcade::Graphical_Ncurses::drawSprite(graphical_sprite_t &sprite)
 {
     int pair = colornum(sprite.color.ncurse[0], sprite.color.ncurse[1]);
@@ -114,16 +153,17 @@ void Arcade::Graphical_Ncurses::drawSprite(graphical_sprite_t &sprite)
         }
         _sprites[sprite.id] = std::make_pair(vector, win);
     }
-    size_y = _sprites[sprite.id].first.size() + 2;
-    size_x = _sprites[sprite.id].first[0].length() + 2;
+    std::vector<std::string> toPrint = rotate(_sprites[sprite.id].first, sprite.angle);
+    size_y = toPrint.size() + 2;
+    size_x = toPrint[0].length() + 2;
     sprite.size.y = size_y * HEIGHT / LINES;
     sprite.size.x = size_x * WIDTH / COLS;
     wattron((sprite.ncursesBox) ? _sprites[sprite.id].second : _windows[0], COLOR_PAIR(pair));
-    for (size_t index = 0; index < _sprites[sprite.id].first.size(); index += 1) {
+    for (size_t index = 0; index < toPrint.size(); index += 1) {
         if (sprite.ncursesBox)
-            mvwprintw(_sprites[sprite.id].second, index + 1, 1, _sprites[sprite.id].first[index].c_str());
+            mvwprintw(_sprites[sprite.id].second, index + 1, 1, toPrint[index].c_str());
         else
-            mvwprintw(_windows[0], pos_y - size_y / 2 + index, pos_x - size_x / 2, _sprites[sprite.id].first[index].c_str());
+            mvwprintw(_windows[0], pos_y - size_y / 2 + index, pos_x - size_x / 2, toPrint[index].c_str());
     }
     wattroff((sprite.ncursesBox) ? _sprites[sprite.id].second : _windows[0], COLOR_PAIR(pair));
 }
