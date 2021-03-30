@@ -17,6 +17,7 @@
 
 #include "GraphicalStructures.hpp"
 #include "Tools.hpp"
+#include "AStar.hpp"
 #include <memory>
 #include <iostream>
 #include <SFML/Graphics.hpp>

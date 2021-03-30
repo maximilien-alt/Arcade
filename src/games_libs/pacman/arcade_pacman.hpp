@@ -20,19 +20,25 @@ namespace Arcade {
         graphical_vector_t buffer;
         int spwanPosition[2];
         int previousPosition[2];
+        GameClock draw;
     } pacman_t;
 
     typedef struct ghost_s
     {
         int position[2];
+        int previousPosition[2];
         graphical_vector_t velocity;
         bool isfree;
         bool isFreeze;
         GameClock clock;
+        GameClock eaten;
         int spwanPosition[2];
         std::vector<graphical_sprite_t> sprites;
         int jail[2];
         int fIterations;
+        bool isDead;
+        std::vector<std::string> path;
+        GameClock draw;
     } ghost_t;
 
     class Game_Pacman: public AGameModule {
@@ -62,6 +68,7 @@ namespace Arcade {
             int _beginId;
             int _life;
             int _lifeMax;
+            AStar star;
 
             std::vector<std::string> readFileIntoVector(std::string filepath) const;
             void getPacVelocity();
@@ -69,6 +76,8 @@ namespace Arcade {
             void ghostMovement(ghost_t &ghost);
             void loadMap();
             void updatePacGums();
+            void followPath(ghost_t &ghost);
+            void smoothDraw(int prev[2], int now[2], graphical_sprite_t &sprite, GameClock clock);
     };
 }
 
