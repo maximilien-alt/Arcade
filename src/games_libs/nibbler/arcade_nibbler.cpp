@@ -22,7 +22,7 @@ void Arcade::Game_Nibbler::loadMap(int i)
 {
     std::string path("ressources/nibbler/maps/map_" + std::to_string(i) + ".txt");
     std::vector<std::string> map = readFileIntoVector(path);
-    std::size_t index = 1;
+    unsigned int index = 1;
     graphical_sprite_t sprite;
 
     sprite.visible = 1;
@@ -34,9 +34,9 @@ void Arcade::Game_Nibbler::loadMap(int i)
     for (size_t y = 0; y < map.size(); y++) {
         for (size_t x = 0; x < map[y].length(); x++) {
             if (map[y][x] == '#') {
-                sprite.id = index;
-                index += 1;
+                sprite.id = index++;
                 sprite.pos = {(WIDTH / 2 - 40 * 10) + x * 40 + 20, (HEIGHT / 2 - 40 * 10) + y * 40 + 20, 0};
+                std::cout << index << std::endl;
                 _sprites.push_back(sprite);
                 _wall.push_back({x, y, 0});
             }
@@ -63,7 +63,6 @@ void Arcade::Game_Nibbler::startGame()
 {
     _snake.clear();
     _wall.clear();
-    appleNewPos();
     _speed = {1, 0, 0};
     _score = 0;
     graphical_text_t text;
@@ -74,7 +73,7 @@ void Arcade::Game_Nibbler::startGame()
     text.size = 30;
     text.pos = {WIDTH / 2, 50, 0};
     _texts.push_back(text);
-    _indexsnake = 200;
+    _indexsnake = TEXTURE_SNAKE_ID;
     graphical_sprite_t sprite;
 
     sprite.visible = 1;
@@ -82,32 +81,42 @@ void Arcade::Game_Nibbler::startGame()
     sprite.id = 0;
     sprite.path = "ressources/nibbler/snake_apple.png";
     sprite.color = {255, 0, 0, {RED, RED}};
-    sprite.pos = {(WIDTH / 2 - 40 * 10) + _apple.x * 40 + 20, (HEIGHT / 2 - 40 * 10) + _apple.y * 40 + 20, 0};
     sprite.size = {40, 40, 0};
     sprite.angle = 0;
     _sprites.push_back(sprite);
-    loadMap(0);
+    loadMap(1);
     sprite.path = "ressources/nibbler/snake_tail.png";
     sprite.color = {0, 255, 0, {GREEN, GREEN}};
     sprite.size = {40, 40, 0};
     for (float i = 0; i < 4; i++) {
-        _snake.push_back({7 - i, 7, 0});
-        sprite.pos = {(WIDTH / 2 - 40 * 10) + _snake[_indexsnake-200].x * 40 + 20, (HEIGHT / 2 - 40 * 10) + _snake[_indexsnake-200].y * 40 + 20, 0};
+        _snake.push_back({7 - i, 9, 0});
+        sprite.pos = {(WIDTH / 2 - 40 * 10) + _snake[_indexsnake-TEXTURE_SNAKE_ID].x * 40 + 20, (HEIGHT / 2 - 40 * 10) + _snake[_indexsnake-TEXTURE_SNAKE_ID].y * 40 + 20, 0};
         sprite.id = _indexsnake++;
         _sprites.push_back(sprite);
     }
+    appleNewPos();
+    sprite.pos = {(WIDTH / 2 - 40 * 10) + _apple.x * 40 + 20, (HEIGHT / 2 - 40 * 10) + _apple.y * 40 + 20, 0};
+}
+
+bool Arcade::Game_Nibbler::inWall(int x, int y)
+{
+    for (std::size_t i = 0; i < _wall.size(); i++)
+        if (x == _wall[i].x && y == _wall[i].y)
+            return true;
+    for (std::size_t i = 0; i < _snake.size(); i++)
+        if (x == _snake[i].x && y == _snake[i].y)
+            return true;
+    return false;
 }
 
 void Arcade::Game_Nibbler::appleNewPos()
 {
-    _apple.x = rand() % 20;
-    _apple.y = rand() % 20;
-    for (std::size_t i = 0; i < _wall.size(); i++)
-        if (_apple.x == _wall[i].x && _apple.y == _wall[i].y)
-            appleNewPos();
-    for (std::size_t i = 0; i < _snake.size(); i++)
-        if (_apple.x == _snake[i].x && _apple.y == _snake[i].y)
-            appleNewPos();
+    _apple.x = 0;
+    _apple.y = 0;
+    while (inWall(_apple.x, _apple.y)) {
+        _apple.x = rand() % 20;
+        _apple.y = rand() % 20;
+    }
 }
 
 int Arcade::Game_Nibbler::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *list)
@@ -143,14 +152,14 @@ int Arcade::Game_Nibbler::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_
         _snake[0].y += _speed.y;
         if (_snake[0].x == _apple.x && _snake[0].y == _apple.y) {
             _score++;
-            appleNewPos();
             _snake.push_back(tmp);
+            appleNewPos();
             graphical_sprite_t sprite;
             sprite.visible = 1;
             sprite.ncursesBox = 0;
             sprite.path = "ressources/nibbler/snake_tail.png";
             sprite.color = {0, 255, 0, {GREEN, GREEN}};
-            sprite.pos = {(WIDTH / 2 - 40 * 10) + _snake[_indexsnake-200].x * 40 + 20, (HEIGHT / 2 - 40 * 10) + _snake[_indexsnake-200].y * 40 + 20, 0};
+            sprite.pos = {(WIDTH / 2 - 40 * 10) + _snake[_indexsnake-TEXTURE_SNAKE_ID].x * 40 + 20, (HEIGHT / 2 - 40 * 10) + _snake[_indexsnake-TEXTURE_SNAKE_ID].y * 40 + 20, 0};
             sprite.size = {40, 40, 0};
             sprite.angle = 0;
             sprite.id = _indexsnake++;
@@ -171,7 +180,7 @@ void Arcade::Game_Nibbler::draw(std::list<std::pair<Arcade::FLAGS, IStruct_t *>>
 {
     int index = 0;
     for (size_t i = 0; i < _sprites.size(); i++)
-        if (_sprites[i].id >= 200) {
+        if (_sprites[i].id >= TEXTURE_SNAKE_ID) {
             _sprites[i].pos = {(WIDTH / 2 - 40 * 10) + _snake[index].x * 40 + 20, (HEIGHT / 2 - 40 * 10) + _snake[index].y * 40 + 20, 0};
             index++;
         }
@@ -191,7 +200,7 @@ bool Arcade::Game_Nibbler::checkDeath()
     for (std::size_t i = 0; i < _wall.size(); i++)
         if (_snake[0].x == _wall[i].x && _snake[0].y == _wall[i].y)
             return true;
-    if (_snake.size() == 15 * 15)
+    if (_snake.size() + _wall.size() == 20 * 20)
         return true;
     return false;
 }

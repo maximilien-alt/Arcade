@@ -10,6 +10,8 @@
 
 #include "../../core/AGameModule.hpp"
 
+#define TEXTURE_SNAKE_ID 1000
+
 namespace Arcade {
     class Game_Nibbler: public AGameModule {
         public:
@@ -23,6 +25,7 @@ namespace Arcade {
             void loadMap(int i);
             std::vector<std::string> readFileIntoVector(std::string filepath) const;
             void appleNewPos();
+            bool inWall(int x, int y);
 
         private:
             std::size_t _indexsnake;
