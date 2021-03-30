@@ -36,7 +36,6 @@ void Arcade::Game_Nibbler::loadMap(int i)
             if (map[y][x] == '#') {
                 sprite.id = index++;
                 sprite.pos = {(WIDTH / 2 - 40 * 10) + x * 40 + 20, (HEIGHT / 2 - 40 * 10) + y * 40 + 20, 0};
-                std::cout << index << std::endl;
                 _sprites.push_back(sprite);
                 _wall.push_back({x, y, 0});
             }
@@ -84,11 +83,18 @@ void Arcade::Game_Nibbler::startGame()
     sprite.size = {40, 40, 0};
     sprite.angle = 0;
     _sprites.push_back(sprite);
-    loadMap(1);
+    loadMap(0);
+    sprite.path = "ressources/nibbler/snake_head.png";
+    sprite.color = {0, 0, 255, {BLUE, BLUE}};
+    sprite.size = {40, 40, 0};
+    _snake.push_back({7, 9, 0});
+    sprite.pos = {(WIDTH / 2 - 40 * 10) + _snake[_indexsnake-TEXTURE_SNAKE_ID].x * 40 + 20, (HEIGHT / 2 - 40 * 10) + _snake[_indexsnake-TEXTURE_SNAKE_ID].y * 40 + 20, 0};
+    sprite.id = _indexsnake++;
+    _sprites.push_back(sprite);
     sprite.path = "ressources/nibbler/snake_tail.png";
     sprite.color = {0, 255, 0, {GREEN, GREEN}};
     sprite.size = {40, 40, 0};
-    for (float i = 0; i < 4; i++) {
+    for (float i = 1; i < 4; i++) {
         _snake.push_back({7 - i, 9, 0});
         sprite.pos = {(WIDTH / 2 - 40 * 10) + _snake[_indexsnake-TEXTURE_SNAKE_ID].x * 40 + 20, (HEIGHT / 2 - 40 * 10) + _snake[_indexsnake-TEXTURE_SNAKE_ID].y * 40 + 20, 0};
         sprite.id = _indexsnake++;
@@ -181,6 +187,10 @@ void Arcade::Game_Nibbler::draw(std::list<std::pair<Arcade::FLAGS, IStruct_t *>>
     int index = 0;
     for (size_t i = 0; i < _sprites.size(); i++)
         if (_sprites[i].id >= TEXTURE_SNAKE_ID) {
+            _sprites[i].angle = _speed.y == -1 ? 0 : _sprites[i].angle;
+            _sprites[i].angle = _speed.y == 1 ? 180 : _sprites[i].angle;
+            _sprites[i].angle = _speed.x == 1 ? 90 : _sprites[i].angle;
+            _sprites[i].angle = _speed.x == -1 ? 270 : _sprites[i].angle;
             _sprites[i].pos = {(WIDTH / 2 - 40 * 10) + _snake[index].x * 40 + 20, (HEIGHT / 2 - 40 * 10) + _snake[index].y * 40 + 20, 0};
             index++;
         }
