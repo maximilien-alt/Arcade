@@ -203,6 +203,8 @@ bool Arcade::Game_Pacman::simulate()
     }
     proj_x = _pac.position[0] + _pac.velocity.x;
     proj_y = _pac.position[1] + _pac.velocity.y;
+    //if (proj_x == _map[0].length())
+    //    return (1);
     if (!((size_t)proj_y < _map.size() && (size_t)proj_x < _map[0].length() && (_map[proj_y][proj_x] == '#' || _map[proj_y][proj_x] == 'x'))) {
         _pac.previousVelocity = _pac.velocity;
         return 1;
@@ -307,6 +309,14 @@ void Arcade::Game_Pacman::ghostMovement(ghost_t &ghost)
     ghost.velocity = paths[index];
     ghost.position[0] += ghost.velocity.x;
     ghost.position[1] += ghost.velocity.y;
+    if (ghost.position[0] <= 0)
+        ghost.position[0] = _map[0].length() - 1;
+    if ((size_t)ghost.position[0] >= _map[0].length())
+        ghost.position[0] = 0;
+    if ((size_t)ghost.position[1] >= _map.size())
+        ghost.position[1] = 0;
+    if (ghost.position[1] <= 0)
+        ghost.position[1] = _map.size() - 1;
 }
 
 void Arcade::Game_Pacman::updateGhosts()
@@ -408,7 +418,7 @@ void Arcade::Game_Pacman::updatePacGums()
         if (_pacgumsTotal == _pacgums) {
             _currentMapIndex = (_currentMapIndex == 1) ? 0 : 1;
             _level += 5;
-            _beginId = (_sprites.size() + _ghosts.size() * 5) * _currentMapIndex;
+            _beginId = (_sprites.size() + _ghosts.size() * 6) * _currentMapIndex;
             _sprites.clear();
             initValues();
             return (loadMap());
@@ -432,10 +442,10 @@ int Arcade::Game_Pacman::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_t
         if (status) {
             _pac.position[0] += _pac.velocity.x;
             _pac.position[1] += _pac.velocity.y;
-            if ((size_t)_pac.position[0] >= _map[0].length())
-                _pac.position[0] = 0;
             if (_pac.position[0] <= 0)
                 _pac.position[0] = _map[0].length() - 1;
+            if ((size_t)_pac.position[0] >= _map[0].length())
+                _pac.position[0] = 0;
             if ((size_t)_pac.position[1] >= _map.size())
                 _pac.position[1] = 0;
             if (_pac.position[1] <= 0)
