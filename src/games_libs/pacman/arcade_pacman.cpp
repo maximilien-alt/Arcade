@@ -89,9 +89,14 @@ void Arcade::Game_Pacman::loadMap()
                 case 'M':
                     temp.position[0] = x;
                     temp.position[1] = y;
+                    temp.previousPosition[0] = x;
+                    temp.previousPosition[1] = y;
                     temp.jail[0] = x;
                     temp.jail[1] = y;
                     temp.fIterations = 0;
+                    temp.isDead = 0;
+                    temp.isfree = 0;
+                    temp.isFreeze = 0;
                     _ghosts.push_back(temp);
                     break;
                 case 'S':
@@ -131,6 +136,10 @@ void Arcade::Game_Pacman::loadMap()
         sprite.id += 1;
         sprite.color = {0, 0, 255, {BLUE, CYAN}};
         sprite.path = "ressources/pacman/ghost_mad.png";
+        n.sprites.push_back(sprite);
+        sprite.id += 1;
+        sprite.color = {0, 0, 255, {RED, MAGENTA}};
+        sprite.path = "ressources/pacman/ghost_eye.png";
         n.sprites.push_back(sprite);
         n.spwanPosition[0] = spawn[0];
         n.spwanPosition[1] = spawn[1];
@@ -233,40 +242,68 @@ void Arcade::Game_Pacman::getPacVelocity()
     }
 }
 
+void Arcade::Game_Pacman::followPath(ghost_t &ghost)
+{
+    int proj_x = ghost.position[0] + 1;
+    int proj_y = ghost.position[1];
+    if (!((size_t)proj_y < ghost.path.size() && (size_t)proj_x < ghost.path[0].length() && ghost.path[proj_y][proj_x] != 'o')) {
+        ghost.velocity = {1, 0, 0};
+        ghost.path[proj_y][proj_x] = ' ';
+    }
+    proj_x = ghost.position[0] - 1;
+    proj_y = ghost.position[1];
+    if (!((size_t)proj_y < ghost.path.size() && (size_t)proj_x < ghost.path[0].length() && ghost.path[proj_y][proj_x] != 'o')) {
+        ghost.velocity = {-1, 0, 0};
+        ghost.path[proj_y][proj_x] = ' ';
+    }
+    proj_x = ghost.position[0];
+    proj_y = ghost.position[1] + 1;
+    if (!((size_t)proj_y < ghost.path.size() && (size_t)proj_x < ghost.path[0].length() && ghost.path[proj_y][proj_x] != 'o')) {
+        ghost.velocity = {0, 1, 0};
+        ghost.path[proj_y][proj_x] = ' ';
+    }
+    proj_x = ghost.position[0];
+    proj_y = ghost.position[1] - 1;
+    if (!((size_t)proj_y < ghost.path.size() && (size_t)proj_x < ghost.path[0].length() && ghost.path[proj_y][proj_x] != 'o')) {
+        ghost.velocity = {0, -1, 0};
+        ghost.path[proj_y][proj_x] = ' ';
+    }
+    ghost.path[ghost.position[1]][ghost.position[0]] = ' ';
+    ghost.position[0] += ghost.velocity.x;
+    ghost.position[1] += ghost.velocity.y;
+}
+
 void Arcade::Game_Pacman::ghostMovement(ghost_t &ghost)
 {
-    int proj_x = ghost.position[0] + ghost.velocity.x;
-    int proj_y = ghost.position[1] + ghost.velocity.y;
+    if (ghost.path.size() > 0)
+        return followPath(ghost);
     std::vector<graphical_vector_t> paths;
-    int index = 0;
-
-    if (!((size_t)proj_y < _map.size() && (size_t)proj_x < _map[0].length() && (_map[proj_y][proj_x] == '#' || _map[proj_y][proj_x] == 'x'))) {
-        ghost.position[0] += ghost.velocity.x;
-        ghost.position[1] += ghost.velocity.y;
-        return;
-    }
     //POSSIBILITIES
-    proj_x = ghost.position[0] + 1;
-    proj_y = ghost.position[1];
+    int proj_x = ghost.position[0] + 1;
+    int proj_y = ghost.position[1];
     if (!((size_t)proj_y < _map.size() && (size_t)proj_x < _map[0].length() && (_map[proj_y][proj_x] == '#' || _map[proj_y][proj_x] == 'x'))) {
-        paths.push_back({1, 0, 0});
+        if (ghost.velocity.x != -1)
+            paths.push_back({1, 0, 0});
     }
     proj_x = ghost.position[0] - 1;
     proj_y = ghost.position[1];
     if (!((size_t)proj_y < _map.size() && (size_t)proj_x < _map[0].length() && (_map[proj_y][proj_x] == '#' || _map[proj_y][proj_x] == 'x'))) {
-        paths.push_back({-1, 0, 0});
+        if (ghost.velocity.x != 1)
+            paths.push_back({-1, 0, 0});
     }
     proj_x = ghost.position[0];
     proj_y = ghost.position[1] + 1;
     if (!((size_t)proj_y < _map.size() && (size_t)proj_x < _map[0].length() && (_map[proj_y][proj_x] == '#' || _map[proj_y][proj_x] == 'x'))) {
-        paths.push_back({0, 1, 0});
+        if (ghost.velocity.y != -1)
+            paths.push_back({0, 1, 0});
     }
     proj_x = ghost.position[0];
     proj_y = ghost.position[1] - 1;
     if (!((size_t)proj_y < _map.size() && (size_t)proj_x < _map[0].length() && (_map[proj_y][proj_x] == '#' || _map[proj_y][proj_x] == 'x'))) {
-        paths.push_back({0, -1, 0});
+        if (ghost.velocity.y != 1)
+            paths.push_back({0, -1, 0});
     }
-    index = rand() % paths.size();
+    int index = rand() % paths.size();
     ghost.velocity = paths[index];
     ghost.position[0] += ghost.velocity.x;
     ghost.position[1] += ghost.velocity.y;
@@ -276,9 +313,30 @@ void Arcade::Game_Pacman::updateGhosts()
 {
     float cl = 0;
 
+    if (_ghosts[0].isfree && !_ghosts[0].isFreeze && !_ghosts[0].isDead) {
+        _ghosts[0].path = star.findWay(_map, std::make_pair(_ghosts[0].position[0], _ghosts[0].position[1]), std::make_pair(_pac.position[0], _pac.position[1]));
+    }
     for (auto &n: _ghosts) {
+        n.previousPosition[0] = n.position[0];
+        n.previousPosition[1] = n.position[1];
+        if (n.isDead) {
+            cl = n.eaten.getElapsedTime();
+            if (cl > 0.06) {
+                ghostMovement(n);
+                n.eaten.reset();
+                if (n.position[0] == n.spwanPosition[0] && n.position[1] == n.spwanPosition[1]) {
+                    n.isfree = 0;
+                    n.isDead = 0;
+                    n.position[0] = n.jail[0];
+                    n.position[1] = n.jail[1];
+                    n.path.clear();
+                }
+            }
+            continue;
+        }
         cl = n.clock.getElapsedTime();
         if (n.isFreeze) {
+            n.path.clear();
             if (cl > 0.5) {
                 n.fIterations += 1;
                 ghostMovement(n);
@@ -318,14 +376,12 @@ void Arcade::Game_Pacman::updatePacGums()
     for (auto &n: _ghosts) {
         if (n.position[0] == _pac.position[0] && n.position[1] == _pac.position[1]) {
             //GHOST COLLISION
-            if (n.isFreeze) {
-                n.position[0] = n.jail[0];
-                n.position[1] = n.jail[1];
+            if (n.isFreeze && !n.isDead) {
+                n.path = star.findWay(_map, std::make_pair(n.position[0], n.position[1]), std::make_pair(n.spwanPosition[0], n.spwanPosition[1]));
                 n.isFreeze = 0;
-                n.isfree = 0;
                 n.fIterations = 0;
-                n.velocity = {0, -1, 0};
-            } else {
+                n.isDead = 1;
+            } else if (!n.isDead) {
                 if (_life == 1) {
                     std::cout << "GAME OVER (implemented ?)..." << std::endl;
                     exit(0);
@@ -344,13 +400,6 @@ void Arcade::Game_Pacman::updatePacGums()
         }
     }
     if (_sprites[i].visible) {
-        //FREEZING GHOSTS
-        if (_map[_pac.position[1]][_pac.position[0]] == '*') {
-            for (auto &n: _ghosts) {
-                if (n.isfree)
-                    n.isFreeze = 1;
-            }
-        }
         //DELETING PACGUM
         _sprites[i].visible = 0;
         _score += 1;
@@ -362,7 +411,14 @@ void Arcade::Game_Pacman::updatePacGums()
             _beginId = (_sprites.size() + _ghosts.size() * 5) * _currentMapIndex;
             _sprites.clear();
             initValues();
-            loadMap();
+            return (loadMap());
+        }
+        //FREEZING GHOSTS
+        if (_map[_pac.position[1]][_pac.position[0]] == '*') {
+            for (auto &n: _ghosts) {
+                if (n.isfree && !n.isDead)
+                    n.isFreeze = 1;
+            }
         }
     }
 }
@@ -376,11 +432,11 @@ int Arcade::Game_Pacman::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_t
         if (status) {
             _pac.position[0] += _pac.velocity.x;
             _pac.position[1] += _pac.velocity.y;
-            if (_pac.position[0] >= _map[0].length())
+            if ((size_t)_pac.position[0] >= _map[0].length())
                 _pac.position[0] = 0;
             if (_pac.position[0] <= 0)
                 _pac.position[0] = _map[0].length() - 1;
-            if (_pac.position[1] >= _map.size())
+            if ((size_t)_pac.position[1] >= _map.size())
                 _pac.position[1] = 0;
             if (_pac.position[1] <= 0)
                 _pac.position[1] = _map.size() - 1;
@@ -393,6 +449,31 @@ int Arcade::Game_Pacman::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_t
     //DRAW
     draw(_list);
     return (0);
+}
+
+void Arcade::Game_Pacman::smoothDraw(int prev[2], int now[2], graphical_sprite_t &sprite, GameClock clock)
+{
+    float start_y = _start_y + prev[1] * 19;
+    float start_x = _start_x + prev[0] * 9.5;
+    float end_y = _start_y + now[1] * 19;
+    float end_x = _start_x + now[0] * 9.5;
+
+    sprite.pos.y = start_y;
+    sprite.pos.x = start_x;
+    //std::cout << "start_y: "<< start_y << "start_x: "<< start_x << "end_y: "<< end_y << "end_x: "<< end_x<< std::endl;
+    if (prev[0] == now[0] && prev[1] == now[1])
+        return;
+    if (prev[1] == now[1]) {
+        if (clock.getElapsedTime() > 0.00002) {
+            clock.reset();
+            sprite.pos.x = (start_x > end_x) ? sprite.pos.x - 2.375: sprite.pos.x + 2.375;
+        }
+    } else {
+        if (clock.getElapsedTime() > 0.00002) {
+            clock.reset();
+            sprite.pos.y = (start_y > end_y) ? sprite.pos.y - 4.75: sprite.pos.y + 4.75;
+        }
+    }
 }
 
 void Arcade::Game_Pacman::draw(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *_list)
@@ -413,8 +494,11 @@ void Arcade::Game_Pacman::draw(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> 
         else
             goodIndex = 0;
         goodIndex = (n.isFreeze) ? 4 : goodIndex;
-        n.sprites[goodIndex].pos.x = _start_x + n.position[0] * 9.5;
-        n.sprites[goodIndex].pos.y = _start_y + n.position[1] * 19;
+        if (n.isDead)
+            goodIndex = 5;
+        //n.sprites[goodIndex].pos.x = _start_x + n.position[0] * 9.5;
+        //n.sprites[goodIndex].pos.y = _start_y + n.position[1] * 19;
+        smoothDraw(n.previousPosition, n.position, n.sprites[goodIndex], n.draw);
         _list->push_back(std::make_pair(SPRITE, &n.sprites[goodIndex]));
     }
     goodVelocity = ((_pac.velocity.x != 0 || _pac.velocity.y != 0) && !_keyPressed) ? _pac.velocity : _pac.previousVelocity;
@@ -428,8 +512,9 @@ void Arcade::Game_Pacman::draw(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> 
        sprite.angle = 0;
     else
        sprite.angle = 180;
-    sprite.pos.x = _start_x + _pac.position[0] * 9.5;
-    sprite.pos.y = _start_y + _pac.position[1] * 19;
+    //sprite.pos.x = _start_x + _pac.position[0] * 9.5;
+    //sprite.pos.y = _start_y + _pac.position[1] * 19;
+    smoothDraw(_pac.previousPosition, _pac.position, sprite, _pac.draw);
     _list->push_back(std::make_pair(SPRITE, &sprite));
     _box.input = _playerName + " " + std::to_string(_score);
     _list->push_back(std::make_pair(BOX, &_box));

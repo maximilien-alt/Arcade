@@ -15,7 +15,8 @@ LDFLAGS	=	-shared
 
 SRC	=	$(wildcard *.cpp)	\
 		../../core/AGameModule.cpp	\
-		../../core/GameClock.cpp
+		../../core/GameClock.cpp	\
+		../../core/AStar.cpp
 
 OBJ	=	$(SRC:.cpp=.o)
 
