@@ -48,6 +48,7 @@ void Arcade::Game_Nibbler::loadMap()
     _wall.clear();
     _apple.clear();
     _speed = {1, 0, 0};
+    _speedbuffer = {1, 0, 0};
     _toGrow = 0;
     graphical_sprite_t sprite;
 
@@ -148,21 +149,23 @@ int Arcade::Game_Nibbler::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_
     float clockSpeed = 0.2;
 
     if (_keys[ARROW_DOWN] && _speed.y != -1 && !_keyPressed) {
-        _speed = {0, 1, 0};
+        _speedbuffer = {0, 1, 0};
         _keyPressed = true;
     }
     if (_keys[ARROW_UP] && _speed.y != 1 && !_keyPressed) {
-        _speed = {0, -1, 0};
+        _speedbuffer = {0, -1, 0};
         _keyPressed = true;
     }
     if (_keys[ARROW_LEFT] && _speed.x != 1 && !_keyPressed) {
-        _speed = {-1, 0, 0};
+        _speedbuffer = {-1, 0, 0};
         _keyPressed = true;
     }
     if (_keys[ARROW_RIGHT] && _speed.x != -1 && !_keyPressed) {
-        _speed = {1, 0, 0};
+        _speedbuffer = {1, 0, 0};
         _keyPressed = true;
     }
+    if (!checkWall(_speedbuffer.x, _speedbuffer.y))
+        _speed = _speedbuffer;
     if (_keys[SPACE])
         clockSpeed = 0.05;
     if (_timeClock.getElapsedTime() > 1) {
@@ -171,7 +174,7 @@ int Arcade::Game_Nibbler::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_
     }
     if (_mainClock.getElapsedTime() > clockSpeed) {
         _keyPressed = false;
-        if (!checkWall()) {
+        if (!checkWall(_speed.x, _speed.y)) {
             graphical_vector_t tmp = _snake[_snake.size() - 1];
             for (int i = _snake.size() - 1; i > 0; i--) {
                 _snake[i].x = _snake[i-1].x;
@@ -183,8 +186,8 @@ int Arcade::Game_Nibbler::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_
                 if (_snake[0].x == _apple[i].x && _snake[0].y == _apple[i].y) {
                     _toGrow += rand() % 3 + 1;
                     _score++;
-                    _apple.erase(_apple.begin() + i);
-                    _sprites.erase(_sprites.begin() + i);
+                _apple.erase(_apple.begin() + i);
+                _sprites.erase(_sprites.begin() + i);
                 }
             }
             if (_toGrow > 0) {
@@ -237,10 +240,10 @@ void Arcade::Game_Nibbler::draw(std::list<std::pair<Arcade::FLAGS, IStruct_t *>>
         list->push_back(std::make_pair(TEXT, &n));
 }
 
-bool Arcade::Game_Nibbler::checkWall()
+bool Arcade::Game_Nibbler::checkWall(int x, int y)
 {
     for (std::size_t i = 0; i < _wall.size(); i++)
-        if (_snake[0].x + _speed.x == _wall[i].x && _snake[0].y + _speed.y == _wall[i].y)
+        if (_snake[0].x + x == _wall[i].x && _snake[0].y + y == _wall[i].y)
             return true;
     return false;
 }

@@ -26,7 +26,7 @@ namespace Arcade {
             void draw(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *_list);
             bool checkDeath();
             bool checkWin();
-            bool checkWall();
+            bool checkWall(int x, int y);
             void loadMap();
             std::vector<std::string> readFileIntoVector(std::string filepath) const;
             // void appleNewPos();
@@ -39,6 +39,7 @@ namespace Arcade {
             std::vector<graphical_vector_t> _wall;
             std::vector<graphical_vector_t> _apple;
             graphical_vector_t _speed;
+            graphical_vector_t _speedbuffer;
             bool _keyPressed = false;
             GameClock _mainClock;
             GameClock _timeClock;
