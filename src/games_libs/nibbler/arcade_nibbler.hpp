@@ -33,6 +33,7 @@ namespace Arcade {
             // bool inWall(int x, int y);
 
         private:
+            std::size_t _toGrow;
             std::size_t _indexsnake;
             std::vector<graphical_vector_t> _snake;
             std::vector<graphical_vector_t> _wall;

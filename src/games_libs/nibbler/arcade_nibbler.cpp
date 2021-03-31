@@ -48,6 +48,7 @@ void Arcade::Game_Nibbler::loadMap()
     _wall.clear();
     _apple.clear();
     _speed = {1, 0, 0};
+    _toGrow = 0;
     graphical_sprite_t sprite;
 
     sprite.visible = 1;
@@ -58,7 +59,7 @@ void Arcade::Game_Nibbler::loadMap()
         for (size_t x = 0; x < map[y].length(); x++) {
             if (map[y][x] == 'A') {
                 sprite.path = "ressources/nibbler/apple.png";
-                sprite.color = {255, 0, 0, {RED, RED}};
+                sprite.color = {255, 0, 0, {GREEN, RED}};
                 sprite.id = indexapple++;
                 sprite.pos = {(float)((WIDTH / 2 - 40 * 10) + x * 40 + 20), (float)((HEIGHT / 2 - 40 * 10) + (y - 1) * 40 + 20), 0};
                 _sprites.push_back(sprite);
@@ -80,12 +81,12 @@ void Arcade::Game_Nibbler::loadMap()
     }
     _indexsnake = TEXTURE_SNAKE_ID;
     sprite.path = "ressources/nibbler/snake_head.png";
-    sprite.color = {0, 0, 255, {BLUE, BLUE}};
+    sprite.color = {0, 0, 255, {MAGENTA, BLUE}};
     _snake.push_back({7, 9, 0});
     sprite.pos = {(WIDTH / 2 - 40 * 10) + _snake[_indexsnake-TEXTURE_SNAKE_ID].x * 40 + 20, (HEIGHT / 2 - 40 * 10) + _snake[_indexsnake-TEXTURE_SNAKE_ID].y * 40 + 20, 0};
     sprite.id = _indexsnake++;
     _sprites.push_back(sprite);
-    sprite.color = {0, 255, 0, {GREEN, GREEN}};
+    sprite.color = {0, 255, 0, {GREEN, MAGENTA}};
     sprite.path = "ressources/nibbler/snake_tail.png";
     for (float i = 1; i < 4; i++) {
         _snake.push_back({7 - i, 9, 0});
@@ -180,21 +181,25 @@ int Arcade::Game_Nibbler::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_
             _snake[0].y += _speed.y;
             for (unsigned int i = 0; i < _apple.size(); i++) {
                 if (_snake[0].x == _apple[i].x && _snake[0].y == _apple[i].y) {
+                    _toGrow += rand() % 3 + 1;
                     _score++;
-                    _snake.push_back(tmp);
-                    graphical_sprite_t sprite;
-                    sprite.visible = 1;
-                    sprite.ncursesBox = 0;
-                    sprite.path = "ressources/nibbler/snake_tail.png";
-                    sprite.color = {0, 255, 0, {GREEN, GREEN}};
-                    sprite.pos = {(WIDTH / 2 - 40 * 10) + _snake[_indexsnake-TEXTURE_SNAKE_ID].x * 40 + 20, (HEIGHT / 2 - 40 * 10) + _snake[_indexsnake-TEXTURE_SNAKE_ID].y * 40 + 20, 0};
-                    sprite.size = {40, 40, 0};
-                    sprite.angle = 0;
-                    sprite.id = _indexsnake++;
-                    _sprites.push_back(sprite);
                     _apple.erase(_apple.begin() + i);
                     _sprites.erase(_sprites.begin() + i);
                 }
+            }
+            if (_toGrow > 0) {
+                _toGrow -= 1;
+                _snake.push_back(tmp);
+                graphical_sprite_t sprite;
+                sprite.visible = 1;
+                sprite.ncursesBox = 0;
+                sprite.path = "ressources/nibbler/snake_tail.png";
+                sprite.color = {0, 255, 0, {GREEN, MAGENTA}};
+                sprite.pos = {(WIDTH / 2 - 40 * 10) + _snake[_indexsnake-TEXTURE_SNAKE_ID].x * 40 + 20, (HEIGHT / 2 - 40 * 10) + _snake[_indexsnake-TEXTURE_SNAKE_ID].y * 40 + 20, 0};
+                sprite.size = {40, 40, 0};
+                sprite.angle = 0;
+                sprite.id = _indexsnake++;
+                _sprites.push_back(sprite);
             }
         }
         _mainClock.reset();
