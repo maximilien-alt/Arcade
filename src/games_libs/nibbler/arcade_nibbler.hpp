@@ -10,7 +10,9 @@
 
 #include "../../core/AGameModule.hpp"
 
-#define TEXTURE_SNAKE_ID 1000
+#define TEXTURE_SNAKE_ID 2000
+#define TEXTURE_WALL_ID 1000
+#define TEXTURE_APPLE_ID 0
 
 namespace Arcade {
     class Game_Nibbler: public AGameModule {
@@ -19,23 +21,29 @@ namespace Arcade {
             ~Game_Nibbler();
 
             void startGame() final;
+            void initValues();
             int updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *_list) final;
             void draw(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *_list);
             bool checkDeath();
-            void loadMap(int i);
+            bool checkWin();
+            bool checkWall();
+            void loadMap();
             std::vector<std::string> readFileIntoVector(std::string filepath) const;
-            void appleNewPos();
-            bool inWall(int x, int y);
+            // void appleNewPos();
+            // bool inWall(int x, int y);
 
         private:
             std::size_t _indexsnake;
             std::vector<graphical_vector_t> _snake;
             std::vector<graphical_vector_t> _wall;
-            graphical_vector_t _apple;
+            std::vector<graphical_vector_t> _apple;
             graphical_vector_t _speed;
             bool _keyPressed = false;
             GameClock _mainClock;
+            GameClock _timeClock;
             std::size_t _score;
+            int _timeleft;
+            std::size_t _currentMapIndex = 0;
     };
 }
 
