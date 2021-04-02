@@ -35,6 +35,7 @@ namespace Arcade {
         private:
             size_t _spriteIndex = 0;
             GameClock _mainClock;
+            GameClock _ennemiesShotClocks;
             GameClock _shotClock;
             std::vector<GameClock> _ennemiesClocks;
             std::vector<std::pair<graphical_sprite_t, float>> _ennemiesShots;

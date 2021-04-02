@@ -1,5 +1,5 @@
-        X
-       XXX
-      XXXXX
-     XXXXXXX
-    XXXXXXXXX
+      XXXXXX
+      XXX  X
+      XXX  X
+      XXX  X
+      XXXXXX

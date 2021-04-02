@@ -223,7 +223,7 @@ void Arcade::Game_Solarfox::calcPlayerPosition()
 
 void Arcade::Game_Solarfox::ennemyShot(graphical_sprite_t &ennemy, GameClock &clock)
 {
-    if (clock.getElapsedTime() > 2)
+    if (clock.getElapsedTime() > 3 / _currentMapIndex)
     {
         clock.reset();
         const int distance = distanceBetween(ennemy.pos, _sprites[4].pos);
@@ -269,7 +269,6 @@ void Arcade::Game_Solarfox::calcEnnemiesShots()
         if (_sprites[5].visible && distanceBetween(_ennemiesShots[i].first.pos, _sprites[5].pos) < 20)
         {
             _ennemiesShots.erase(_ennemiesShots.begin() + i);
-            _sprites[5].visible = false;
             continue;
         }
         if (_ennemiesShots[i].second == 0)
@@ -305,12 +304,16 @@ void Arcade::Game_Solarfox::calcEnnemiesShots()
 
 void Arcade::Game_Solarfox::calcPowerUpsShots()
 {
+    if (_powerUps.size() == 0) {
+        _currentMapIndex += 1;
+        endGame();
+        return;
+    }
     for (size_t i = 0; i < _powerUps.size(); i++) {
         if (_sprites[5].visible && distanceBetween(_powerUps[i].first.pos, _sprites[5].pos) < 20) {
             _powerUps[i].second -= 1;
             if (_powerUps[i].second == 0)
                 _powerUps.erase(_powerUps.begin() + i);
-            _sprites[5].visible = false;
         }
     }
 }
@@ -354,14 +357,17 @@ void Arcade::Game_Solarfox::handleKeys()
 int Arcade::Game_Solarfox::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *list)
 {
     handleKeys();
-    if (_shotClock.getElapsedTime() > 0.3)
+    if (_shotClock.getElapsedTime() > 0.2)
         _sprites[5].visible = 0;
+    if (_ennemiesShotClocks.getElapsedTime() > 0.005 / _currentMapIndex) {
+        _ennemiesShotClocks.reset();
+        calcEnnemiesShots();
+    }
     if (_mainClock.getElapsedTime() > 0.005)
     {
         _mainClock.reset();
         calcEnnemiesPositions();
         calcPlayerPosition();
-        calcEnnemiesShots();
         calcPowerUpsShots();
         for (size_t i = 0; i < 4; i++)
             ennemyShot(_sprites[i], _ennemiesClocks[i]);
