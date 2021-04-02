@@ -318,7 +318,12 @@ void Arcade::Game_Solarfox::calcPowerUpsShots()
 void Arcade::Game_Solarfox::endGame()
 {
     std::cout << "RIP" << std::endl;
-    exit(0);
+    _spriteIndex = 0;
+    _sprites.clear();
+    _ennemiesClocks.clear();
+    _ennemiesShots.clear();
+    _powerUps.clear();
+    startGame();
 }
 
 void Arcade::Game_Solarfox::handleKeys()
