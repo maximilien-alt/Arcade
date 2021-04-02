@@ -23,7 +23,7 @@ void Arcade::GameClock::reset()
 float Arcade::GameClock::getElapsedTime()
 {
     auto now = Clock::now();
-    float elapsedTime = std::chrono::duration_cast<std::chrono::microseconds>(now - _clock).count();
+    std::chrono::duration<double, std::micro> elapsedTime = now - _clock;
 
-    return (elapsedTime / 1000000);
+    return (elapsedTime.count() / 1000000);
 }
