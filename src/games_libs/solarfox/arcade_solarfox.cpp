@@ -82,7 +82,51 @@ void Arcade::Game_Solarfox::createPlayer()
     shot.visible = 0;
     _sprites.push_back(shot);
 
-    _spriteIndex = 5;
+    _spriteIndex = 6;
+}
+
+std::vector<std::string> Arcade::Game_Solarfox::readFileIntoVector(std::string filepath) const
+{
+    std::vector<std::string> res;
+    std::ifstream file(filepath);
+    std::string temp;
+
+    if (file.is_open())
+    {
+        while (std::getline(file, temp))
+        {
+            res.push_back(temp);
+        }
+        file.close();
+    }
+    return (res);
+}
+
+void Arcade::Game_Solarfox::createPowerUps()
+{
+    graphical_sprite_t sprite;
+    sprite.id = _spriteIndex++;
+    sprite.visible = 1;
+    sprite.path = "ressources/solarfox/solarfox_powerup.png";
+    sprite.color = {255, 0, 0, {WHITE, BLACK}};
+    sprite.size = {36, 18, 0};
+    sprite.angle = 0;
+    sprite.ncursesBox = 0;
+
+    std::string path("ressources/solarfox/maps/map_" + std::to_string(_currentMapIndex) + ".txt");
+    std::vector<std::string> map = readFileIntoVector(path);
+
+    for (float y = 0; y < map.size(); y++)
+    {
+        for (float x = 0; x < map[y].length(); x++)
+        {
+            if (map[y][x] == 'X')
+            {
+                sprite.pos = {_box.pos.x - _box.size.x / 2 - 20 + x * 40, _box.pos.y - _box.size.y / 2 + 200 + y * 40, 0};
+                _powerUps.push_back(std::make_pair(sprite, 2));
+            }
+        }
+    }
 }
 
 void Arcade::Game_Solarfox::startGame()
@@ -92,6 +136,7 @@ void Arcade::Game_Solarfox::startGame()
 
     createEnnemies();
     createPlayer();
+    createPowerUps();
 
     _ennemiesDirection[0] = 1;
     _ennemiesDirection[1] = 1;
@@ -194,7 +239,7 @@ void Arcade::Game_Solarfox::ennemyShot(graphical_sprite_t &ennemy, GameClock &cl
             shot.size = {36, 18, 0};
             shot.angle = ennemy.angle;
             shot.ncursesBox = 0;
-            _ennemiesShots.push_back(shot);
+            _ennemiesShots.push_back(std::make_pair(shot, shot.angle));
         }
     }
 }
@@ -213,40 +258,59 @@ void Arcade::Game_Solarfox::calcEnnemiesShots()
 {
     for (size_t i = 0; i < _ennemiesShots.size(); i++)
     {
-        if (distanceBetween(_ennemiesShots[i].pos, _sprites[4].pos) < 20) {
+        if (_ennemiesShots[i].first.angle + 90 == _ennemiesShots[i].second)
+            _ennemiesShots[i].first.angle += 90;
+        else
+            _ennemiesShots[i].first.angle -= 90;
+        if (distanceBetween(_ennemiesShots[i].first.pos, _sprites[4].pos) < 20)
+        {
             endGame();
         }
-        if (distanceBetween(_ennemiesShots[i].pos, _sprites[5].pos) < 20) {
+        if (_sprites[5].visible && distanceBetween(_ennemiesShots[i].first.pos, _sprites[5].pos) < 20)
+        {
             _ennemiesShots.erase(_ennemiesShots.begin() + i);
+            _sprites[5].visible = false;
             continue;
         }
-        if (_ennemiesShots[i].angle == 0)
+        if (_ennemiesShots[i].second == 0)
         {
-            if (_ennemiesShots[i].pos.y > _box.pos.y - _box.size.y / 2 + 60)
-                _ennemiesShots[i].pos.y -= 1;
+            if (_ennemiesShots[i].first.pos.y > _box.pos.y - _box.size.y / 2 + 60)
+                _ennemiesShots[i].first.pos.y -= 1;
             else
                 _ennemiesShots.erase(_ennemiesShots.begin() + i);
         }
-        else if (_ennemiesShots[i].angle == 90)
+        else if (_ennemiesShots[i].second == 90)
         {
-            if (_ennemiesShots[i].pos.x < _box.pos.x - _box.size.x / 2 + _box.size.x - 60)
-                _ennemiesShots[i].pos.x += 1;
+            if (_ennemiesShots[i].first.pos.x < _box.pos.x - _box.size.x / 2 + _box.size.x - 60)
+                _ennemiesShots[i].first.pos.x += 1;
             else
                 _ennemiesShots.erase(_ennemiesShots.begin() + i);
         }
-        else if (_ennemiesShots[i].angle == 180)
+        else if (_ennemiesShots[i].second == 180)
         {
-            if (_ennemiesShots[i].pos.y < _box.pos.y - _box.size.y / 2 + _box.size.y - 60)
-                _ennemiesShots[i].pos.y += 1;
+            if (_ennemiesShots[i].first.pos.y < _box.pos.y - _box.size.y / 2 + _box.size.y - 60)
+                _ennemiesShots[i].first.pos.y += 1;
             else
                 _ennemiesShots.erase(_ennemiesShots.begin() + i);
         }
-        else if (_ennemiesShots[i].angle == 270)
+        else if (_ennemiesShots[i].second == 270)
         {
-            if (_ennemiesShots[i].pos.x > _box.pos.x - _box.size.x / 2 + 60)
-                _ennemiesShots[i].pos.x -= 1;
+            if (_ennemiesShots[i].first.pos.x > _box.pos.x - _box.size.x / 2 + 60)
+                _ennemiesShots[i].first.pos.x -= 1;
             else
                 _ennemiesShots.erase(_ennemiesShots.begin() + i);
+        }
+    }
+}
+
+void Arcade::Game_Solarfox::calcPowerUpsShots()
+{
+    for (size_t i = 0; i < _powerUps.size(); i++) {
+        if (_sprites[5].visible && distanceBetween(_powerUps[i].first.pos, _sprites[5].pos) < 20) {
+            _powerUps[i].second -= 1;
+            if (_powerUps[i].second == 0)
+                _powerUps.erase(_powerUps.begin() + i);
+            _sprites[5].visible = false;
         }
     }
 }
@@ -275,7 +339,9 @@ void Arcade::Game_Solarfox::handleKeys()
     else if (_keys[ARROW_LEFT] && _playerDirection != 90)
     {
         _sprites[4].angle = 270;
-    } else if (_keys[SPACE]) {
+    }
+    else if (_keys[SPACE])
+    {
         playerShot();
     }
 }
@@ -291,6 +357,7 @@ int Arcade::Game_Solarfox::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct
         calcEnnemiesPositions();
         calcPlayerPosition();
         calcEnnemiesShots();
+        calcPowerUpsShots();
         for (size_t i = 0; i < 4; i++)
             ennemyShot(_sprites[i], _ennemiesClocks[i]);
     }
@@ -303,10 +370,12 @@ void Arcade::Game_Solarfox::draw(std::list<std::pair<Arcade::FLAGS, IStruct_t *>
     list->push_back(std::make_pair(BOX, &_box));
     for (auto &n : _texts)
         list->push_back(std::make_pair(TEXT, &n));
+    for (auto &n : _powerUps)
+        list->push_back(std::make_pair(SPRITE, &n.first));
     for (auto &n : _sprites)
         list->push_back(std::make_pair(SPRITE, &n));
     for (auto &n : _ennemiesShots)
-        list->push_back(std::make_pair(SPRITE, &n));
+        list->push_back(std::make_pair(SPRITE, &n.first));
 }
 
 extern "C" Arcade::IGameModule *entryPoint(void)
