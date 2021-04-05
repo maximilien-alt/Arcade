@@ -142,6 +142,15 @@ void Arcade::Game_Solarfox::startGame()
     _ennemiesDirection[1] = 1;
     _ennemiesDirection[2] = -1;
     _ennemiesDirection[3] = -1;
+
+    graphical_text_t level;
+    level.id = 0;
+    level.color = {0, 255, 0, {GREEN, BLACK}};
+    level.font = "ressources/font.ttf";
+    level.size = 30;
+    level.pos = {_box.size.x / 2, 50, 0};
+    level.text = "Level : " + _currentMapIndex + 1;
+    _texts.push_back(level);
 }
 
 void Arcade::Game_Solarfox::calcEnnemiesPositions()
@@ -323,6 +332,7 @@ void Arcade::Game_Solarfox::endGame()
     std::cout << "RIP" << std::endl;
     _spriteIndex = 0;
     _sprites.clear();
+    _texts.clear();
     _ennemiesClocks.clear();
     _ennemiesShots.clear();
     _powerUps.clear();
