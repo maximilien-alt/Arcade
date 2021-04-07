@@ -379,6 +379,15 @@ void Arcade::Game_Pacman::updateGhosts()
     }
 }
 
+void Arcade::Game_Pacman::newScore() const
+{
+    std::string path("ressources/pacman/highscore.txt");
+    std::ofstream file(path, std::ios_base::app);
+
+    file << (_playerName == "" ? "user" : _playerName) << " " << _score << std::endl;
+    file.close();
+}
+
 void Arcade::Game_Pacman::updatePacGums()
 {
     int i = _pac.position[1] * _map[0].length() + _pac.position[0];
@@ -393,6 +402,7 @@ void Arcade::Game_Pacman::updatePacGums()
                 n.isDead = 1;
             } else if (!n.isDead) {
                 if (_life == 1) {
+                    newScore();
                     std::cout << "GAME OVER (implemented ?)..." << std::endl;
                     exit(0);
                 }

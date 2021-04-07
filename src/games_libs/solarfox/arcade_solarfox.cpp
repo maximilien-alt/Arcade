@@ -330,6 +330,7 @@ void Arcade::Game_Solarfox::calcPowerUpsShots()
 void Arcade::Game_Solarfox::endGame()
 {
     std::cout << "RIP" << std::endl;
+    newScore();
     _spriteIndex = 0;
     _sprites.clear();
     _texts.clear();
@@ -337,6 +338,15 @@ void Arcade::Game_Solarfox::endGame()
     _ennemiesShots.clear();
     _powerUps.clear();
     startGame();
+}
+
+void Arcade::Game_Solarfox::newScore() const
+{
+    std::string path("ressources/solarfox/highscore.txt");
+    std::ofstream file(path, std::ios_base::app);
+
+    file << (_playerName == "" ? "user" : _playerName) << " " << "_score" << std::endl;
+    file.close();
 }
 
 void Arcade::Game_Solarfox::handleKeys()

@@ -32,6 +32,8 @@ namespace Arcade {
             void ennemyShot(graphical_sprite_t &sprite, GameClock &clock);
             std::vector<std::string> readFileIntoVector(std::string filepath) const;
             void playerShot();
+            void newScore() const;
+
         private:
             size_t _spriteIndex = 0;
             GameClock _mainClock;

@@ -45,12 +45,13 @@ namespace Arcade {
         public:
             Game_Pacman();
             ~Game_Pacman();
-        
+
             void startGame() final;
             int updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *_list) final;
             void draw(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *_list);
             bool simulate();
             void initValues();
+            void newScore() const;
 
         private:
             int _currentMapIndex;

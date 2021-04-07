@@ -29,8 +29,7 @@ namespace Arcade {
             bool checkWall(int x, int y);
             void loadMap();
             std::vector<std::string> readFileIntoVector(std::string filepath) const;
-            // void appleNewPos();
-            // bool inWall(int x, int y);
+            void newScore() const;
 
         private:
             std::size_t _toGrow;

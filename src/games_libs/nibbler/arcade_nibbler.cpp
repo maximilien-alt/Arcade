@@ -123,27 +123,6 @@ void Arcade::Game_Nibbler::startGame()
     loadMap();
 }
 
-// bool Arcade::Game_Nibbler::inWall(int x, int y)
-// {
-//     for (std::size_t i = 0; i < _wall.size(); i++)
-//         if (x == _wall[i].x && y == _wall[i].y)
-//             return true;
-//     for (std::size_t i = 0; i < _snake.size(); i++)
-//         if (x == _snake[i].x && y == _snake[i].y)
-//             return true;
-//     return false;
-// }
-
-// void Arcade::Game_Nibbler::appleNewPos()
-// {
-//     _apple.x = 0;
-//     _apple.y = 0;
-//     while (inWall(_apple.x, _apple.y)) {
-//         _apple.x = rand() % 20;
-//         _apple.y = rand() % 20;
-//     }
-// }
-
 int Arcade::Game_Nibbler::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *list)
 {
     float clockSpeed = 0.2;
@@ -214,10 +193,20 @@ int Arcade::Game_Nibbler::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_
     if (checkDeath()) {
         _sprites.clear();
         _texts.clear();
+        newScore();
         startGame();
     }
     draw(list);
     return (0);
+}
+
+void Arcade::Game_Nibbler::newScore() const
+{
+    std::string path("ressources/nibbler/highscore.txt");
+    std::ofstream file(path, std::ios_base::app);
+
+    file << (_playerName == "" ? "user" : _playerName) << " " << _score << std::endl;
+    file.close();
 }
 
 void Arcade::Game_Nibbler::draw(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *list)
