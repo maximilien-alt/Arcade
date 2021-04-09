@@ -143,14 +143,17 @@ void Arcade::Game_Solarfox::startGame()
     _ennemiesDirection[2] = -1;
     _ennemiesDirection[3] = -1;
 
-    graphical_text_t level;
-    level.id = 0;
-    level.color = {0, 255, 0, {GREEN, BLACK}};
-    level.font = "ressources/font.ttf";
-    level.size = 30;
-    level.pos = {_box.size.x / 2, 50, 0};
-    level.text = "Level : " + _currentMapIndex + 1;
-    _texts.push_back(level);
+    graphical_text_t text;
+    text.id = 0;
+    text.color = {0, 255, 0, {RED, BLACK}};
+    text.font = "ressources/font.ttf";
+    text.size = 30;
+    text.pos = {(_box.pos.x + _box.size.x) / 2 + 120, 70, 0};
+    _texts.push_back(text);
+
+    text.id = 1;
+    text.pos = {(_box.pos.x + _box.size.x) / 2 + 120, 120, 0};
+    _texts.push_back(text);
 }
 
 void Arcade::Game_Solarfox::calcEnnemiesPositions()
@@ -285,51 +288,67 @@ void Arcade::Game_Solarfox::calcEnnemiesShots()
             if (_ennemiesShots[i].first.pos.y > _box.pos.y - _box.size.y / 2 + 60)
                 _ennemiesShots[i].first.pos.y -= 1;
             else
+            {
                 _ennemiesShots.erase(_ennemiesShots.begin() + i);
+                _score += 1;
+            }
         }
         else if (_ennemiesShots[i].second == 90)
         {
             if (_ennemiesShots[i].first.pos.x < _box.pos.x - _box.size.x / 2 + _box.size.x - 60)
                 _ennemiesShots[i].first.pos.x += 1;
             else
+            {
                 _ennemiesShots.erase(_ennemiesShots.begin() + i);
+                _score += 1;
+            }
         }
         else if (_ennemiesShots[i].second == 180)
         {
             if (_ennemiesShots[i].first.pos.y < _box.pos.y - _box.size.y / 2 + _box.size.y - 60)
                 _ennemiesShots[i].first.pos.y += 1;
             else
+            {
                 _ennemiesShots.erase(_ennemiesShots.begin() + i);
+                _score += 1;
+            }
         }
         else if (_ennemiesShots[i].second == 270)
         {
             if (_ennemiesShots[i].first.pos.x > _box.pos.x - _box.size.x / 2 + 60)
                 _ennemiesShots[i].first.pos.x -= 1;
             else
+            {
                 _ennemiesShots.erase(_ennemiesShots.begin() + i);
+                _score += 1;
+            }
         }
     }
 }
 
 void Arcade::Game_Solarfox::calcPowerUpsShots()
 {
-    if (_powerUps.size() == 0) {
+    if (_powerUps.size() == 0)
+    {
         _currentMapIndex += 1;
         endGame();
         return;
     }
-    for (size_t i = 0; i < _powerUps.size(); i++) {
-        if (_sprites[5].visible && distanceBetween(_powerUps[i].first.pos, _sprites[5].pos) < 20) {
+    for (size_t i = 0; i < _powerUps.size(); i++)
+    {
+        if (_sprites[5].visible && distanceBetween(_powerUps[i].first.pos, _sprites[5].pos) < 20)
+        {
             _powerUps[i].second -= 1;
-            if (_powerUps[i].second == 0)
+            if (_powerUps[i].second == 0) {
                 _powerUps.erase(_powerUps.begin() + i);
+                _score += 2;
+            }
         }
     }
 }
 
 void Arcade::Game_Solarfox::endGame()
 {
-    std::cout << "RIP" << std::endl;
     newScore();
     _spriteIndex = 0;
     _sprites.clear();
@@ -345,7 +364,7 @@ void Arcade::Game_Solarfox::newScore() const
     std::string path("ressources/solarfox/highscore.txt");
     std::ofstream file(path, std::ios_base::app);
 
-    file << (_playerName == "" ? "user" : _playerName) << " " << "_score" << std::endl;
+    file << (_playerName == "" ? "user" : _playerName) << " " << _score << std::endl;
     file.close();
 }
 
@@ -353,7 +372,6 @@ void Arcade::Game_Solarfox::handleKeys()
 {
     if (_keys[ARROW_UP] && _sprites[4].angle != 180)
     {
-        _playerDirection = 0;
         _sprites[4].angle = 0;
     }
     else if (_keys[ARROW_RIGHT] && _sprites[4].angle != 270)
@@ -364,7 +382,7 @@ void Arcade::Game_Solarfox::handleKeys()
     {
         _sprites[4].angle = 180;
     }
-    else if (_keys[ARROW_LEFT] && _playerDirection != 90)
+    else if (_keys[ARROW_LEFT] && _sprites[4].angle != 90)
     {
         _sprites[4].angle = 270;
     }
@@ -379,7 +397,8 @@ int Arcade::Game_Solarfox::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct
     handleKeys();
     if (_shotClock.getElapsedTime() > 0.2)
         _sprites[5].visible = 0;
-    if (_ennemiesShotClocks.getElapsedTime() > 0.005 / _currentMapIndex) {
+    if (_ennemiesShotClocks.getElapsedTime() > 0.005 / _currentMapIndex)
+    {
         _ennemiesShotClocks.reset();
         calcEnnemiesShots();
     }
@@ -392,6 +411,8 @@ int Arcade::Game_Solarfox::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct
         for (size_t i = 0; i < 4; i++)
             ennemyShot(_sprites[i], _ennemiesClocks[i]);
     }
+    _texts[0].text = "Level : " + std::to_string(_currentMapIndex);
+    _texts[1].text = "Score : " + std::to_string(_score);
     draw(list);
     return (0);
 }
@@ -399,14 +420,14 @@ int Arcade::Game_Solarfox::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct
 void Arcade::Game_Solarfox::draw(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *list)
 {
     list->push_back(std::make_pair(BOX, &_box));
-    for (auto &n : _texts)
-        list->push_back(std::make_pair(TEXT, &n));
     for (auto &n : _powerUps)
         list->push_back(std::make_pair(SPRITE, &n.first));
     for (auto &n : _sprites)
         list->push_back(std::make_pair(SPRITE, &n));
     for (auto &n : _ennemiesShots)
         list->push_back(std::make_pair(SPRITE, &n.first));
+    for (auto &n : _texts)
+        list->push_back(std::make_pair(TEXT, &n));
 }
 
 extern "C" Arcade::IGameModule *entryPoint(void)

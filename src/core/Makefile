@@ -9,7 +9,7 @@ CC	=	g++
 
 TARGET	=	../../arcade
 
-CPPFLAGS	=	-W -Wall -Wextra -std=c++17 -g3
+CPPFLAGS	=	-W -Wall -Wextra -std=c++17
 
 LDFLAGS	=	-ldl
 

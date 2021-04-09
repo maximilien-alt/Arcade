@@ -44,7 +44,7 @@ namespace Arcade {
             std::vector<std::pair<graphical_sprite_t, size_t>> _powerUps;
             std::unordered_map<size_t, float> _ennemiesDirection;
             size_t _currentMapIndex = 1;
-            size_t _playerDirection = 0;
+            size_t _score = 0;
     };
 }
 
