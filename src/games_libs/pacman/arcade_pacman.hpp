@@ -70,6 +70,7 @@ namespace Arcade {
             int _life;
             int _lifeMax;
             AStar star;
+            bool _gameOver;
 
             std::vector<std::string> readFileIntoVector(std::string filepath) const;
             void getPacVelocity();
