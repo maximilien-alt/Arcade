@@ -16,6 +16,7 @@ namespace Arcade {
             Game_Solarfox();
             ~Game_Solarfox();
 
+            void restartGame();
             void startGame() final;
             int updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *_list) final;
             void draw(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *list);
