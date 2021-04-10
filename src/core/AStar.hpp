@@ -50,8 +50,9 @@ namespace Arcade
             cellule_t _start;
             cellule_t _end;
             std::vector<cellule_t *> _array;
-            std::list<void *> _garbage;
-        
+            std::list<Arcade::nodes_t *> _garbage;
+            std::list<Arcade::cellule_t *> _garbage_cellules;
+
             void create_array();
             void clear();
             void setup_neighbors(cellule_t **neighbors, int x, int y);

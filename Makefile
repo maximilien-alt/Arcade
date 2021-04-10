@@ -8,12 +8,14 @@
 all:	games graphicals core
 
 core:
+	$(MAKE) -C src/games_libs clean
 	$(MAKE) -C src/core
 
 core_debug:
 	$(MAKE) -C src/core debug
 
 games:
+	$(MAKE) -C src/core clean
 	$(MAKE) -C src/games_libs
 
 graphicals:

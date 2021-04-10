@@ -46,7 +46,7 @@ void Arcade::AStar::spe_push(Arcade::cellule_t **neighbor, int y, int x)
     Arcade::cellule_t *newOne = new Arcade::cellule_t;
     Arcade::cellule_t *temp = *neighbor;
 
-    _garbage.push_back(newOne);
+    _garbage_cellules.push_back(newOne);
     newOne->status = 0;
     newOne->x = x;
     newOne->y = y;
@@ -99,8 +99,11 @@ void Arcade::AStar::clear()
         delete[] _array[index];
     for (auto &n: _garbage)
         delete n;
+    for (auto &n: _garbage_cellules)
+        delete n;
     _array.clear();
     _garbage.clear();
+    _garbage_cellules.clear();
 }
 
 Arcade::nodes_t *lowest_fcost(Arcade::nodes_t *open)
@@ -125,7 +128,7 @@ Arcade::nodes_t *lowest_fcost(Arcade::nodes_t *open)
 }
 
 void delete_node(Arcade::nodes_t **nodes, Arcade::nodes_t *ptr)
-{  
+{
     if (!*nodes || !ptr)
         return;
     if (*nodes == ptr)

@@ -95,46 +95,6 @@ std::vector<std::string> Arcade::Graphical_Ncurses::readFileIntoVector(std::stri
     return (res);
 }
 
-std::vector<std::string> rotate(std::vector<std::string> toRotate, float angle)
-{
-    // std::vector<std::string> ret;
-    // std::string temp;
-    // int i = 0;
-
-    // switch ((int)angle) {
-    //     case 0: return toRotate;
-    //     case 90:
-    //         for (int x = 0; x < (int)toRotate[0].length(); x += 1) {
-    //             temp.clear();
-    //             i = 0;
-    //             for (int y = (int)toRotate.size() - 1; y >= 0; y -= 1)
-    //                 temp.insert(temp.begin() + i++, 1, toRotate[y][x]);
-    //             ret.push_back(temp);
-    //         }
-    //         break;
-    //     case 180:
-    //         for (int y = (int)toRotate.size() - 1; y >= 0; y -= 1) {
-    //             temp.clear();
-    //             i = 0;
-    //             for (int x = (int)toRotate[y].length() - 1; x >= 0; x -= 1)
-    //                 temp.insert(temp.begin() + i++, 1, toRotate[y][x]);
-    //             ret.push_back(temp);
-    //         }
-    //         break;
-    //     case 270:
-    //         for (int x = (int)toRotate[0].length() - 1; x >= 0; x -= 1) {
-    //             temp.clear();
-    //             i = 0;
-    //             for (int y = 0; y < (int)toRotate.size(); y += 1)
-    //                 temp.insert(temp.begin() + i++, 1, toRotate[y][x]);
-    //             ret.push_back(temp);
-    //         }
-    //         break;
-    // }
-    // return ret;
-    return toRotate;
-}
-
 void Arcade::Graphical_Ncurses::drawSprite(graphical_sprite_t &sprite)
 {
     int pair = colornum(sprite.color.ncurse[0], sprite.color.ncurse[1]);
@@ -154,7 +114,7 @@ void Arcade::Graphical_Ncurses::drawSprite(graphical_sprite_t &sprite)
         }
         _sprites[sprite.id] = std::make_pair(vector, win);
     }
-    std::vector<std::string> toPrint = rotate(_sprites[sprite.id].first, sprite.angle);
+    std::vector<std::string> toPrint = _sprites[sprite.id].first;
     size_y = toPrint.size() + 2;
     size_x = toPrint[0].length() + 2;
     sprite.size.y = size_y * HEIGHT / LINES;
