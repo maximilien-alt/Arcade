@@ -177,10 +177,14 @@ int Arcade::Game_Menu::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_t *
     int ret_2 = 0;
 
     updatePlayerName();
-    if (_keys[Arcade::KEYS::ARROW_LEFT])
+    if (_keys[Arcade::KEYS::ARROW_LEFT]) {
         _gindex = _gindex >= 1 ? _gindex - 1 : nbGames - 1;
-    if (_keys[Arcade::KEYS::ARROW_RIGHT])
+        updateLeaderBoard();
+    }
+    if (_keys[Arcade::KEYS::ARROW_RIGHT]) {
         _gindex = (_gindex + 1) < nbGames ? _gindex + 1 : 0;
+        updateLeaderBoard();
+    }
     if (_keys[Arcade::KEYS::ARROW_DOWN] || _keys[Arcade::KEYS::ARROW_UP])
         _choiceIndex = _choiceIndex == 1 ? 0 : 1;
     if (_keys[Arcade::KEYS::RETURN]) {
@@ -199,7 +203,6 @@ int Arcade::Game_Menu::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_t *
         if (_keys[Arcade::KEYS::MOUSE])
             ret_2 = -1;
     }
-    updateLeaderBoard();
     draw(list);
     return (ret_1 != 0 && _keys[Arcade::KEYS::MOUSE]) ? ret_1 : (ret_2 != 0 && _keys[Arcade::KEYS::MOUSE]) ? ret_2 : 0;
 }
