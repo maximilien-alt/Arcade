@@ -22,6 +22,8 @@ namespace Arcade {
             void createEnnemies();
             void createPlayer();
             void createPowerUps();
+            void createLifes();
+            void createEndText();
             void calcEnnemiesPositions();
             void calcPlayerPosition();
             void calcEnnemiesShots();
@@ -41,10 +43,14 @@ namespace Arcade {
             GameClock _shotClock;
             std::vector<GameClock> _ennemiesClocks;
             std::vector<std::pair<graphical_sprite_t, float>> _ennemiesShots;
-            std::vector<std::pair<graphical_sprite_t, size_t>> _powerUps;
+            std::vector<graphical_sprite_t> _powerUps;
+            std::vector<graphical_sprite_t> _lifes;
             std::unordered_map<size_t, float> _ennemiesDirection;
             size_t _currentMapIndex = 1;
             size_t _score = 0;
+            size_t _life = 6;
+            graphical_text_t _endText;
+            graphical_text_t _restartText;
     };
 }
 
