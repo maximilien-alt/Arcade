@@ -146,19 +146,19 @@ void Arcade::Game_Solarfox::createLifes()
     }
 }
 
-void Arcade::Game_Solarfox::startGame()
+void Arcade::Game_Solarfox::restartGame()
 {
-    _box.pos = {WIDTH / 2, HEIGHT / 2, 0};
-    _box.size = {40 * 15, 40 * 15, 0};
+    _sprites.clear();
+    _texts.clear();
+    _ennemiesClocks.clear();
+    _ennemiesShots.clear();
+    _powerUps.clear();
 
     _spriteIndex = 0;
+
     createEnnemies();
     createPlayer();
     createPowerUps();
-    if (_lifes.size() == 0) {
-        createEndText();
-        createLifes();
-    }
 
     _ennemiesDirection[0] = 1;
     _ennemiesDirection[1] = 1;
@@ -176,6 +176,20 @@ void Arcade::Game_Solarfox::startGame()
     text.id = 1;
     text.pos = {(_box.pos.x + _box.size.x) / 2 + 120, 120, 0};
     _texts.push_back(text);
+}
+
+void Arcade::Game_Solarfox::startGame()
+{
+    _box.pos = {WIDTH / 2, HEIGHT / 2, 0};
+    _box.size = {40 * 15, 40 * 15, 0};
+
+    _lifes.clear();
+    _life = 6;
+    _score = 0;
+    _currentMapIndex = 1;
+    restartGame();
+    createEndText();
+    createLifes();
 }
 
 void Arcade::Game_Solarfox::calcEnnemiesPositions()
@@ -366,16 +380,11 @@ void Arcade::Game_Solarfox::createEndText()
     _restartText.font = "ressources/font.ttf";
     _restartText.size = 30;
     _restartText.pos = {(_box.pos.x + _box.size.x) / 2 + 50, 360, 0};
-    _restartText.text = "Press R to restart";
+    _restartText.text = "Press F5 to restart";
 }
 
 void Arcade::Game_Solarfox::endGame()
 {
-    _sprites.clear();
-    _texts.clear();
-    _ennemiesClocks.clear();
-    _ennemiesShots.clear();
-    _powerUps.clear();
     _lifes[_life - 2].visible = false;
     if (_life == 1)
     {
@@ -384,7 +393,7 @@ void Arcade::Game_Solarfox::endGame()
     else
     {
         _life -= 1;
-        startGame();
+        restartGame();
     }
 }
 
@@ -418,13 +427,6 @@ void Arcade::Game_Solarfox::handleKeys()
     else if (_keys[SPACE])
     {
         playerShot();
-    } else if (_keys[R])
-    {
-        _lifes.clear();
-        _life = 7;
-        _score = 0;
-        _currentMapIndex = 1;
-        endGame();
     }
 }
 
