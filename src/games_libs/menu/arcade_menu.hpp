@@ -18,18 +18,20 @@ namespace Arcade
         public:
             Game_Menu();
             ~Game_Menu();
-        
+
             void startGame() final;
             int updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *_list) final;
-        
+
         private:
             size_t _gindex;
             size_t _choiceIndex;
             size_t nbGames;
+            std::map<int, std::string> _leaderboard;
 
             void updatePlayerName();
             void init_sprites();
             void draw(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *_list);
+            void updateLeaderBoard();
     };
 }
 

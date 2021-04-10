@@ -6,6 +6,9 @@
 */
 
 #include "arcade_menu.hpp"
+#include <regex>
+
+static const std::regex rgx("(\\w+)\\s+(\\w+)");
 
 Arcade::Game_Menu::Game_Menu(): AGameModule()
 {
@@ -55,6 +58,22 @@ Arcade::Game_Menu::~Game_Menu()
 
 }
 
+void Arcade::Game_Menu::updateLeaderBoard()
+{
+    std::string path("ressources/" + _texts[_gindex].text + "/highscore.txt");
+    std::ifstream fs(path);
+
+    _leaderboard.clear();
+    if (fs.is_open()) {
+        std::string str;
+        while (std::getline(fs, str)) {
+            std::smatch matches;
+            std::regex_search(str, matches, rgx);
+            _leaderboard[std::stoi(matches[2])] = matches[1];
+        }
+    }
+}
+
 void Arcade::Game_Menu::startGame()
 {
     graphical_text_t text;
@@ -84,6 +103,7 @@ void Arcade::Game_Menu::startGame()
     _box.pos = {WIDTH / 2, HEIGHT / 2 + 50, 0};
     _box.size = {WIDTH / 10, HEIGHT / 15, 0};
     init_sprites();
+    updateLeaderBoard();
 }
 
 void Arcade::Game_Menu::updatePlayerName()
@@ -128,6 +148,7 @@ int Arcade::Game_Menu::updateGame(std::list<std::pair<Arcade::FLAGS, IStruct_t *
         if (_keys[Arcade::KEYS::MOUSE])
             ret_2 = -1;
     }
+    updateLeaderBoard();
     draw(list);
     return (ret_1 != 0 && _keys[Arcade::KEYS::MOUSE]) ? ret_1 : (ret_2 != 0 && _keys[Arcade::KEYS::MOUSE]) ? ret_2 : 0;
 }
