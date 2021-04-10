@@ -103,6 +103,33 @@ void Arcade::Game_Menu::startGame()
     _box.pos = {WIDTH / 2, HEIGHT / 2 + 50, 0};
     _box.size = {WIDTH / 10, HEIGHT / 15, 0};
     init_sprites();
+    text.color = {0, 0, 255, {Arcade::COLOR::BLUE, Arcade::COLOR::BLACK}};
+    text.size = 24;
+    text.font = "ressources/font.ttf";
+    text.id = i++;
+    text.text = "Press F1/F2 to change libraries";
+    text.pos = {20, 800, 0};
+    _texts.push_back(text);
+    text.id = i++;
+    text.text = "Press F3/F4 to change game in runtime";
+    text.pos = {20, 824, 0};
+    _texts.push_back(text);
+    text.id = i++;
+    text.text = "Press F5 to restart game";
+    text.pos = {20, 848, 0};
+    _texts.push_back(text);
+    text.id = i++;
+    text.text = "Press F6 to go to menu";
+    text.pos = {20, 872, 0};
+    _texts.push_back(text);
+    text.id = i++;
+    text.text = "Press F7 to quit";
+    text.pos = {20, 896, 0};
+    _texts.push_back(text);
+    text.id = i++;
+    text.text = "Use space and keyboard arrow keys to play game and move in menu";
+    text.pos = {20, 920, 0};
+    _texts.push_back(text);
     updateLeaderBoard();
 }
 
@@ -187,6 +214,8 @@ void Arcade::Game_Menu::draw(std::list<std::pair<Arcade::FLAGS, IStruct_t *>> *l
             n.pos.x = 40;
             list->push_back(std::make_pair(TEXT, &n));
         }
+        if (text_index > nbGames - 1)
+            list->push_back(std::make_pair(TEXT, &n));
         text_index += 1;
     }
     list->push_back(std::make_pair(BOX, &_box));
