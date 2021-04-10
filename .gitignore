@@ -5,4 +5,5 @@ arcade
 .vscode/*
 debug.txt
 vgcore.*
-a.outhighscore.txt
+a.out
+highscore.txt
