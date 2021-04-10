@@ -62,6 +62,7 @@ void Arcade::Game_Menu::updateLeaderBoard()
 {
     std::string path("ressources/" + _texts[_gindex].text + "/highscore.txt");
     std::ifstream fs(path);
+    int index = 1;
 
     _leaderboard.clear();
     if (fs.is_open()) {
@@ -70,6 +71,17 @@ void Arcade::Game_Menu::updateLeaderBoard()
             std::smatch matches;
             std::regex_search(str, matches, rgx);
             _leaderboard[std::stoi(matches[2])] = matches[1];
+        }
+    }
+    _texts[_texts.size() - 1].text = "1. ";
+    _texts[_texts.size() - 2].text = "2. ";
+    _texts[_texts.size() - 3].text = "3. ";
+    if (!_leaderboard.empty()) {
+        for (std::map<int, std::string>::iterator it = --_leaderboard.end(); index != 4; --it) {
+            _texts[_texts.size() - index].text += it->second + ": " + std::to_string(it->first);
+            index += 1;
+            if (it == _leaderboard.begin())
+                break;
         }
     }
 }
@@ -129,6 +141,18 @@ void Arcade::Game_Menu::startGame()
     text.id = i++;
     text.text = "Use space and keyboard arrow keys to play game and move in menu";
     text.pos = {20, 920, 0};
+    _texts.push_back(text);
+    text.id = i++;
+    text.text = "3. ";
+    text.pos = {1500, 150, 0};
+    _texts.push_back(text);
+    text.id = i++;
+    text.text = "2. ";
+    text.pos = {1500, 100, 0};
+    _texts.push_back(text);
+    text.id = i++;
+    text.text = "1. ";
+    text.pos = {1500, 50, 0};
     _texts.push_back(text);
     updateLeaderBoard();
 }
