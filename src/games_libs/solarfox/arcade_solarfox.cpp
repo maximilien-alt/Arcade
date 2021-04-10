@@ -75,7 +75,7 @@ void Arcade::Game_Solarfox::createPlayer()
     graphical_sprite_t shot;
     shot.id = 5;
     shot.path = "ressources/solarfox/solarfox_shot.png";
-    shot.color = {255, 0, 0, {WHITE, BLACK}};
+    shot.color = {255, 0, 0, {YELLOW, BLACK}};
     shot.pos = {0, 0, 0};
     shot.angle = 0;
     shot.ncursesBox = 0;
@@ -108,7 +108,7 @@ void Arcade::Game_Solarfox::createPowerUps()
     sprite.id = _spriteIndex++;
     sprite.visible = 1;
     sprite.path = "ressources/solarfox/solarfox_powerup.png";
-    sprite.color = {255, 0, 0, {WHITE, BLACK}};
+    sprite.color = {255, 0, 0, {BLUE, BLACK}};
     sprite.size = {36, 18, 0};
     sprite.angle = 0;
     sprite.ncursesBox = 0;
@@ -167,7 +167,7 @@ void Arcade::Game_Solarfox::startGame()
 
     graphical_text_t text;
     text.id = 0;
-    text.color = {0, 255, 0, {RED, BLACK}};
+    text.color = {0, 255, 0, {GREEN, BLACK}};
     text.font = "ressources/font.ttf";
     text.size = 30;
     text.pos = {(_box.pos.x + _box.size.x) / 2 + 120, 70, 0};
